@@ -1,4 +1,4 @@
-<?
+<?php
 class AtisGenerator{
     private $icao;
     private $ident;

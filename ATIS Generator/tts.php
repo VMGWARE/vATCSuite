@@ -1,4 +1,4 @@
-<?
+<?php
 if(!isset($_GET) || empty($_GET) || strlen($_GET['atis']) < 20){
     return false;
 }
