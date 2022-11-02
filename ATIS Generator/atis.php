@@ -3,7 +3,14 @@ if(!isset($_POST["icao"]) || is_null($_POST["icao"])){
     return false;
 }
 
-function url_get_data($icao){
+/**
+ * It takes an ICAO code as a string, and returns the METAR data as a string.
+ * 
+ * @param string $icao The ICAO code of the airport you want to get the METAR from.
+ * 
+ * @return string METAR data
+ */
+function url_get_data(string $icao){
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,"https://tgftp.nws.noaa.gov/data/observations/metar/stations/".strtoupper($icao).".TXT");
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);

@@ -1,4 +1,6 @@
 <?php
+/* Checking if the  variable is set, if it is empty, or if the length of the ['atis']
+variable is less than 20. If any of these are true, it returns false. */
 if(!isset($_GET) || empty($_GET) || strlen($_GET['atis']) < 20){
     return false;
 }
@@ -18,4 +20,3 @@ if ($status == 200) {
     echo $output;
     die();
 }
-?>
