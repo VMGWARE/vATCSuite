@@ -1,10 +1,10 @@
-<?
+<?php
 if(!isset($_POST["icao"]) || is_null($_POST["icao"])){
     return false;
 }
 
 function db_get_contents($icao){
-    	$mysqli = new mysqli('localhost','redbbqhz_Vbyn','WentNeed$l5FQ','redbbqhz_atis_generator');
+    	$mysqli = new mysqli('HOST','USERNAME','PASSWORD','DATABASE');
 		$query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . strtoupper($icao) . "' limit 1");
 		$result = $query->fetch_row();
 		

@@ -1,4 +1,4 @@
-<?
+<?php
 class Runways{
     private $icao;
     private $metar;
