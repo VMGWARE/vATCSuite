@@ -1,4 +1,6 @@
 <?php
+include_once('./includes/constants.php');
+
 class AtisGenerator
 {
     private $icao;
@@ -153,7 +155,7 @@ class AtisGenerator
         }
         
         $icao   = strtoupper($return[1]);
-        $mysqli = new mysqli('HOST','USERNAME','PASSWORD','DATABASE');
+        $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
         $query  = $mysqli->query("SELECT name FROM airports WHERE icao ='" . $icao . "' LIMIT 1");
         $result = $query->fetch_row();
         
