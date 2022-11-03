@@ -1,4 +1,5 @@
 <?php
+include_once('./includes/constants.php');
 
 /**
  *   It takes an ICAO code, gets the METAR for that ICAO, parses the METAR for the wind direction, then
@@ -76,7 +77,7 @@ class Runways
      */
     public function parse_runways()
     {
-        $mysqli = new mysqli('HOST', 'USERNAME', 'PASSWORD', 'DATABASE');
+        $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
         $query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . $this->icao . "' limit 1");
         $result = $query->fetch_row();
 

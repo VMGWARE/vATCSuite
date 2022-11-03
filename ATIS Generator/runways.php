@@ -1,4 +1,6 @@
 <?php
+include_once('./includes/constants.php');
+
 if (!isset($_POST["icao"]) || is_null($_POST["icao"])) {
     return false;
 }
@@ -13,7 +15,7 @@ if (!isset($_POST["icao"]) || is_null($_POST["icao"])) {
  */
 function db_get_contents(string $icao)
 {
-    $mysqli = new mysqli('HOST', 'USERNAME', 'PASSWORD', 'DATABASE');
+    $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
     $query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . strtoupper($icao) . "' limit 1");
     $result = $query->fetch_row();
 
