@@ -36,7 +36,7 @@ function db_get_contents(string $icao)
 function url_get_contents(string $icao)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://tgftp.nws.noaa.gov/data/observations/metar/stations/" . strtoupper($icao) . ".TXT");
+    curl_setopt($ch, CURLOPT_URL, "https://tgftp.nws.noaa.gov/data/observations/metar/stations/" . addslashes(strtoupper($icao)) . ".TXT");
     curl_setopt($ch, CURLOPT_NOBODY, true);
     $response = curl_exec($ch);
     if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {

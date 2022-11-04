@@ -14,7 +14,7 @@ if(!isset($_POST["icao"]) || is_null($_POST["icao"])){
  */
 function url_get_data(string $icao){
     $ch = curl_init();
-    curl_setopt($ch,CURLOPT_URL,"https://tgftp.nws.noaa.gov/data/observations/metar/stations/".strtoupper($icao).".TXT");
+    curl_setopt($ch,CURLOPT_URL,"https://tgftp.nws.noaa.gov/data/observations/metar/stations/".addslashes(strtoupper($icao)).".TXT");
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
     $exec = curl_exec($ch);
     curl_close($ch);
