@@ -78,7 +78,7 @@ class Runways
     public function parse_runways()
     {
         $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
-        $query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . $this->icao . "' limit 1");
+        $query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . htmlspecialchars($this->icao) . "' limit 1");
         $result = $query->fetch_row();
 
         $runways = explode(",", $result[0]);
@@ -115,7 +115,7 @@ class Runways
             echo '
                     <thead>
                         <tr>
-                            <th colspan="5" class="small">Winds at <strong>' . strtoupper($_POST["icao"]) . '</strong> are either calm or variable, so runway/wind heading variance cannot be calculated.</th>
+                            <th colspan="5" class="small">Winds at <strong>' . htmlspecialchars(strtoupper($_POST["icao"])) . '</strong> are either calm or variable, so runway/wind heading variance cannot be calculated.</th>
                         </tr>
                     </thead>';
         }

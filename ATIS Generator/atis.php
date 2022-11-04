@@ -35,7 +35,7 @@ if(url_get_data($_POST["icao"]) == false){
                     </div>
                     <div class="modal-body text-center">
                         <p class="fs-3 text-danger"><i class="fa-solid fa-circle-xmark"></i><br/>Generation Failed</p>
-                        <p>AviationWeather.gov does not have any weather information available for <strong>' . strtoupper($_POST["icao"]) . '</strong>. Please try again with a different airport.</p>
+                        <p>AviationWeather.gov does not have any weather information available for <strong>' . htmlspecialchars(strtoupper($_POST["icao"])) . '</strong>. Please try again with a different airport.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
