@@ -156,7 +156,7 @@ class AtisGenerator
         
         $icao   = strtoupper($return[1]);
         $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
-        $query  = $mysqli->query("SELECT name FROM airports WHERE icao ='" . $icao . "' LIMIT 1");
+        $query  = $mysqli->query("SELECT name FROM airports WHERE icao ='" . htmlspecialchars($icao) . "' LIMIT 1");
         $result = $query->fetch_row();
         
         if(!$result){
