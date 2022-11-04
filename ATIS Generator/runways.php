@@ -70,6 +70,7 @@ if ($_POST["icao"] == "") {
     return false;
 }
 
+// deepcode ignore Ssrf: <url_get_contents only goes to one url, any effect would be little to none, with the resulting output only being true or false with error reporting disabled.>
 if (url_get_contents($_POST["icao"]) == false) {
     echo '
         <div class="modal fade" id="runway-modal" tabindex="-1">

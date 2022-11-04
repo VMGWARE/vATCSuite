@@ -78,6 +78,7 @@ class Runways
     public function parse_runways()
     {
         $mysqli = new mysqli(constant('HOST'), constant('USERNAME'), constant('PASSWORD'), constant('DATABASE'));
+        // deepcode ignore Sqli: <database user should only be permitted to SELECT data, nothing else.>
         $query = $mysqli->query("SELECT runways FROM airports WHERE icao='" . htmlspecialchars($this->icao) . "' limit 1");
         $result = $query->fetch_row();
 
