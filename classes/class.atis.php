@@ -65,7 +65,7 @@ class AtisGenerator
     private $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
 
     
-    function __construct(){
+    public function __construct(){
         $this->icao                 = strtoupper(preg_replace("@[^a-z0-9]@i", "", $_POST["icao"]));
         $this->ident                = $_POST["ident"];
         $this->landing_runways      = $_POST["landing_runways"];
