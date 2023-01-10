@@ -1,13 +1,5 @@
 # ATIS_GENERATOR
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
@@ -39,7 +31,6 @@
 1. Credit me for any use.
 2. Do NOT, and I mean DO NOT charge for this, or put it behind a paywall.
 
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -58,8 +49,6 @@ Don't forget to give the project a star! Thanks again!
 <img src = "https://contrib.rocks/image?repo=RedbeardTFL/ATIS_GENERATOR"/>
 </a>
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
 [contributors-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/graphs/contributors
 
