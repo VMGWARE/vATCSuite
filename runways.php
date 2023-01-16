@@ -1,7 +1,7 @@
 <?php
 include_once('./includes/constants.php');
 
-if (!isset($_POST["icao"]) || is_null($_POST["icao"])) {
+if (!isset($_POST["icao"])) {
     return false;
 }
 
