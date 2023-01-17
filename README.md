@@ -52,7 +52,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## License
 
-Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more information. The LICENSE file included overrides any other license information and is the major license that applies to this project, the `CC BY-NC-SA 4.0` License, is a secondary license that also applies to this project and is included for reference.
+Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more information. The `CC BY-NC-SA 4.0` License overrides the included `LICENSE` file. The LICENSE file included is a secondary license that also applies to this project and is included for reference.
 
 ## Contributors
 
