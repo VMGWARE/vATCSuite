@@ -8,9 +8,9 @@ RedbeardTFL grants you a non-exclusive, non-transferable, limited license to use
 
 ## Restrictions
 
--   You may modify the Code, including adding new features, for personal or non-commercial use only.
--   You may not rent, lease, loan, or sell derivative works based on the Code.
--   Any forks or branches of the Code must also be subject to the terms and conditions of this Agreement.
+- You may modify the Code, including adding new features, for personal or non-commercial use only.
+- You may not rent, lease, loan, or sell derivative works based on the Code.
+- Any forks or branches of the Code must also be subject to the terms and conditions of this Agreement.
 
 ## Attribution
 
