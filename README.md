@@ -32,11 +32,6 @@
 2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
 3. cURL: is used to fetch weather info, so this function must be enabled.
 
-## Basic rules:
-
-1. Credit me for any use.
-2. Do NOT, and I mean DO NOT charge for this, or put it behind a paywall.
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
