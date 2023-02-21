@@ -803,4 +803,3 @@ class AtisGenerator
         return implode(" ", $output);
     }
 }
-?>
