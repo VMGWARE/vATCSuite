@@ -53,6 +53,7 @@ if (!extension_loaded('mysqli')) {
 require_once './includes/constants.php';
 
 echo "Checking: Database connection...\n";
+$mysqli = null;
 try {
     $mysqli = new mysqli(HOST, USERNAME, PASSWORD, DATABASE);
 } catch (Exception $e) {
