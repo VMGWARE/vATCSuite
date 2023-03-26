@@ -34,11 +34,11 @@ if (!is_readable('./includes/constants.php')) {
 
 // Validate PHP version is 8.0 or higher
 echo "Checking: PHP version...\n";
-if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+if (version_compare(PHP_VERSION, '8.1.0', '<')) {
     echo "Failed: PHP version is too low. Please upgrade to PHP 8.0 or higher.\n";
     exit();
 } else {
-    echo "Passed: PHP version is 8.0 or higher.\n";
+    echo "Passed: PHP version is 8.1 or higher.\n";
 }
 
 // Validate mysqli extension is installed
