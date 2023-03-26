@@ -22,7 +22,7 @@
    2. Create atis-generator user
       1. username: redbeard_atis_generator(or whatever works for you)
       2. password: (create secure password or have mariaDB generate it for you)
-      3. permissions: only enable SELECT for the database: redbeard-atis-generator
+      3. permissions: only enable SELECT, and INSERT for the redbeard-atis-generator database
 3. Open /includes/constants.php in a text editor and change the database connection information to your database and user info
 4. Run `php db_initialize.php` from the command line to create the database tables.
 
