@@ -15,8 +15,11 @@ $output = curl_exec($ch);
 $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 if ($status == 200) {
-    header("Content-type: application/octet-stream");     
-    header("Content-Disposition: attachment; filename=ATIS_".gmdate("YmdHis",time()).".mp3"); 
+    $zulu = gmdate("dHi");
+    $icao = strtoupper($_GET['icao']);
+    $ident = strtoupper($_GET['ident']);
+    header("Content-type: application/octet-stream");
+    header("Content-Disposition: attachment; filename=" . $icao . "_ATIS_" . $ident . "_" . $zulu . "Z.mp3");
     echo $output;
     die();
 }

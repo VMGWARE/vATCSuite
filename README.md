@@ -1,19 +1,19 @@
-# ATIS_GENERATOR
+# ATIS GENERATOR
 
 [![License: CC BY-NC-SA 4.0][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
 
-## Rudimentary instructions to get started:
+## Rudimentary instructions to get started
 
 1. Download Code
-2. Import redbbqhz_atis_generator.sql using your preferred method into MySQL. This file includes ICAO codes and associated airport names
-3. Open /includes/constants.php in a text editor and change the MySQL database connection information to your database
+2. Open /includes/constants.php in a text editor and change the MySQL database connection information to your database
+3. Run `php db_initialize.php` from the command line to create the database tables.
 4. Upload files to your server
 5. Enjoy!
 
-## Advanced Instructions:
+## Advanced Instructions
 
 1. Download Code
 2. MariaDB
@@ -22,11 +22,11 @@
    2. Create atis-generator user
       1. username: redbeard_atis_generator(or whatever works for you)
       2. password: (create secure password or have mariaDB generate it for you)
-      3. permissions: only enable SELECT for the database: redbeard-atis-generator
-   3. Import redbbqhz_atis_generator.sql using your preferred method into MySQL. This file includes ICAO codes and associated airport names.
+      3. permissions: only enable SELECT, and INSERT for the redbeard-atis-generator database
 3. Open /includes/constants.php in a text editor and change the database connection information to your database and user info
+4. Run `php db_initialize.php` from the command line to create the database tables.
 
-## Requirements:
+## Requirements
 
 1. PHP: version 8.1 or greater
 2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
