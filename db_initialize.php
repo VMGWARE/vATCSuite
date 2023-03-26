@@ -2,7 +2,7 @@
 
 $success = false;
 
-echo "Datbase Initialization Script\n";
+echo "Database Initialization Script\n";
 echo "=============================\n";
 
 // Check if called via browser
