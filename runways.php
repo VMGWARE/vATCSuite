@@ -32,6 +32,31 @@ try {
     return false;
 }
 
+// Check if the database has no tables
+$query = $mysqli->query("SHOW TABLES");
+if ($query->num_rows == 0) {
+    echo '
+        <div class="modal fade" id="runway-modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Oops!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="fs-3 text-danger"><i class="fa-solid fa-circle-xmark"></i><br/>Connection Failed</p>
+                        <p>One or more tables are missing, please contact the administrator.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ';
+}
+$mysqli->close();
+
 /**
  * It connects to the database, queries the database for the runways of the airport, and returns the
  * result

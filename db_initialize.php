@@ -2,7 +2,7 @@
 
 $success = false;
 
-echo "Datbase Initialization Script\n";
+echo "Database Initialization Script\n";
 echo "=============================\n";
 
 // Check if called via browser
@@ -84,7 +84,7 @@ if ($mysqli->connect_errno) {
     exit();
 }
 
-echo "Passed: Database connection.\n";
+echo "Passed: Database connection established.\n";
 
 echo "Checking: Database tables...\n";
 // Check that no tables exist
@@ -94,17 +94,17 @@ if ($result = $mysqli->query($sql)) {
         echo "Failed: Database tables already exist.\n";
         exit();
     } else {
-        echo "Passed: Database tables.\n";
+        echo "Passed: Database tables do not exist.\n";
     }
 } else {
     echo "Failed: Database tables: (" . $mysqli->errno . ") " . $mysqli->error;
     exit();
 }
 
-echo "Checking: Creating database tables...\n";
+echo "Checking: Creation of database tables...\n";
 $sql = file_get_contents('./redbbqhz_atis_generator.sql');
 if ($mysqli->multi_query($sql)) {
-    echo "Passed: Creating database tables.\n";
+    echo "Passed: Created required database tables.\n";
     $success = true;
 } else {
     echo "Failed: Creating database tables: (" . $mysqli->errno . ") " . $mysqli->error;
