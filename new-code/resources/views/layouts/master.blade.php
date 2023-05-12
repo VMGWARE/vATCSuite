@@ -28,8 +28,7 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ asset('/lib/js/redbeard.js') }}"
-        integrity="sha384-iJkOZ98Q2+eS2mEcOzRcyxAlswxPN5/x3BtTsLG4g7eEpuM0eWXMwmaT3qit/OCN" crossorigin="anonymous">
+    <script src="{{ asset('/lib/js/redbeard.js') }}">
     </script>
 </body>
 
