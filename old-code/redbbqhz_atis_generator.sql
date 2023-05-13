@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `redbbqhz_atis_generator`
+-- Database: `redbeard-atis-generator`
 --
 
 -- --------------------------------------------------------
@@ -39,7 +39,7 @@ CREATE TABLE `airports` (
 --
 
 INSERT INTO `airports` (`icao`, `name`, `runways`) VALUES
-('AGEV', 'Geva Airport', '33,15'),
+('AGEV', 'Geva Airport', '33,15')
 ('AGGA', 'Gwaunaru u Airport', '36,18'),
 ('AGRM', 'Ramata Airport', '32,14'),
 ('AGAT', 'Uru Harbour Airport', '31,13'),
