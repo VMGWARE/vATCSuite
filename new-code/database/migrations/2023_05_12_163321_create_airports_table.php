@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('airports', function (Blueprint $table) {
             $table->id();
             $table->string('icao', 4)->unique();
-            $table->string('iata', 3)->nullable();
             $table->string('name');
             $table->text('runways')->nullable();
             $table->timestamps();

@@ -18,7 +18,6 @@ class AirportFactory extends Factory
     {
         return [
             'icao' => $this->faker->unique()->regexify('[A-Z]{4}'),
-            'iata' => $this->faker->unique()->regexify('[A-Z]{3}'),
             'name' => $this->faker->unique()->city() . ' Airport',
             'runways' => $this->faker->unique()->regexify('[0-9]{2}[LRC]'),
         ];
