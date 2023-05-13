@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\Airport as AirportModel;
 
 class Airport extends Controller
 {
@@ -15,9 +16,38 @@ class Airport extends Controller
         // TODO: Return airport data from database
     }
 
-    public function runways($icao, Request $request)
+    public function runways($icao)
     {
-        // TODO: Return runway data from database
+        if (!$this->validateIcao($icao)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid ICAO code.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        $airport = AirportModel::where('icao', strtoupper($icao))->first();
+
+        if (!$airport) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . '.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        $runways = $airport->runways;
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Runways retrieved successfully.',
+            'code' => 200,
+            'data' => [
+                'runways' => $runways
+            ]
+        ]);
     }
 
     public function atis($icao, Request $request)
@@ -25,7 +55,7 @@ class Airport extends Controller
         // TODO: Generate ATIS from METAR
     }
 
-    public function metar($icao, Request $request)
+    public function metar($icao)
     {
         if (!$this->validateIcao($icao)) {
             return response()->json([
@@ -59,7 +89,6 @@ class Airport extends Controller
             'message' => 'METAR data retrieved successfully.',
             'code' => 200,
             'data' => [
-                'icao' => strtoupper($icao),
                 'metar' => trim($lines[1])
             ]
         ]);
