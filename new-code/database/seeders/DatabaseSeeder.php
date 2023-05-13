@@ -12,7 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed the airports table
+        // TODO: Move to separate seeders
+        // TODO: Move airports to separate json file and import from there
         $airports = [
             [
                 'icao' => 'AGEV',
