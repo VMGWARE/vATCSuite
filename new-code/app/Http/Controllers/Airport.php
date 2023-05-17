@@ -30,8 +30,13 @@ class Airport extends Controller
         }
 
         $metar = $this->fetch_metar($icao);
-        $wind = $this->get_wind($metar);
-        $runways = $this->parse_runways($icao, $wind['dir']);
+        if ($metar == null) {
+            $wind = null;
+            $runways = null;
+        } else {
+            $wind = $this->get_wind($metar);
+            $runways = $this->parse_runways($icao, $wind['dir']);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -233,7 +238,7 @@ class Airport extends Controller
             curl_close($ch);
 
             // If the icao is not found in the response, return an error
-            if (!strpos($exec, strtoupper($icao))) {
+            if (strpos($exec, "Not Found") !== false || strpos($exec, strtoupper($icao)) === false) {
                 return null;
             }
 
