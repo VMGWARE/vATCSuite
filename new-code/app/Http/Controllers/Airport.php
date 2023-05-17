@@ -86,8 +86,18 @@ class Airport extends Controller
             ]);
         }
 
-        $wind = $this->get_wind($this->fetch_metar($icao));
+        $metar = $this->fetch_metar($icao);
+        if ($metar == null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+        $wind = $this->get_wind($metar);
         $runways = $this->parse_runways($icao, $wind['dir']);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Runways retrieved successfully.',
