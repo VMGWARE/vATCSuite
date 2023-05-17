@@ -46,6 +46,19 @@ class Airport extends Controller
         ]);
     }
 
+    public function all(Request $request)
+    {
+        $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Airports retrieved successfully.',
+            'code' => 200,
+            'data' => [
+                'airports' => $airports,
+            ]
+        ]);
+    }
+
     public function runways($icao)
     {
         if (!$this->validateIcao($icao)) {

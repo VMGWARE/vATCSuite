@@ -18,6 +18,7 @@ use App\Http\Controllers\Airport;
 Route::prefix('v1')->group(function () {
 
     Route::prefix('airport')->group(function () {
+        Route::get('/', [Airport::class, 'all'])->name('api.airport.all');
         Route::get('{icao}', [Airport::class, 'index'])->name('api.airport.index');
         Route::get('{icao}/runways', [Airport::class, 'runways'])->name('api.airport.runways');
         Route::get('{icao}/atis', [Airport::class, 'atis'])->name('api.airport.atis');
