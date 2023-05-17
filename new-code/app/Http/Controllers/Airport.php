@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Cache;
 
 class Airport extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index($icao, Request $request)
     {
         if (!$this->validateIcao($icao)) {
