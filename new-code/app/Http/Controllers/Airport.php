@@ -137,6 +137,51 @@ class Airport extends Controller
 
     public function atis($icao, Request $request)
     {
+        // Validate ICAO code
+        if (!$this->validateIcao($icao)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid ICAO code.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        // Get the airport from the database
+        $airport = AirportModel::where('icao', strtoupper($icao))->first();
+
+        // If the airport is not found in the database, return an error
+        if (!$airport) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . ' in the database.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        // Fetch the METAR data for the airport
+        $metar = $this->fetch_metar($icao);
+
+        // If the icao is not found in the response, return an error
+        if ($metar == null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        if (!isset($request->landing_runways) || !isset($request->departure_runways)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must select at least one landing and departing runway to generate your ATIS.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
         // TODO: Generate ATIS from METAR
     }
 
