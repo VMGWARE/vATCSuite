@@ -67,45 +67,72 @@ class Airport extends Controller
     public function runways($icao)
     {
         if (!$this->validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            if (request()->query('res') == 'html') {
+                return view('partials.failed', [
+                    'message' => 'Invalid ICAO code.',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid ICAO code.',
+                    'code' => 400,
+                    'data' => null
+                ]);
+            }
         }
 
         $airport = AirportModel::where('icao', strtoupper($icao))->first();
 
         if (!$airport) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . '.',
-                'code' => 404,
-                'data' => null
-            ]);
+            if (request()->query('res') == 'html') {
+                return view('partials.failed', [
+                    'message' => 'Could not find airport with ICAO code <strong>' . strtoupper($icao) . '</strong>.',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . '.',
+                    'code' => 404,
+                    'data' => null
+                ]);
+            }
         }
 
         $metar = $this->fetch_metar($icao);
         if ($metar == null) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
-                'code' => 404,
-                'data' => null
-            ]);
+            if (request()->query('res') == 'html') {
+                return view('partials.failed', [
+                    'message' => 'AviationWeather.gov does not have any weather information available for <strong>' . strtoupper($icao) . '</strong>. Please try again with a different airport.',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
+                    'code' => 404,
+                    'data' => null
+                ]);
+            }
         }
         $wind = $this->get_wind($metar);
         $runways = $this->parse_runways($icao, $wind['dir']);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Runways retrieved successfully.',
-            'code' => 200,
-            'data' => [
+        if (request()->query('res') == 'html') {
+            return view('partials.runways', [
+                'airport' => $airport,
+                'metar' => $metar,
+                'wind' => $wind,
                 'runways' => $runways,
-            ]
-        ]);
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Runways retrieved successfully.',
+                'code' => 200,
+                'data' => [
+                    'runways' => $runways,
+                ]
+            ]);
+        }
     }
 
     public function atis($icao, Request $request)

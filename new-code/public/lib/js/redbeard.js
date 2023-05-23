@@ -26,7 +26,7 @@ $(document).ready(function () {
         t.preventDefault();
         $(".loading").show();
         icao = $("#icao").val();
-        $.get(`/api/v1/airport/${icao}/runways`, function (t) {
+        $.get(`/api/v1/airport/${icao}/runways?res=html`, function (t) {
             $("#runway-output").html(t);
             $("#runway-modal").modal("show");
             $(".loading").hide()
