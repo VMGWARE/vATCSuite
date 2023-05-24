@@ -35,10 +35,15 @@ Route::prefix('v1')->group(function () {
                 'contact' => [
                     'email' => 'atis@vahngomes.dev',
                     'name' => 'Atis Generator Support',
+                    'url' => 'https://github.com/RedbeardTFL/ATIS_GENERATOR'
                 ],
                 'license' => [
                     'name' => 'CC BY-NC-SA 4.0',
                     'url' => 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                ],
+                'x-logo' => [
+                    'url' => '/lib/images/atis_generator_logo_small.png',
+                    'altText' => 'Redbeard\'s Atis Generator',
                 ]
             ],
             "servers" => [
@@ -46,6 +51,10 @@ Route::prefix('v1')->group(function () {
                     "url" => "https://atis.vahngomes.dev/api/v1",
                     "description" => "Production server"
                 ],
+                [
+                    "url" => "http://127.0.0.1:8000/api/v1",
+                    "description" => "Local server"
+                ]
             ],
             'host' => 'atis.vahngomes.dev',
             'basePath' => '/v1',
@@ -55,32 +64,6 @@ Route::prefix('v1')->group(function () {
                     "type" => "apiKey",
                     "name" => "api_key",
                     "in" => "header"
-                ],
-            ],
-            "definitions" => [
-                "ApiResponse" => [
-                    "type" => "object",
-                    "properties" => [
-                        "status" => [
-                            "type" => "string",
-                            "description" => "Status of the response",
-                            "example" => "success"
-                        ],
-                        "message" => [
-                            "type" => "string",
-                            "description" => "Message of the response",
-                            "example" => "Airport found"
-                        ],
-                        "code" => [
-                            "type" => "integer",
-                            "description" => "HTTP status code",
-                            "example" => 200
-                        ],
-                        "data" => [
-                            "type" => "object",
-                            "description" => "Data of the response",
-                        ],
-                    ],
                 ],
             ],
             'tags' => [
@@ -105,17 +88,139 @@ Route::prefix('v1')->group(function () {
                         'operationId' => 'getAirport',
                         "produces" => ["application/json"],
                         "responses" => [
-                            "200" => [
-                                "description" => "successful operation",
-
+                            '200' => [
+                                "description" => "Airport found",
+                                'content' => [
+                                    'application/json' => [
+                                        'schema' => [
+                                            '$ref' => '#/definitions/Airport',
+                                        ],
+                                    ],
+                                ]
                             ],
                             '404' => [
-                                "description" => "Pet not found"
+                                "description" => "Airport not found",
+                                'content' => [
+                                    'application/json' => [
+                                        'schema' => [
+                                            '$ref' => '#/definitions/ApiResponse',
+                                        ],
+                                    ],
+                                ]
                             ]
+                        ],
+                        "parameters" => [
+                            [
+                                "name" => "icao",
+                                "in" => "path",
+                                "description" => "ICAO code of the airport",
+                                "required" => true,
+                                "type" => "string",
+                                "example" => "EGKK"
+                            ],
                         ],
                     ]
                 ]
-            ]
+            ],
+            "definitions" => [
+                "ApiResponse" => [
+                    "type" => "object",
+                    "properties" => [
+                        "status" => [
+                            "type" => "string",
+                            "description" => "Status of the response",
+                        ],
+                        "message" => [
+                            "type" => "string",
+                            "description" => "Message of the response",
+                        ],
+                        "code" => [
+                            "type" => "integer",
+                            "description" => "HTTP status code",
+
+                        ],
+                        "data" => [
+                            "type" => "object",
+                            "description" => "Data of the response",
+                        ],
+                    ],
+                ],
+                "Airport" => [
+                    "type" => "object",
+                    "properties" => [
+                        "airport" => [
+                            "type" => "object",
+                            "description" => "Airport data",
+                            "properties" => [
+                                "id" => [
+                                    "type" => "integer",
+                                    "description" => "ID of the airport",
+                                ],
+                                "icao" => [
+                                    "type" => "string",
+                                    "description" => "ICAO code of the airport",
+                                ],
+                                "name" => [
+                                    "type" => "string",
+                                    "description" => "Name of the airport",
+                                ],
+                                "runways" => [
+                                    "type" => "object",
+                                    "description" => "Array of runways",
+                                ]
+                            ]
+                        ],
+                        "metar" => [
+                            "type" => "string",
+                            "description" => "METAR of the airport",
+                        ],
+                        "wind" => [
+                            "type" => "object",
+                            "description" => "Wind data",
+                            "properties" => [
+                                "dir" => [
+                                    "type" => "integer",
+                                    "description" => "Wind direction",
+                                ],
+                                "speed" => [
+                                    "type" => "integer",
+                                    "description" => "Wind speed",
+                                ],
+                                "gust_speed" => [
+                                    "type" => "integer",
+                                    "description" => "Wind gust",
+                                ],
+                            ]
+
+                        ],
+                        "runways" => [
+                            "type" => "object",
+                            "description" => "Array of runways",
+                            "properties" => [
+                                "runway" => [
+                                    "type" => "object",
+                                    "description" => "Runway data",
+                                    "properties" => [
+                                        "runway_hdg" => [
+                                            "type" => "integer",
+                                            "description" => "Runway heading",
+                                        ],
+                                        "wind_dir" => [
+                                            "type" => "string",
+                                            "description" => "Wind direction",
+                                        ],
+                                        "wind_diff" => [
+                                            "type" => "string",
+                                            "description" => "Wind difference",
+                                        ],
+                                    ]
+                                ],
+
+                            ],
+                        ],
+                    ],
+                ],
+            ],
 
         ]);
     });
