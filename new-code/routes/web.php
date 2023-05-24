@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/doc', function () {
+Route::get('/docs', function () {
     return view('redoc');
 });
