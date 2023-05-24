@@ -37,7 +37,7 @@ $(document).ready(function () {
         $(".loading").show();
         t.preventDefault();
         icao = $("#icao").val();
-        $.get(`/api/v1/airport/${icao}/atis`, $("#atis-input").serialize(), function (t) {
+        $.post(`/api/v1/airport/${icao}/atis`, $("#atis-input").serialize(), function (t) {
             $("#atis-output").html(t);
             $("#atis-modal").modal("show");
             $(".loading").hide();
