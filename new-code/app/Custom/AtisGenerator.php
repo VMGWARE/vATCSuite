@@ -206,7 +206,7 @@ class AtisGenerator
      */
     private function zulu_time(mixed $part, bool $speak = false)
     {
-        if (!preg_match("@^([0-9]{2})([0-9]{4})(Z)$@", $part, $return) || isset($this->part["pressure"])) {
+        if (!preg_match("@^([0-9]{2})([0-9]{4})(Z)$@", $part, $return) || isset($this->parts["pressure"])) {
             return false;
         }
 
