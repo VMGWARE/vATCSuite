@@ -7,18 +7,27 @@ return [
         'default' => [
 
             'info' => [
-                'title' => config('app.name'),
-                'description' => null,
+                'title' => "Redbeard's ATIS Generator",
+                'description' => 'A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.',
                 'version' => '1.0.0',
-                'contact' => [],
+                'contact' => [
+                    'name' => 'Atis Support',
+                    'email' => 'atis@vahngomes.dev',
+                    'url' => 'https://atis.vahngomes.dev/',
+                ],
             ],
 
             'servers' => [
                 [
-                    'url' => env('APP_URL'),
-                    'description' => null,
+                    'url' => 'http://127.0.0.1:8000/',
+                    'description' => 'Local Server',
                     'variables' => [],
                 ],
+                [
+                    'url' => 'https://atis.vahngomes.dev/',
+                    'description' => 'Production Server',
+                    'variables' => [],
+                ]
             ],
 
             'tags' => [
