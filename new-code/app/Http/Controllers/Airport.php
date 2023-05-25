@@ -302,4 +302,8 @@ class Airport extends Controller
             ]
         ]);
     }
+
+    public function textToSpeech($icao, Request $request)
+    {
+    }
 }

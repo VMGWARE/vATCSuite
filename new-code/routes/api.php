@@ -23,5 +23,7 @@ Route::prefix('v1')->group(function () {
         Route::get('{icao}/runways', [Airport::class, 'runways'])->name('api.airport.runways');
         Route::post('{icao}/atis', [Airport::class, 'atis'])->name('api.airport.atis');
         Route::get('{icao}/metar', [Airport::class, 'metar'])->name('api.airport.metar');
+
+        Route::get('{icao}/tts', [Airport::class, 'textToSpeech'])->name('api.airport.text-to-speech');
     });
 });
