@@ -12,6 +12,16 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 #[OpenApi\PathItem]
 class Airport extends Controller
 {
+    /**
+     * Get Airport.
+     * 
+     * Gets an airport from the database and returns it in a JSON response.
+     * 
+     * @param string $icao The ICAO code of the airport to get.
+     * @return \Illuminate\Http\Response
+     */
+    #[OpenApi\Operation]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function index($icao, Request $request)
     {
         if (!Helpers::validateIcao($icao)) {
@@ -56,7 +66,7 @@ class Airport extends Controller
     }
 
     /**
-     * Get all airports in the database.
+     * Get All Airports.
      * 
      * Gets all airports in the database and returns them in a JSON response.
      */
@@ -75,7 +85,7 @@ class Airport extends Controller
     }
 
     /**
-     * Get runways for an airport.
+     * Get Airport Runways.
      * 
      * Gets the runways for an airport and returns them in a JSON response.
      * 
@@ -155,7 +165,7 @@ class Airport extends Controller
     }
 
     /**
-     * Get the ATIS for an airport.
+     * Get Airport ATIS.
      * 
      * Gets the ATIS for an airport and returns it in a JSON response.
      * 
@@ -226,7 +236,9 @@ class Airport extends Controller
     }
 
     /**
-     * Get the METAR for an airport.
+     * Get Airport METAR.
+     * 
+     * Gets the METAR for an airport and returns it in a JSON response.
      * 
      * @param string $icao The ICAO code of the airport to get the METAR for.
      * @return \Illuminate\Http\Response
