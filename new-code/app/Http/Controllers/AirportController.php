@@ -13,7 +13,7 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 use Illuminate\Support\Facades\Storage;
 
 #[OpenApi\PathItem]
-class Airport extends Controller
+class AirportController extends Controller
 {
     /**
      * Get Airport.
