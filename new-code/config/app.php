@@ -17,6 +17,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'voice-rss-key' => env('VOICE_RSS_API_KEY', 'e1f2f3f4f5f6f7f8'),
 
     /*
     |--------------------------------------------------------------------------
