@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\OpenApi\Parameters\GetAirportParameters;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use \App\Models\Airport as AirportModel;
-use \App\Models\ATISAudioFile;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
-use \App\Custom\AtisGenerator;
-use \App\Custom\Helpers;
+use App\Models\Airport as AirportModel;
+use App\Models\ATISAudioFile;
+use App\Custom\AtisGenerator;
+use App\Custom\Helpers;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,12 +21,11 @@ class AirportController extends Controller
      * Gets an airport from the database and returns it in a JSON response.
      *
      * @param string $icao The ICAO code of the airport to get.
-     * @param Request $request
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
-    public function index(string $icao, Request $request): JsonResponse
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    public function index(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
             return response()->json([
@@ -74,11 +72,10 @@ class AirportController extends Controller
      * Get All Airports.
      *
      * Gets all airports in the database and returns them in a JSON response.
-     * @param Request $request
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
-    public function all(Request $request): JsonResponse
+    public function all(): JsonResponse
     {
         $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
         return response()->json([
@@ -100,7 +97,7 @@ class AirportController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function runways(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
@@ -156,7 +153,7 @@ class AirportController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function atis(string $icao, Request $request): JsonResponse
     {
         // Validate ICAO code
@@ -254,7 +251,7 @@ class AirportController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function metar(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
@@ -298,7 +295,7 @@ class AirportController extends Controller
      * @return void
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function textToSpeech(string $icao, Request $request): void
     {
         // TODO: Get mp3 atis file and return link and id.
@@ -314,7 +311,7 @@ class AirportController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function textToSpeechStore(string $icao, Request $request): JsonResponse
     {
         // Validate the request
@@ -332,7 +329,7 @@ class AirportController extends Controller
 
         // Create the atis audio file
         $VOICE_RSS_API_KEY = config('app.voice-rss-key');
-        $ch = curl_init("http://api.voicerss.org/?key=$VOICE_RSS_API_KEY&hl=en-us&c=MP3&v=John&f=16khz_16bit_stereo&src=" . rawurlencode($atis));
+        $ch = curl_init("https://api.voicerss.org/?key=$VOICE_RSS_API_KEY&hl=en-us&c=MP3&v=John&f=16khz_16bit_stereo&src=" . rawurlencode($atis));
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
@@ -407,7 +404,7 @@ class AirportController extends Controller
      * @return void
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     public function textToSpeechDestroy(string $icao, Request $request): void
     {
         // TODO: Delete mp3 atis file.
