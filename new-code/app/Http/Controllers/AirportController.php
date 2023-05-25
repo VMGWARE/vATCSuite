@@ -213,8 +213,20 @@ class AirportController extends Controller
         }
 
         // Define the ATIS generator
-        $spoken_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
-        $text_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
+        $spoken_atis = new AtisGenerator($icao,
+            ident: $request->ident,
+            landing_runways: $request->landing_runways,
+            departing_runways: $request->departure_runways,
+            remarks1: $request->remarks_1,
+            remarks2: $request->remarks_2,
+            override_runways: $request->override_runway);
+        $text_atis = new AtisGenerator($icao,
+            ident: $request->ident,
+            landing_runways: $request->landing_runways,
+            departing_runways: $request->departure_runways,
+            remarks1: $request->remarks_1,
+            remarks2: $request->remarks_2,
+            override_runways: $request->override_runway);
 
         // Generate the ATIS
         $spoken = $spoken_atis->parse_atis(true);
