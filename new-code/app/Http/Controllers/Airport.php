@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Airport as AirportModel;
 use Illuminate\Support\Facades\Cache;
+use \App\Custom\AtisGenerator;
+use \App\Custom\Helpers;
 
 class Airport extends Controller
 {
     public function index($icao, Request $request)
     {
-        if (!$this->validateIcao($icao)) {
+        if (!Helpers::validateIcao($icao)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid ICAO code.',
@@ -29,13 +31,13 @@ class Airport extends Controller
             ]);
         }
 
-        $metar = $this->fetch_metar($icao);
+        $metar = Helpers::fetch_metar($icao);
         if ($metar == null) {
             $wind = null;
             $runways = null;
         } else {
-            $wind = $this->get_wind($metar);
-            $runways = $this->parse_runways($icao, $wind['dir']);
+            $wind = Helpers::get_wind($metar);
+            $runways = Helpers::parse_runways($icao, $wind['dir']);
         }
 
         return response()->json([
@@ -66,7 +68,7 @@ class Airport extends Controller
 
     public function runways($icao)
     {
-        if (!$this->validateIcao($icao)) {
+        if (!Helpers::validateIcao($icao)) {
             if (request()->query('res') == 'html') {
                 return view('partials.failed', [
                     'message' => 'Invalid ICAO code.',
@@ -98,7 +100,7 @@ class Airport extends Controller
             }
         }
 
-        $metar = $this->fetch_metar($icao);
+        $metar = Helpers::fetch_metar($icao);
         if ($metar == null) {
             if (request()->query('res') == 'html') {
                 return view('partials.failed', [
@@ -113,8 +115,8 @@ class Airport extends Controller
                 ]);
             }
         }
-        $wind = $this->get_wind($metar);
-        $runways = $this->parse_runways($icao, $wind['dir']);
+        $wind = Helpers::get_wind($metar);
+        $runways = Helpers::parse_runways($icao, $wind['dir']);
 
         if (request()->query('res') == 'html') {
             return view('partials.runways', [
@@ -138,7 +140,7 @@ class Airport extends Controller
     public function atis($icao, Request $request)
     {
         // Validate ICAO code
-        if (!$this->validateIcao($icao)) {
+        if (!Helpers::validateIcao($icao)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid ICAO code.',
@@ -161,7 +163,7 @@ class Airport extends Controller
         }
 
         // Fetch the METAR data for the airport
-        $metar = $this->fetch_metar($icao);
+        $metar = Helpers::fetch_metar($icao);
 
         // If the icao is not found in the response, return an error
         if ($metar == null) {
@@ -183,11 +185,23 @@ class Airport extends Controller
         }
 
         // TODO: Generate ATIS from METAR
+        $spoken_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
+        $text_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ATIS generated successfully.',
+            'code' => 200,
+            'data' => [
+                'spoken' => $spoken_atis->parse_atis(true),
+                'text' => $text_atis->parse_atis(false),
+            ]
+        ]);
     }
 
     public function metar($icao)
     {
-        if (!$this->validateIcao($icao)) {
+        if (!Helpers::validateIcao($icao)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid ICAO code.',
@@ -196,7 +210,7 @@ class Airport extends Controller
             ]);
         }
 
-        $metar = $this->fetch_metar($icao);
+        $metar = Helpers::fetch_metar($icao);
 
         // If the icao is not found in the response, return an error
         if ($metar == null) {
@@ -216,150 +230,5 @@ class Airport extends Controller
                 'metar' => $metar,
             ]
         ]);
-    }
-
-    /**
-     * Validate ICAO code
-     *
-     * @param string $icao The ICAO code to validate
-     * @return boolean Returns true if ICAO code is valid, false if not
-     */
-    private function validateIcao($icao)
-    {
-        if (strlen($icao) != 4) {
-            return false;
-        }
-
-        if (!preg_match("@^[a-z0-9]+$@i", $icao)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * The function parses the runways of an airport and calculates the difference between the wind
-     * direction and the runway heading.
-     * 
-     * @param string $icao The ICAO code of an airport.
-     * @param mixed $wind_dir The wind direction in degrees or "VRB" (variable).
-     * 
-     * @return array an array of runway information for a given airport (specified by its ICAO code) and wind
-     * direction. The array includes information such as the runway identifier, runway heading, wind
-     * direction, and the difference between the wind direction and the runway heading. The array is
-     * sorted in ascending order based on the wind difference.
-     */
-    private function parse_runways($icao, $wind_dir)
-    {
-        $result = AirportModel::where('icao', $icao)->pluck('runways');
-
-        $runways = explode(",", $result[0]);
-        $output = array();
-
-        $i = 0;
-        while ($i < sizeof($runways)) {
-            $runway_hdg = str_pad(substr($runways[$i], 0, 2), 3, "0");
-
-            if ($wind_dir == "0" || $wind_dir == "VRB") {
-                $wind_dir = "-";
-                $wind_diff = "-";
-                $no_val = true;
-            } else {
-                $wind_dir = $wind_dir;
-                $wind_diff = abs($this->get_angle_diff($wind_dir, $runway_hdg));
-                $no_val = false;
-            }
-
-            $output[$i]["runway"] = $runways[$i];
-            $output[$i]["runway_hdg"] = $runway_hdg;
-            $output[$i]["wind_dir"] = $wind_dir;
-            $output[$i]["wind_diff"] = $wind_diff;
-            $i++;
-        }
-
-        $select_diff = array_column($output, "wind_diff");
-        array_multisort($select_diff, SORT_ASC, $output);
-
-        return $output;
-    }
-
-    /**
-     * It returns the shortest angle between two angles.
-     * 
-     * @param mixed $angle_start The starting angle of the needle.
-     * @param mixed $angle_target The angle you want to rotate to.
-     * 
-     * @return mixed difference between the two angles.
-     */
-    private function get_angle_diff(mixed $angle_start, mixed $angle_target)
-    {
-        $delta = intval($angle_target) - intval($angle_start);
-        $direction = ($delta > 0) ? -1 : 1;
-        $delta1 = abs($delta);
-        $delta2 = 360 - $delta1;
-        return $direction * ($delta1 < $delta2 ? $delta1 : $delta2);
-    }
-
-    /**
-     * The function fetches the METAR data for a given airport (specified by its ICAO code).
-     * 
-     * @param string $icao The ICAO code of an airport.
-     * 
-     * @return null|string Returns the METAR data for a given airport (specified by its ICAO code). Null if the metar data is not found.
-     */
-    private function fetch_metar($icao)
-    {
-        // Cache the METAR data for 30 seconds
-        if (Cache::has('metar_' . $icao)) {
-            $metar_data = Cache::get('metar_' . $icao);
-        } else {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://tgftp.nws.noaa.gov/data/observations/metar/stations/" . strtoupper($icao) . ".TXT");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $exec = curl_exec($ch);
-            curl_close($ch);
-
-            // If the icao is not found in the response, return an error
-            if (strpos($exec, "Not Found") !== false || strpos($exec, strtoupper($icao)) === false) {
-                return null;
-            }
-
-            $lines = explode("\n", $exec);
-
-            $metar_data = trim($lines[1]);
-
-            Cache::put('metar_' . $icao, $metar_data, 30);
-        }
-
-        return $metar_data;
-    }
-
-    /**
-     * The function decodes a METAR string and returns an array of wind speed and direction
-     * information.
-     * 
-     * @param metar The input parameter is a string containing a METAR (Meteorological Terminal
-     * Aviation Routine Weather Report) which is a format used for reporting weather information for
-     * aviation purposes.
-     * 
-     * @return array an array containing the wind direction, wind speed, and gust speed (if present) parsed
-     * from the METAR string.
-     */
-    private function get_wind($metar)
-    {
-        $metar = explode(" ", $metar);
-
-        while ($part = current($metar)) {
-            if (!preg_match("@^([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?KT$@", $part, $return)) {
-                next($metar);
-                continue;
-            }
-
-            return [
-                "dir" => $return[1],
-                "speed" => $return[2],
-                "gust_speed" => $return[4] ?? null
-            ];
-        }
     }
 }
