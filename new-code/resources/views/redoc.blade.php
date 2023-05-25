@@ -18,7 +18,7 @@
     </style>
   </head>
   <body>
-    <redoc spec-url='/api/v1/swagger.json'></redoc>
+    <redoc spec-url='/lib/swagger.json'></redoc>
     <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
