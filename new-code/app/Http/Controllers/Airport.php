@@ -221,8 +221,6 @@ class Airport extends Controller
             ]);
         }
 
-        // TODO: Generate ATIS from METAR
-
         // Validate ATIS identifier
         if (!isset($request->ident) || !ctype_alpha($request->ident)) {
             return response()->json([
@@ -233,16 +231,32 @@ class Airport extends Controller
             ]);
         }
 
+        // Define the ATIS generator
         $spoken_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
         $text_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
 
+        // Generate the ATIS
+        $spoken = $spoken_atis->parse_atis(true);
+        $text = $text_atis->parse_atis(false);
+
+        // If the ATIS could not be generated, return an error
+        if ($spoken == null || $text == null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not generate ATIS.',
+                'code' => 500,
+                'data' => null
+            ]);
+        }
+
+        // Return the ATIS
         return response()->json([
             'status' => 'success',
             'message' => 'ATIS generated successfully.',
             'code' => 200,
             'data' => [
-                'spoken' => $spoken_atis->parse_atis(true),
-                'text' => $text_atis->parse_atis(false),
+                'spoken' => $spoken,
+                'text' => $text,
             ]
         ]);
     }
