@@ -7,7 +7,9 @@ use \App\Models\Airport as AirportModel;
 use Illuminate\Support\Facades\Cache;
 use \App\Custom\AtisGenerator;
 use \App\Custom\Helpers;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+#[OpenApi\PathItem]
 class Airport extends Controller
 {
     public function index($icao, Request $request)
@@ -53,6 +55,12 @@ class Airport extends Controller
         ]);
     }
 
+    /**
+     * Get all airports in the database.
+     * 
+     * Gets all airports in the database and returns them in a JSON response.
+     */
+    #[OpenApi\Operation]
     public function all(Request $request)
     {
         $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
@@ -66,6 +74,15 @@ class Airport extends Controller
         ]);
     }
 
+    /**
+     * Get runways for an airport.
+     * 
+     * Gets the runways for an airport and returns them in a JSON response.
+     * 
+     * @param string $icao The ICAO code of the airport to get runways for.
+     * @return \Illuminate\Http\Response
+     */
+    #[OpenApi\Operation]
     public function runways($icao)
     {
         if (!Helpers::validateIcao($icao)) {
@@ -137,6 +154,15 @@ class Airport extends Controller
         }
     }
 
+    /**
+     * Get the ATIS for an airport.
+     * 
+     * Gets the ATIS for an airport and returns it in a JSON response.
+     * 
+     * @param string $icao The ICAO code of the airport to get the ATIS for.
+     * @return \Illuminate\Http\Response
+     */
+    #[OpenApi\Operation]
     public function atis($icao, Request $request)
     {
         // Validate ICAO code
@@ -199,6 +225,13 @@ class Airport extends Controller
         ]);
     }
 
+    /**
+     * Get the METAR for an airport.
+     * 
+     * @param string $icao The ICAO code of the airport to get the METAR for.
+     * @return \Illuminate\Http\Response
+     */
+    #[OpenApi\Operation]
     public function metar($icao)
     {
         if (!Helpers::validateIcao($icao)) {
