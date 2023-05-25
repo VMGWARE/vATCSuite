@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Airport as AirportModel;
+use \App\Models\ATISAudioFile;
 use Illuminate\Support\Facades\Cache;
 use \App\Custom\AtisGenerator;
 use \App\Custom\Helpers;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
+// Use Storage;
+use Illuminate\Support\Facades\Storage;
 
 #[OpenApi\PathItem]
 class Airport extends Controller
@@ -335,7 +338,85 @@ class Airport extends Controller
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function textToSpeechStore($icao, Request $request)
     {
-        // TODO: Create mp3 atis file and return link and id.
+        // Validate the request
+        $atis = $request->atis;
+        $ident = $request->ident;
+        $icao = $request->icao;
+
+        if (!isset($atis) || !isset($ident) || !isset($icao)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must provide an ATIS, ATIS identifier, and ICAO code.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        // Create the atis audio file
+        $VOICE_RSS_API_KEY = config('app.voice-rss-key');
+        $ch = curl_init("http://api.voicerss.org/?key=$VOICE_RSS_API_KEY&hl=en-us&c=MP3&v=John&f=16khz_16bit_stereo&src=" . rawurlencode($atis));
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_NOBODY, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        $output = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($status == 200) {
+            // Define some variables
+            $zulu = gmdate("dHi");
+            $icao = strtoupper($icao);
+            $ident = strtoupper($ident);
+            $name = $icao . "_ATIS_" . $ident . "_" . $zulu . "Z.mp3";
+
+            // Create the database entry
+            $atis_file = new ATISAudioFile;
+            $atis_file->icao = $icao;
+            $atis_file->ident = $ident;
+            $atis_file->atis = $atis;
+            $atis_file->zulu = $zulu;
+            $atis_file->file_name = $name;
+            $atis_file->save();
+
+            $file_id = $atis_file->id;
+
+            // Write the file to the server storage
+            Storage::disk('local')->put("public/atis/$file_id/$name", $output);
+            $file_url = Storage::url("public/atis/$file_id/$name");
+            if (!$file_url) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Could not generate ATIS.',
+                    'code' => 500,
+                    'data' => null
+                ]);
+            }
+
+            // Store the file url in the database, add the url to the response
+            $atis_file->url = $file_url;
+            $atis_file->update();
+
+            // Return the response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'ATIS generated successfully.',
+                'code' => 200,
+                'data' => [
+                    'file_id' => $file_id,
+                    'file_name' => $name,
+                    'file_url' => $file_url,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not generate ATIS.',
+                'code' => 500,
+                'data' => null
+            ]);
+        }
     }
 
     /**
