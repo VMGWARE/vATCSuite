@@ -201,7 +201,7 @@ class Airport extends Controller
         // Fetch the METAR data for the airport
         $metar = Helpers::fetch_metar($icao);
 
-        // If the icao is not found in the response, return an error
+        // Ensure that the METAR data was found
         if ($metar == null) {
             return response()->json([
                 'status' => 'error',
@@ -211,6 +211,7 @@ class Airport extends Controller
             ]);
         }
 
+        // Get the wind data from the METAR
         if (!isset($request->landing_runways) || !isset($request->departure_runways)) {
             return response()->json([
                 'status' => 'error',
@@ -221,6 +222,17 @@ class Airport extends Controller
         }
 
         // TODO: Generate ATIS from METAR
+
+        // Validate ATIS identifier
+        if (!isset($request->ident) || !ctype_alpha($request->ident)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must provide an ATIS identifier.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
         $spoken_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
         $text_atis = new AtisGenerator($icao, $request->ident, $request->landing_runways, $request->departure_runways, $request->remarks_1, $request->remarks_2, $request->override_runway);
 
