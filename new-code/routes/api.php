@@ -24,6 +24,9 @@ Route::prefix('v1')->group(function () {
         Route::post('{icao}/atis', [Airport::class, 'atis'])->name('api.airport.atis');
         Route::get('{icao}/metar', [Airport::class, 'metar'])->name('api.airport.metar');
 
-        Route::get('{icao}/tts', [Airport::class, 'textToSpeech'])->name('api.airport.text-to-speech');
+        Route::get('{icao}/tts', [Airport::class, 'textToSpeech']);
+        Route::post('{icao}/tts', [Airport::class, 'textToSpeechStore']);
+        Route::delete('{icao}/tts', [Airport::class, 'textToSpeechDestroy']);
+
     });
 });

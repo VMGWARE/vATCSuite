@@ -15,28 +15,47 @@ return [
                     'email' => 'atis@vahngomes.dev',
                     'url' => 'https://atis.vahngomes.dev/',
                 ],
-            ],
-
-            'servers' => [
-                [
-                    'url' => 'http://127.0.0.1:8000/',
-                    'description' => 'Local Server',
-                    'variables' => [],
+                'license' => [
+                    'name' => 'CC BY-NC-SA 4.0',
+                    'url' => 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
                 ],
-                [
-                    'url' => 'https://atis.vahngomes.dev/',
-                    'description' => 'Production Server',
-                    'variables' => [],
+                'x-logo' => [
+                    'url' => '/lib/images/atis_generator_logo_small.png',
+                    'altText' => 'Redbeard\'s Atis Generator',
                 ]
             ],
 
+            "servers" => [
+                [
+                    "url" => "https://atis.vahngomes.dev/api/v1",
+                    "description" => "Production server"
+                ],
+                [
+                    "url" => "http://127.0.0.1:8000/api/v1",
+                    "description" => "Local server"
+                ]
+            ],
+
+            'host' => 'atis.vahngomes.dev',
+            'basePath' => '/v1',
+            "schemes" => ["https", "http"],
+            "securityDefinitions" => [
+                "api_key" => [
+                    "type" => "apiKey",
+                    "name" => "api_key",
+                    "in" => "header"
+                ],
+            ],
+
             'tags' => [
-
-                // [
-                //    'name' => 'user',
-                //    'description' => 'Application users',
-                // ],
-
+                [
+                    'name' => 'Airport',
+                    'description' => 'Airport related endpoints',
+                ],
+                [
+                    'name' => 'Text to Speech',
+                    'description' => 'Text to Speech related endpoints',
+                ]
             ],
 
             'security' => [
@@ -53,6 +72,10 @@ return [
                 //         ],
                 //     ],
                 // ],
+                'x-logo' => [
+                    'url' => '/lib/images/atis_generator_logo_small.png',
+                    'altText' => 'Redbeard\'s Atis Generator',
+                ]
             ],
 
             // Route for exposing specification.

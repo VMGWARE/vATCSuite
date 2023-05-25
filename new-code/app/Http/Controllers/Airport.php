@@ -20,7 +20,7 @@ class Airport extends Controller
      * @param string $icao The ICAO code of the airport to get.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function index($icao, Request $request)
     {
@@ -70,7 +70,7 @@ class Airport extends Controller
      * 
      * Gets all airports in the database and returns them in a JSON response.
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['Airport'])]
     public function all(Request $request)
     {
         $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
@@ -92,7 +92,8 @@ class Airport extends Controller
      * @param string $icao The ICAO code of the airport to get runways for.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['Airport'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function runways($icao)
     {
         if (!Helpers::validateIcao($icao)) {
@@ -172,7 +173,8 @@ class Airport extends Controller
      * @param string $icao The ICAO code of the airport to get the ATIS for.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['Airport'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function atis($icao, Request $request)
     {
         // Validate ICAO code
@@ -269,7 +271,8 @@ class Airport extends Controller
      * @param string $icao The ICAO code of the airport to get the METAR for.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['Airport'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function metar($icao)
     {
         if (!Helpers::validateIcao($icao)) {
@@ -303,7 +306,51 @@ class Airport extends Controller
         ]);
     }
 
+    /**
+     * Get Airport TTS.
+     * 
+     * Gets a link to a mp3 text-to-speech file for an airport and returns it in a JSON response.
+     *
+     * @param string $icao The ICAO code of the airport to generate the TTS for.
+     * @param Request $request
+     * @return void
+     */
+    #[OpenApi\Operation(tags: ['Text to Speech'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     public function textToSpeech($icao, Request $request)
     {
+        // TODO: Get mp3 atis file and return link and id.
+    }
+
+    /**
+     * Generate Airport TTS.
+     * 
+     * Generates a mp3 text-to-speech file for an airport and returns a link to it.
+     *
+     * @param string $icao The ICAO code of the airport to generate the TTS for.
+     * @param Request $request
+     * @return void
+     */
+    #[OpenApi\Operation(tags: ['Text to Speech'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    public function textToSpeechStore($icao, Request $request)
+    {
+        // TODO: Create mp3 atis file and return link and id.
+    }
+
+    /**
+     * Delete Airport TTS.
+     * 
+     * Deletes a mp3 text-to-speech file for an airport.
+     *
+     * @param string $icao The ICAO code of the airport to generate the TTS for.
+     * @param Request $request
+     * @return void
+     */
+    #[OpenApi\Operation(tags: ['Text to Speech'])]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    public function textToSpeechDestroy($icao, Request $request)
+    {
+        // TODO: Delete mp3 atis file.
     }
 }
