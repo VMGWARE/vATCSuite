@@ -127,6 +127,12 @@
       <excludeFolder url="file://$MODULE_DIR$/new-code/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/new-code/vendor/vyuldashev/laravel-openapi" />
       <excludeFolder url="file://$MODULE_DIR$/new-code/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/new-code/public/storage" />
+      <excludeFolder url="file://$MODULE_DIR$/new-code/storage/app/public/atis" />
+      <excludeFolder url="file://$MODULE_DIR$/new-code/storage/framework/cache/data/c0" />
+      <excludeFolder url="file://$MODULE_DIR$/new-code/storage/framework/cache/data/ec" />
+      <excludeFolder url="file://$MODULE_DIR$/new-code/vendor" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
