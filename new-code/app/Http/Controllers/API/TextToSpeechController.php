@@ -6,6 +6,12 @@ use App\Custom\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\ATISAudioFile;
 use App\OpenApi\Parameters\GetAirportParameters;
+use App\OpenApi\RequestBodies\TTS\GenerateRequestBody;
+use App\OpenApi\Responses\TTS\ErrorGeneratingResponse;
+use App\OpenApi\Responses\TTS\ErrorRequestConflictResponse;
+use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
+use App\OpenApi\Responses\TTS\ErrorWithVoiceAPIResponse;
+use App\OpenApi\Responses\TTS\SuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -41,6 +47,12 @@ class TextToSpeechController extends Controller
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    #[OpenApi\RequestBody(factory: GenerateRequestBody::class)]
+    #[OpenApi\Response(factory: ErrorRequestConflictResponse::class, statusCode: 409)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: ErrorWithVoiceAPIResponse::class, statusCode: 500)]
+    #[OpenApi\Response(factory: ErrorGeneratingResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: SuccessResponse::class, statusCode: 200)]
     public function generate(string $icao, Request $request): JsonResponse
     {
         // Validate the request
@@ -116,7 +128,7 @@ class TextToSpeechController extends Controller
             if (!$file_url) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Could not generate ATIS.',
+                    'message' => 'Could not generate ATIS audio file.',
                     'code' => 422,
                     'data' => null
                 ]);
