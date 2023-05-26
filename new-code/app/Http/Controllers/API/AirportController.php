@@ -202,6 +202,16 @@ class AirportController extends Controller
             ]);
         }
 
+        // If the runways are not an array, return an error
+        if (!is_array($request->landing_runways) || !is_array($request->departure_runways)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Runways must be an array.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
         // Validate ATIS identifier
         if (!isset($request->ident) || !ctype_alpha($request->ident)) {
             return response()->json([
