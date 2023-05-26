@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\AirportController;
+use App\Http\Controllers\API\TextToSpeechController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AirportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +24,9 @@ Route::prefix('v1')->group(function () {
         Route::post('{icao}/atis', [AirportController::class, 'atis'])->name('api.airport.atis');
         Route::get('{icao}/metar', [AirportController::class, 'metar'])->name('api.airport.metar');
 
-        Route::get('{icao}/tts', [AirportController::class, 'textToSpeech']);
-        Route::post('{icao}/tts', [AirportController::class, 'textToSpeechStore']);
-        Route::delete('{icao}/tts', [AirportController::class, 'textToSpeechDestroy']);
+        Route::get('{icao}/tts', [TextToSpeechController::class, 'index']);
+        Route::post('{icao}/tts', [TextToSpeechController::class, 'generate']);
+        Route::delete('{icao}/tts', [TextToSpeechController::class, 'delete']);
 
     });
 });
