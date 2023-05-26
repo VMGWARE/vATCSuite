@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    Route::prefix('airport')->group(function () {
+    Route::prefix('airports')->group(function () {
         Route::get('/', [AirportController::class, 'all'])->name('api.airport.all');
         Route::get('{icao}', [AirportController::class, 'index'])->name('api.airport.index');
         Route::get('{icao}/runways', [AirportController::class, 'runways'])->name('api.airport.runways');
