@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('atis_audio_files', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
             // Important information
             $table->string('icao', 4);
             $table->string('ident');
@@ -22,6 +22,8 @@ return new class extends Migration
             // Download url and file name
             $table->string('url')->nullable();
             $table->string('file_name')->nullable();
+            // Password for deleting the file
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }
