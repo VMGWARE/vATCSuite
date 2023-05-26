@@ -128,7 +128,6 @@ class AirportController extends Controller
                 'code' => 404,
                 'data' => null
             ]);
-
         }
         $wind = Helpers::get_wind($metar);
         $runways = Helpers::parse_runways($icao, $wind['dir']);
@@ -213,20 +212,24 @@ class AirportController extends Controller
         }
 
         // Define the ATIS generator
-        $spoken_atis = new AtisGenerator($icao,
+        $spoken_atis = new AtisGenerator(
+            $icao,
             ident: $request->ident,
             landing_runways: $request->landing_runways,
             departing_runways: $request->departure_runways,
             remarks1: $request->remarks_1,
             remarks2: $request->remarks_2,
-            override_runways: $request->override_runway);
-        $text_atis = new AtisGenerator($icao,
+            override_runways: $request->override_runway
+        );
+        $text_atis = new AtisGenerator(
+            $icao,
             ident: $request->ident,
             landing_runways: $request->landing_runways,
             departing_runways: $request->departure_runways,
             remarks1: $request->remarks_1,
             remarks2: $request->remarks_2,
-            override_runways: $request->override_runway);
+            override_runways: $request->override_runway
+        );
 
         // Generate the ATIS
         $spoken = $spoken_atis->parse_atis(true);
@@ -327,6 +330,15 @@ class AirportController extends Controller
     public function textToSpeechStore(string $icao, Request $request): JsonResponse
     {
         // Validate the request
+        if (!Helpers::validateIcao($icao)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid ICAO code.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
         $atis = $request->atis;
         $ident = $request->ident;
 
@@ -336,6 +348,21 @@ class AirportController extends Controller
                 'message' => 'You must provide an ATIS, ATIS identifier, and ICAO code.',
                 'code' => 400,
                 'data' => null
+            ]);
+        }
+
+        // Check if the ATIS already exists in the database
+        $atis_file = ATISAudioFile::where('icao', $icao)->where('ident', $ident)->where('atis', $atis)->first();
+        if ($atis_file != null && $atis_file->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This ATIS audio file already exists.',
+                'code' => 409, // Conflict error code
+                'data' => [
+                    'id' => $atis_file->id,
+                    'name' => $atis_file->file_name,
+                    'url' => $atis_file->url,
+                ]
             ]);
         }
 
@@ -376,7 +403,7 @@ class AirportController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Could not generate ATIS.',
-                    'code' => 500,
+                    'code' => 422,
                     'data' => null
                 ]);
             }
@@ -391,15 +418,15 @@ class AirportController extends Controller
                 'message' => 'ATIS generated successfully.',
                 'code' => 200,
                 'data' => [
-                    'file_id' => $file_id,
-                    'file_name' => $name,
-                    'file_url' => $file_url,
+                    'id' => $file_id,
+                    'name' => $name,
+                    'url' => $file_url,
                 ]
             ]);
         } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Could not generate ATIS.',
+                'message' => 'Could not generate ATIS using the VoiceRSS API.',
                 'code' => 500,
                 'data' => null
             ]);
