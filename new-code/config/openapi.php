@@ -19,16 +19,16 @@ return [
                     'name' => 'CC BY-NC-SA 4.0',
                     'url' => 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
                 ],
-                'x-logo' => [
-                    'url' => '/lib/images/atis_generator_logo_small.png',
-                    'altText' => 'Redbeard\'s Atis Generator',
-                ]
             ],
 
             "servers" => [
                 [
                     "url" => "https://atis.vahngomes.dev/api/v1",
                     "description" => "Production server"
+                ],
+                [
+                    "url" => "https://dev-atis.vahngomes.dev/api/v1",
+                    "description" => "Development server"
                 ],
                 [
                     "url" => "http://127.0.0.1:8000/api/v1",
@@ -72,10 +72,6 @@ return [
                 //         ],
                 //     ],
                 // ],
-                'x-logo' => [
-                    'url' => '/lib/images/atis_generator_logo_small.png',
-                    'altText' => 'Redbeard\'s Atis Generator',
-                ]
             ],
 
             // Route for exposing specification.
