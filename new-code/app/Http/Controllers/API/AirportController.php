@@ -226,8 +226,8 @@ class AirportController extends Controller
             ident: $request->ident,
             landing_runways: $request->landing_runways,
             departing_runways: $request->departing_runways,
-            remarks1: $request->remarks_1,
-            remarks2: $request->remarks_2,
+            remarks1: $request->remarks1,
+            remarks2: $request->remarks2,
             override_runways: $request->override_runway
         );
         $text_atis = new AtisGenerator(
@@ -235,8 +235,8 @@ class AirportController extends Controller
             ident: $request->ident,
             landing_runways: $request->landing_runways,
             departing_runways: $request->departing_runways,
-            remarks1: $request->remarks_1,
-            remarks2: $request->remarks_2,
+            remarks1: $request->remarks1,
+            remarks2: $request->remarks2,
             override_runways: $request->override_runway
         );
 
