@@ -23,15 +23,15 @@ return [
 
             "servers" => [
                 [
-                    "url" => "https://atis.vahngomes.dev/api/v1",
+                    "url" => "https://atis.vahngomes.dev",
                     "description" => "Production server"
                 ],
                 [
-                    "url" => "https://dev-atis.vahngomes.dev/api/v1",
+                    "url" => "https://dev-atis.vahngomes.dev",
                     "description" => "Development server"
                 ],
                 [
-                    "url" => "http://127.0.0.1:8000/api/v1",
+                    "url" => "http://127.0.0.1:8000",
                     "description" => "Local server"
                 ]
             ],
