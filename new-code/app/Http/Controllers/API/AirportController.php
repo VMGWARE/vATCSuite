@@ -137,9 +137,7 @@ class AirportController extends Controller
             'status' => 'success',
             'message' => 'Runways retrieved successfully.',
             'code' => 200,
-            'data' => [
-                'runways' => $runways,
-            ]
+            'data' => $runways,
         ]);
     }
 
@@ -193,7 +191,7 @@ class AirportController extends Controller
         }
 
         // Get the wind data from the METAR
-        if (!isset($request->landing_runways) || !isset($request->departure_runways)) {
+        if (!isset($request->landing_runways) || !isset($request->departing_runways)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'You must select at least one landing and departing runway to generate your ATIS.',
@@ -203,7 +201,7 @@ class AirportController extends Controller
         }
 
         // If the runways are not an array, return an error
-        if (!is_array($request->landing_runways) || !is_array($request->departure_runways)) {
+        if (!is_array($request->landing_runways) || !is_array($request->departing_runways)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Runways must be an array.',
@@ -227,7 +225,7 @@ class AirportController extends Controller
             $icao,
             ident: $request->ident,
             landing_runways: $request->landing_runways,
-            departing_runways: $request->departure_runways,
+            departing_runways: $request->departing_runways,
             remarks1: $request->remarks_1,
             remarks2: $request->remarks_2,
             override_runways: $request->override_runway
@@ -236,7 +234,7 @@ class AirportController extends Controller
             $icao,
             ident: $request->ident,
             landing_runways: $request->landing_runways,
-            departing_runways: $request->departure_runways,
+            departing_runways: $request->departing_runways,
             remarks1: $request->remarks_1,
             remarks2: $request->remarks_2,
             override_runways: $request->override_runway
