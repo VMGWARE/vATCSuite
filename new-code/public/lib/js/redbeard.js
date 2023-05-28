@@ -126,6 +126,7 @@ $(document).ready(function () {
         $(".loading").show();
         t.preventDefault();
         icao = $("#icao").val();
+        ident = $("#ident").val();
         $.post(`/api/v1/airports/${icao}/atis`, $("#atis-input").serialize(), function (t) {
             if (t.status == "error" || t.code != 200) {
                 $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
@@ -140,6 +141,8 @@ $(document).ready(function () {
                 $(".loading").hide();
                 return;
             }
+
+            atis = t.data.spoken;
 
             success = `
             <div class="modal fade show" id="atis-modal" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
@@ -157,7 +160,7 @@ $(document).ready(function () {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="copy-atis">Copy ATIS To Clipboard</button>
-                            <a class="btn btn-primary" id="download-atis" download>Download .mp3</a>
+                            <a class="btn btn-primary" id="download-atis" download>Fetching Download Link <i class="fa-solid fa-spinner fa-spin"></i></a>
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -170,28 +173,20 @@ $(document).ready(function () {
             $("#atis-modal").modal("show");
             $(".loading").hide();
 
-            atis2 = $("#atis2").html();
-            icao = $("#icao").val();
-            ident = $("#ident").val();
-
-            // Make post request to /api/v1/airports/{icao}/tts
-            $.post(`/api/v1/airports/${icao}/tts`, { ident: ident, atis: atis2 }, function (t) {
-                // Show error modal if code is not 200 or 409
-                if (t.code != 200 && t.code != 409) {
+            tts = $.post(`/api/v1/airports/${icao}/tts`, { ident: ident, atis: atis }, function (t) {
+                if (t.code != 200 && t.status == "error" && t.code != 409) {
                     $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
                     $("#atis-modal").modal("show");
                     $(".loading").hide();
+                    return;
                 }
-                // Show warning in console if code is 409
-                else if (t.code == 409) {
-                    console.log(`[WARN] ${t.message}`);
-                    $("#download-atis").attr("href", t.data.url);
-                }
-                // Set download link if code is 200
-                else {
-                    $("#download-atis").attr("href", t.data.url);
-                }
+
+                // Show download button
+                $("#download-atis").attr("href", t.data.url);
+                $("#download-atis").html("Download ATIS");
+                $("#download-atis").attr("download", t.data.name);
             });
+
             $("#copy-atis").click(function () {
                 copy("#atis1")
             })
