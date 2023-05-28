@@ -157,7 +157,7 @@ $(document).ready(function () {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="copy-atis">Copy ATIS To Clipboard</button>
-                            <a class="btn btn-primary" id="download-atis">Download .mp3</a>
+                            <a class="btn btn-primary" id="download-atis" download>Download .mp3</a>
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -185,11 +185,11 @@ $(document).ready(function () {
                 // Show warning in console if code is 409
                 else if (t.code == 409) {
                     console.log(`[WARN] ${t.message}`);
-                    $("#download-atis").attr("href", t.data.url).attr("download", t.data.filename);
+                    $("#download-atis").attr("href", t.data.url);
                 }
                 // Set download link if code is 200
                 else {
-                    $("#download-atis").attr("href", t.data.url).attr("download", t.data.filename);
+                    $("#download-atis").attr("href", t.data.url);
                 }
             });
             $("#copy-atis").click(function () {
