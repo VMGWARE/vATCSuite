@@ -88,6 +88,7 @@ class TextToSpeechController extends Controller
                     'id' => $atis_file->id,
                     'name' => $atis_file->file_name,
                     'url' => $atis_file->url,
+                    'expires_at' => $atis_file->expires_at,
                 ]
             ]);
         }
@@ -126,6 +127,9 @@ class TextToSpeechController extends Controller
             Storage::disk('local')->put("public/atis/$file_id/$name", $output);
             $file_url = Storage::url("public/atis/$file_id/$name");
             if (!$file_url) {
+                // Delete the database entry
+                $atis_file->delete();
+
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Could not generate ATIS audio file.',
@@ -136,6 +140,8 @@ class TextToSpeechController extends Controller
 
             // Store the file url in the database, add the url to the response
             $atis_file->url = $file_url;
+            // Set the expiration date to 2 hours from now
+            $atis_file->expires_at = now()->addHours(2);
             $atis_file->update();
 
             // Return the response
@@ -147,6 +153,7 @@ class TextToSpeechController extends Controller
                     'id' => $file_id,
                     'name' => $name,
                     'url' => $file_url,
+                    'expires_at' => $atis_file->expires_at,
                 ]
             ]);
         } else {

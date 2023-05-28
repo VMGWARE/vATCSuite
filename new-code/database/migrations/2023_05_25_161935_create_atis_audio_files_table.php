@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('file_name')->nullable();
             // Password for deleting the file
             $table->string('password')->nullable();
+            // Expires at
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }

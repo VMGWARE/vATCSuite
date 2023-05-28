@@ -34,7 +34,8 @@ class ATISAudioFile extends Model
         'zulu',
         'url',
         'file_name',
-        'password'
+        'password',
+        'expires_at'
     ];
 
     /**
@@ -51,7 +52,8 @@ class ATISAudioFile extends Model
         'url' => 'string',
         'file_name' => 'string',
 
-        'password' => 'string'
+        'password' => 'string',
+        'expires_at' => 'datetime',
     ];
 
     /**
