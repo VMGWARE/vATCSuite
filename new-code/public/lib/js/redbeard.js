@@ -25,6 +25,7 @@ $(document).ready(function () {
     /**
      * Return a modal with the error message
      * @param message - The error message.
+     * @param id - The id of the modal.
      * @returns a string that represents an HTML modal element with a title, body, and a close button.
      */
     function ErrorModal(message, id) {
@@ -53,6 +54,7 @@ $(document).ready(function () {
      * Return a modal with the title and body
      * @param title - The title of the modal
      * @param body - The body of the modal.
+     * @param id - The id of the modal.
      * @returns a string that represents an HTML modal element with a title, body, and a close button.
      */
     function Modal(title, body, id) {
