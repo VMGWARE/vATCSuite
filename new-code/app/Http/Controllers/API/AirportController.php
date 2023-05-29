@@ -8,10 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport as AirportModel;
 use App\Models\ATISAudioFile;
 use App\OpenApi\Parameters\GetAirportParameters;
+use App\OpenApi\Responses\Airport\DBErrorLocatingAirportResponse;
+use App\OpenApi\Responses\Airport\ErrorFetchingMetarResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
+use App\OpenApi\RequestBodies\Airport\GenerateAtisRequestBody;
+use App\OpenApi\Responses\Airport\AtisResponse;
+use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
 
 #[OpenApi\PathItem]
 class AirportController extends Controller
@@ -152,6 +157,9 @@ class AirportController extends Controller
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    #[OpenApi\RequestBody(factory: GenerateAtisRequestBody::class)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AtisResponse::class, statusCode: 200)]
     public function atis(string $icao, Request $request): JsonResponse
     {
         // Validate ICAO code
@@ -172,7 +180,7 @@ class AirportController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . ' in the database.',
-                'code' => 404,
+                'code' => 4041,
                 'data' => null
             ]);
         }
@@ -185,7 +193,7 @@ class AirportController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
-                'code' => 404,
+                'code' => 4042,
                 'data' => null
             ]);
         }
