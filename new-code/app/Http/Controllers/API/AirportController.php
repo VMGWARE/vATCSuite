@@ -7,6 +7,7 @@ use App\Custom\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Airport as AirportModel;
 use App\OpenApi\Parameters\GetAirportParameters;
+use App\OpenApi\Responses\Airport\GetAllAirportsResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -27,6 +28,7 @@ class AirportController extends Controller
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
     public function index(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
@@ -77,6 +79,7 @@ class AirportController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Airport'])]
+    #[OpenApi\Response(factory: GetAllAirportsResponse::class, statusCode: 200)]
     public function all(): JsonResponse
     {
         $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
@@ -84,9 +87,7 @@ class AirportController extends Controller
             'status' => 'success',
             'message' => 'Airports retrieved successfully.',
             'code' => 200,
-            'data' => [
-                'airports' => $airports,
-            ]
+            'data' => $airports,
         ]);
     }
 
@@ -100,6 +101,7 @@ class AirportController extends Controller
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
     public function runways(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
@@ -280,6 +282,7 @@ class AirportController extends Controller
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
     public function metar(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
