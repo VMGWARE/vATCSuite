@@ -7,6 +7,7 @@ use App\Custom\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Airport as AirportModel;
 use App\OpenApi\Parameters\GetAirportParameters;
+use App\OpenApi\Responses\Airport\GetAirportResponse;
 use App\OpenApi\Responses\Airport\GetAllAirportsResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class AirportController extends Controller
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: GetAirportResponse::class, statusCode: 200)]
     public function index(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {

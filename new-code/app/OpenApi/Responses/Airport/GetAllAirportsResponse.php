@@ -26,8 +26,8 @@ class GetAllAirportsResponse extends ResponseFactory implements Reusable
             ),
         );
 
-        return Response::create('')
-            ->description('')
+        return Response::create('GetAllAirports')
+            ->description('Get all airports')
             ->content(MediaType::json()->schema($response));
     }
 }
