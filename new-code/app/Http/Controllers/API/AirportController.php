@@ -9,6 +9,7 @@ use App\Models\Airport as AirportModel;
 use App\OpenApi\Parameters\GetAirportParameters;
 use App\OpenApi\Responses\Airport\GetAirportResponse;
 use App\OpenApi\Responses\Airport\GetAllAirportsResponse;
+use App\OpenApi\Responses\Airport\RunwayResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -104,6 +105,7 @@ class AirportController extends Controller
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: RunwayResponse::class, statusCode: 200)]
     public function runways(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
