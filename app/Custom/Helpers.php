@@ -12,29 +12,29 @@ class Helpers
 {
     /**
      * It returns the shortest angle between two angles.
-     * 
+     *
      * @param mixed $angle_start The starting angle of the needle.
      * @param mixed $angle_target The angle you want to rotate to.
-     * 
-     * @return mixed difference between the two angles.
+     *
+     * @return float|int difference between the two angles.
      */
-    public static function get_angle_diff(mixed $angle_start, mixed $angle_target)
+    public static function get_angle_diff(mixed $angle_start, mixed $angle_target): float|int
     {
         $delta = intval($angle_target) - intval($angle_start);
         $direction = ($delta > 0) ? -1 : 1;
         $delta1 = abs($delta);
         $delta2 = 360 - $delta1;
-        return $direction * ($delta1 < $delta2 ? $delta1 : $delta2);
+        return $direction * (min($delta1, $delta2));
     }
 
     /**
      * The function fetches the METAR data for a given airport (specified by its ICAO code).
-     * 
+     *
      * @param string $icao The ICAO code of an airport.
-     * 
+     *
      * @return null|string Returns the METAR data for a given airport (specified by its ICAO code). Null if the metar data is not found.
      */
-    public static function fetch_metar($icao)
+    public static function fetch_metar(string $icao): ?string
     {
         // Cache the METAR data for 30 seconds
         if (Cache::has('metar_' . $icao)) {
@@ -47,7 +47,7 @@ class Helpers
             curl_close($ch);
 
             // If the icao is not found in the response, return an error
-            if (strpos($exec, "Not Found") !== false || strpos($exec, strtoupper($icao)) === false) {
+            if (str_contains($exec, "Not Found") || !str_contains($exec, strtoupper($icao))) {
                 return null;
             }
 
@@ -67,7 +67,7 @@ class Helpers
      * @param string $icao The ICAO code to validate
      * @return boolean Returns true if ICAO code is valid, false if not
      */
-    public static function validateIcao($icao)
+    public static function validateIcao(string $icao): bool
     {
         if (strlen($icao) != 4) {
             return false;
@@ -81,17 +81,13 @@ class Helpers
     }
 
     /**
-     * The function decodes a METAR string and returns an array of wind speed and direction
-     * information.
-     * 
-     * @param metar The input parameter is a string containing a METAR (Meteorological Terminal
-     * Aviation Routine Weather Report) which is a format used for reporting weather information for
-     * aviation purposes.
-     * 
-     * @return array an array containing the wind direction, wind speed, and gust speed (if present) parsed
-     * from the METAR string.
+     * The function parses the METAR string and returns the wind direction, wind speed, and gust speed.
+     *
+     * @param string $metar The METAR string to decode.
+     *
+     * @return array an array of wind information for a given METAR string. The array includes information such as the wind direction, wind speed, and gust speed.
      */
-    public static function get_wind($metar)
+    public static function get_wind(string $metar): array
     {
         $metar = explode(" ", $metar);
 
@@ -107,16 +103,22 @@ class Helpers
                 "gust_speed" => $return[4] ?? null
             ];
         }
+
+        return [
+            "dir" => null,
+            "speed" => null,
+            "gust_speed" => null
+        ];
     }
 
     /**
      * It takes an array and returns a string of the array's values separated by commas.
-     * 
+     *
      * @param mixed $part The part of the array to merge.
-     * 
+     *
      * @return string the value of the variable.
      */
-    public static function merge_recursive(mixed $part)
+    public static function merge_recursive(mixed $part): string
     {
         if (!is_array($part)) {
             return $part;
@@ -127,16 +129,16 @@ class Helpers
     /**
      * The function parses the runways of an airport and calculates the difference between the wind
      * direction and the runway heading.
-     * 
+     *
      * @param string $icao The ICAO code of an airport.
      * @param mixed $wind_dir The wind direction in degrees or "VRB" (variable).
-     * 
+     *
      * @return array an array of runway information for a given airport (specified by its ICAO code) and wind
      * direction. The array includes information such as the runway identifier, runway heading, wind
      * direction, and the difference between the wind direction and the runway heading. The array is
      * sorted in ascending order based on the wind difference.
      */
-    public static function parse_runways($icao, $wind_dir)
+    public static function parse_runways(string $icao, mixed $wind_dir): array
     {
         $result = Airport::where('icao', $icao)->pluck('runways');
 
@@ -152,7 +154,6 @@ class Helpers
                 $wind_diff = "-";
                 $no_val = true;
             } else {
-                $wind_dir = $wind_dir;
                 $wind_diff = abs(Helpers::get_angle_diff($wind_dir, $runway_hdg));
                 $no_val = false;
             }
