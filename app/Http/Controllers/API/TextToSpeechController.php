@@ -138,6 +138,19 @@ class TextToSpeechController extends Controller
                 ]);
             }
 
+            // Validate that the file exists
+            if (!Storage::disk('local')->exists("public/atis/$file_id/$name")) {
+                // Delete the database entry
+                $atis_file->delete();
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Could not generate ATIS audio file.',
+                    'code' => 422,
+                    'data' => null
+                ]);
+            }
+
             // Store the file url in the database, add the url to the response
             $atis_file->url = $file_url;
             // Set the expiration date to 2 hours from now
