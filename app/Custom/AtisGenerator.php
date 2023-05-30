@@ -7,17 +7,17 @@ use \App\Custom\Helpers;
 
 class AtisGenerator
 {
-    private $icao;
-    private $ident;
-    private $metar;
-    private $landing_runways;
-    private $departing_runways;
-    private $remarks1;
-    private $remarks2;
-    private $ceiling = true;
-    private $parts = array();
-    private $override_runways;
-    private $weather_codes  = array(
+    private string $icao;
+    private mixed $ident;
+    private array $metar;
+    private mixed $landing_runways;
+    private mixed $departing_runways;
+    private mixed $remarks1;
+    private mixed $remarks2;
+    private bool $ceiling = true;
+    private array $parts = array();
+    private mixed $override_runways;
+    private array $weather_codes  = array(
         "VA"        => "volcanic ash",
         "HZ"        => "haze",
         "DU"        => "dust",
@@ -53,7 +53,7 @@ class AtisGenerator
         "TSRA"        => "thunderstorm with rain",
         "TSGR"        => "thunderstorm with hail"
     );
-    private $sky_cover  = array(
+    private array $sky_cover  = array(
         "BKN"   => "broken",
         "CLR"   => "sky clear",
         "FEW"   => "few clouds",
@@ -62,13 +62,13 @@ class AtisGenerator
         "SCT"   => "scattered clouds",
         "SKC"   =>   "sky clear"
     );
-    private $sky_type   = array(
+    private array $sky_type   = array(
         "CB"    => "cumulonimbus",
         "TCU"   => "towering cumulus"
     );
-    private $spoken_letters = array("a" => "alpha", "b" => "bravo", "c" => "charlie", "d" => "delta", "e" => "echo", "f" => "foxtrot", "g" => "golf", "h" => "hotel", "i" => "india", "j" => "juliet", "k" => "kilo", "l" => "lima", "m" => "mike", "n" => "november", "o" => "oscar", "p" => "papa", "q" => "quebec", "r" => "romeo", "s" => "sierra", "t" => "tango", "u" => "uniform", "v" => "victor", "w" => "whiskey", "x" => "x-ray", "y" => "yankee", "z" => "zulu");
-    private $spoken_numbers = array("0" => "zero", "1" => "one", "2" => "two", "3" => "three", "4" => "four", "5" => "five", "6" => "six", "7" => "seven", "8" => "eight", "9" => "niner");
-    private $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
+    private array $spoken_letters = array("a" => "alpha", "b" => "bravo", "c" => "charlie", "d" => "delta", "e" => "echo", "f" => "foxtrot", "g" => "golf", "h" => "hotel", "i" => "india", "j" => "juliet", "k" => "kilo", "l" => "lima", "m" => "mike", "n" => "november", "o" => "oscar", "p" => "papa", "q" => "quebec", "r" => "romeo", "s" => "sierra", "t" => "tango", "u" => "uniform", "v" => "victor", "w" => "whiskey", "x" => "x-ray", "y" => "yankee", "z" => "zulu");
+    private array $spoken_numbers = array("0" => "zero", "1" => "one", "2" => "two", "3" => "three", "4" => "four", "5" => "five", "6" => "six", "7" => "seven", "8" => "eight", "9" => "niner");
+    private array $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
 
 
     public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null)
@@ -85,11 +85,11 @@ class AtisGenerator
 
     /**
      * It takes a string, splits it into an array, and then replaces each character with a spoken word
-     * 
+     *
      * @param mixed $part The part of the ICAO code to be spoken.
      * @param bool $runway If the part is a runway, set this to true.
      * @param bool $speak If true, the function will return the spoken version of the part.
-     * 
+     *
      * @return string the spoken version of the input.
      */
     private function spoken(mixed $part, bool $runway = false, bool $speak = false)
@@ -117,9 +117,9 @@ class AtisGenerator
 
     /**
      * It takes the ICAO code and looks up the name of the airport in a database
-     * 
+     *
      * @param bool $speak true/false
-     * 
+     *
      * @return string the name of the airport.
      */
     private function station_name(bool $speak = false)
@@ -143,9 +143,9 @@ class AtisGenerator
 
     /**
      * This function adds the ATIS ident to the ATIS message.
-     * 
+     *
      * @param bool $speak Whether or not to speak the ATIS.
-     * 
+     *
      * @return bool the value of the variable ->parts["atis_ident"]
      */
     private function atis_ident(bool $speak = false)
@@ -161,9 +161,9 @@ class AtisGenerator
 
     /**
      * This function takes the station name and the ATIS ident and combines them into one string.
-     * 
+     *
      * @param bool $speak true/false
-     * 
+     *
      * @return true.
      */
     private function station_info(bool $speak = false)
@@ -181,27 +181,27 @@ class AtisGenerator
 
     /**
      * `zulu_time` is a function that takes a string and returns a string.
-     * 
+     *
      * The function is called `zulu_time` because it parses a string that represents a time in the Zulu
-     * timezone. 
-     * 
-     * The function takes two arguments: 
-     * 
-     * 1. `` is a string that represents a time in the Zulu timezone. 
+     * timezone.
+     *
+     * The function takes two arguments:
+     *
+     * 1. `` is a string that represents a time in the Zulu timezone.
      * 2. `` is a boolean that determines whether the function returns a string that is spoken or
-     * written. 
-     * 
-     * The function returns a string that represents a time in the Zulu timezone. 
-     * 
+     * written.
+     *
+     * The function returns a string that represents a time in the Zulu timezone.
+     *
      * The function returns `false` if the string that is passed to it does not represent a time in the
-     * Zulu timezone. 
-     * 
+     * Zulu timezone.
+     *
      * The function returns `false` if the string that is passed to it represents a time in the Zulu
      * timezone, but the function
-     * 
+     *
      * @param mixed $part The part of the METAR to be parsed.
      * @param bool $speak true/false
-     * 
+     *
      * @return bool the value of the ->parts["zulu_time"] variable.
      */
     private function zulu_time(mixed $part, bool $speak = false)
@@ -218,10 +218,10 @@ class AtisGenerator
     /**
      * It takes a string, checks if it's a valid wind string, and if it is, it adds it to the
      * ->parts array.
-     * 
+     *
      * @param mixed $part The part of the METAR that is being parsed.
      * @param bool $speak true/false
-     * 
+     *
      * @return a boolean value.
      */
     private function winds_basic(mixed $part, bool $speak = false)
@@ -270,10 +270,10 @@ class AtisGenerator
 
     /**
      * If the string matches the pattern, then it's a variable wind direction
-     * 
+     *
      * @param mixed $part The part of the METAR that we're working with.
      * @param bool $speak true/false
-     * 
+     *
      * @return a boolean value.
      */
     private function winds_variable(mixed $part, bool $speak = false)
@@ -297,10 +297,10 @@ class AtisGenerator
 
     /**
      * > This function is a wrapper for the basic and variable functions
-     * 
+     *
      * @param mixed $part The part of the forecast you want to get.
      * @param bool $speak If true, the function will speak the wind direction.
-     * 
+     *
      * @return True
      */
     private function winds_full(mixed $part, bool $speak = false)
@@ -318,10 +318,10 @@ class AtisGenerator
      * then the output is "visibility [number] miles". If the input is 10, then the output is
      * "visibility 10 or more miles". If the input is M, then the output is "visibility less than one
      * mile".
-     * 
+     *
      * @param mixed $part The part of the METAR to parse.
      * @param bool $speak true/false
-     * 
+     *
      * @return a boolean value.
      */
     private function visibility(mixed $part, bool $speak = false)
@@ -396,28 +396,28 @@ class AtisGenerator
     /**
      * If the input string matches the regex pattern, then the function returns true. Otherwise, it
      * returns false.
-     * 
+     *
      * The regex pattern is:
-     * 
+     *
      * `@^([-+])?(VC)?(" .  . ")$@`
-     * 
+     *
      * The `` variable is a string of pipe-separated weather codes.
-     * 
+     *
      * The `` variable is an array of the regex matches.
-     * 
+     *
      * The ``, ``, and `` variables are strings that are used to build the
      * final output.
-     * 
+     *
      * The `->parts["weather"]` array is used to store the final output.
-     * 
+     *
      * The `->weather_codes` array is used to translate the weather codes into human-readable
      * text.
-     * 
+     *
      * The `` variable is the input string.
-     * 
+     *
      * @param mixed $part The part of the METAR to be parsed.
      * @param bool $speak Whether or not to speak the weather.
-     * 
+     *
      * @return bool a boolean value.
      */
     private function weather(mixed $part, bool $speak = false)
@@ -453,10 +453,10 @@ class AtisGenerator
     /**
      * It takes a string, checks if it's a valid vertical visibility, and if it is, it adds it to the
      * parts array.
-     * 
+     *
      * @param mixed $part The part of the METAR that we're trying to parse.
      * @param bool $speak If true, the function will return the spoken version of the part.
-     * 
+     *
      * @return float the visibility in feet.
      */
     private function vertical_visibility(mixed $part, bool $speak = false)
@@ -475,10 +475,10 @@ class AtisGenerator
     /**
      * The function takes a string, checks if it matches a pattern, and if it does, it adds the string
      * to an array
-     * 
+     *
      * @param mixed $part The part of the METAR that is being parsed.
      * @param bool $speak true/false
-     * 
+     *
      * @return bool boolean value.
      */
     public function sky_cover(mixed $part, bool $speak = false)
@@ -537,10 +537,10 @@ class AtisGenerator
     /**
      * It takes a string like "M02/M04" and converts it to "minus two degrees Celsius, minus four
      * degrees Celsius"
-     * 
+     *
      * @param mixed $part The part of the METAR to be parsed.
      * @param bool $speak true/false
-     * 
+     *
      * @return bool a boolean value.
      */
     private function temperature_dewpoint(mixed $part, bool $speak = false)
@@ -571,10 +571,10 @@ class AtisGenerator
     /**
      * It takes a string, checks if it's a valid pressure, and if it is, it converts it to the other
      * type of pressure and stores it in an array.
-     * 
+     *
      * @param mixed $part The part of the METAR to be parsed.
      * @param bool $speak true/false
-     * 
+     *
      * @return true if the part is valid and false if it is not.
      */
     private function pressure(mixed $part, bool $speak = false)
@@ -604,9 +604,9 @@ class AtisGenerator
 
     /**
      * `approaches` takes an array of strings and returns a string.
-     * 
+     *
      * @param mixed $parts The array of parts that the parser has already parsed.
-     * 
+     *
      * @return bool a boolean value.
      */
     private function approaches(mixed $parts)
@@ -629,11 +629,11 @@ class AtisGenerator
     /**
      * It takes two arrays of runways, one for landing and one for departing, and returns a string of
      * the runways in a human readable format
-     * 
+     *
      * @param mixed $landing_runways An array of runways that are available for landing.
      * @param mixed $_POSTdeparting_runways array of runways that are departing
      * @param bool $speak true/false
-     * 
+     *
      * @return bool a boolean value.
      */
     private function runways(mixed $landing_runways, mixed $departing_runways, bool $speak = false)
@@ -695,7 +695,7 @@ class AtisGenerator
     /**
      * `remarks1` is a private function that takes a mixed variable as a parameter and returns a
      * boolean value.
-     * 
+     *
      * @param mixed $parts The parts of the email address.
      */
     private function remarks1(mixed $parts)
@@ -711,9 +711,9 @@ class AtisGenerator
 
     /**
      * It takes an array of strings and joins them together with a period.
-     * 
+     *
      * @param mixed $parts An array of strings that will be joined together with a period.
-     * 
+     *
      * @return mixed a boolean value.
      */
     private function remarks2(mixed $parts)
@@ -730,9 +730,9 @@ class AtisGenerator
     /**
      * "advise controller on initial contact that you have information " . ->spoken(->ident,
      * false, );
-     * 
+     *
      * @param bool $speak true/false
-     * 
+     *
      * @return bool a boolean value.
      */
     private function ident_end(bool $speak = false)
@@ -748,9 +748,9 @@ class AtisGenerator
 
     /**
      * It takes a METAR string and parses it into an ATIS string
-     * 
+     *
      * @param mixed $speak The language to speak in.
-     * 
+     *
      * @return string the array.
      */
     public function parse_atis(mixed $speak)

@@ -68,6 +68,7 @@ class TextToSpeechController extends Controller
         $atis = $request->atis;
         $ident = $request->ident;
 
+        // Check if the request has the required parameters, not using request()->validate() for now.
         if (!isset($atis) || !isset($ident) || !isset($icao)) {
             return response()->json([
                 'status' => 'error',

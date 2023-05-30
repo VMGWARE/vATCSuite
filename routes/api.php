@@ -15,18 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// API v1 Routes
 Route::prefix('v1')->group(function () {
 
+    // Airports
     Route::prefix('airports')->group(function () {
+        // Get all airports
         Route::get('/', [AirportController::class, 'all'])->name('api.airport.all');
+
+        // Get airport by ICAO
         Route::get('{icao}', [AirportController::class, 'index'])->name('api.airport.index');
+
+        // Get airport runways
         Route::get('{icao}/runways', [AirportController::class, 'runways'])->name('api.airport.runways');
+
+        // Generate ATIS
         Route::post('{icao}/atis', [AirportController::class, 'atis'])->name('api.airport.atis');
+
+        // Get ATIS
         Route::get('{icao}/metar', [AirportController::class, 'metar'])->name('api.airport.metar');
 
+        // Get atis audio file
         Route::get('{icao}/tts', [TextToSpeechController::class, 'index']);
-        Route::post('{icao}/tts', [TextToSpeechController::class, 'generate']);
-        Route::delete('{icao}/tts', [TextToSpeechController::class, 'delete']);
 
+        // Generate atis audio file
+        Route::post('{icao}/tts', [TextToSpeechController::class, 'generate']);
+
+        // Delete atis audio file
+        Route::delete('{icao}/tts', [TextToSpeechController::class, 'delete']);
     });
 });
