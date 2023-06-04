@@ -5,26 +5,24 @@
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
 
-## Rudimentary instructions to get started
+## Getting Started
 
-1. Download Code
-2. Open /includes/constants.php in a text editor and change the MySQL database connection information to your database
-3. Run `php db_initialize.php` from the command line to create the database tables.
-4. Upload files to your server
-5. Enjoy!
-
-## Advanced Instructions
-
-1. Download Code
-2. MariaDB
-   1. Create database
-      1. name: redbeard-atis-generator
-   2. Create atis-generator user
-      1. username: redbeard_atis_generator(or whatever works for you)
-      2. password: (create secure password or have mariaDB generate it for you)
-      3. permissions: only enable SELECT, and INSERT for the redbeard-atis-generator database
-3. Open /includes/constants.php in a text editor and change the database connection information to your database and user info
-4. Run `php db_initialize.php` from the command line to create the database tables.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
+    ```
+2. Install Composer dependencies
+    ```sh
+    composer install
+    ```
+3. Fill in the .env file with your database credentials
+    ```sh
+    cp .env.example .env
+    ```
+4. Run artisan commands
+    ```sh
+    php artisan key:generate & php artisan migrate --seed
+    ```
 
 ## Requirements
 
