@@ -1,9 +1,13 @@
 {
-    "name": "laravel/laravel",
+    "name": "redbeardtfl/atis-generator",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.",
+    "keywords": [
+        "atis",
+        "generator",
+        "atc"
+    ],
+    "license": "CC BY-NC-SA 4.0",
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
