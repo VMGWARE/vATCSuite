@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Atis Generator API Documentation</title>
+    <title>Redbeard's ATIS Generator API Documentation</title>
     <!-- needed for adaptive design -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
