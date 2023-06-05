@@ -96,6 +96,16 @@ class TextToSpeechController extends Controller
 
         // Create the atis audio file
         $VOICE_RSS_API_KEY = config('app.voice-rss-key');
+
+        // Validate the API key
+        if (!isset($VOICE_RSS_API_KEY) || empty($VOICE_RSS_API_KEY)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'The VoiceRSS API key is not set.',
+                'code' => 500,
+                'data' => null
+            ]);
+        }
         $ch = curl_init("https://api.voicerss.org/?key=$VOICE_RSS_API_KEY&hl=en-us&c=MP3&v=John&f=16khz_16bit_stereo&src=" . rawurlencode($atis));
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
