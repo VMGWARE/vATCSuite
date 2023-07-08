@@ -8,21 +8,50 @@
 ## Getting Started
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
+
+    ```sh
+    git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
     ```
+
 2. Install Composer dependencies
+
     ```sh
     composer install
     ```
+
 3. Fill in the .env file with your database credentials
+
     ```sh
     cp .env.example .env
     ```
+
 4. Run artisan commands to generate a key and migrate the database
+
     ```sh
     php artisan key:generate & php artisan migrate --seed
     ```
+
+### Docker
+
+1. Pull the image
+
+    ```sh
+    docker pull insidiousfiddler/redbeards-atis-generator
+    ```
+
+2. Run the container with your database credentials
+
+    ```sh
+    docker run -d -p 80:80 insidiousfiddler/redbeards-atis-generator -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
+    ```
+
+3. Run artisan commands to generate a key and migrate the database
+
+    ```sh
+    docker exec -it <container_id> php artisan key:generate & php artisan migrate --seed
+    ```
+
+4. Visit the site at [http://<your_server_ip>/](http://<your_server_ip>/)
 
 ## Requirements
 
