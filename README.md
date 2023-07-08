@@ -19,7 +19,7 @@
     ```sh
     cp .env.example .env
     ```
-4. Run artisan commands
+4. Run artisan commands to generate a key and migrate the database
     ```sh
     php artisan key:generate & php artisan migrate --seed
     ```
