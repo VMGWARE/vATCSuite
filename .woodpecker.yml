@@ -1,6 +1,6 @@
 variables:
   - &buildx_image "woodpeckerci/plugin-docker-buildx"
-  - &platforms "linux/amd64,linux/arm64,linux/arm/v7"
+  - &platforms "linux/amd64"
 
 pipeline:
   - name: Deploy to Docker Hub
