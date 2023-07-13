@@ -4,6 +4,7 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
+[![Build Status][ci-shield]][ci-url]
 
 ## Getting Started
 
@@ -82,11 +83,13 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 <img src = "https://contrib.rocks/image?repo=RedbeardTFL/ATIS_GENERATOR"/>
 </a>
 
-[contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg
 [contributors-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/RedbeardTFL/ATIS_GENERATOR.svg
 [forks-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/network
-[issues-shield]: https://img.shields.io/github/issues/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/RedbeardTFL/ATIS_GENERATOR.svg
 [issues-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/issues
-[license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/Codycody31/ATIS_GENERATOR/status.svg
+[ci-url]: https://woodpecker.vahngomes.dev/Codycody31/ATIS_GENERATOR
