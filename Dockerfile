@@ -7,8 +7,7 @@ ENV PATH="/composer/vendor/bin:$PATH" \
     COMPOSER_HOME=/composer
 
 # install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer --ansi --version --no-interaction
+COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 
 # install application dependencies
 WORKDIR /var/www/app
