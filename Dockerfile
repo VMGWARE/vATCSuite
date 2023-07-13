@@ -42,6 +42,10 @@ RUN composer dump-autoload -o \
     && chown -R :www-data /var/www/app \
     && chmod -R 775 /var/www/app/storage /var/www/app/bootstrap/cache
 
+# Run storage link
+RUN php artisan storage:link
+
+# expose port 80
 EXPOSE 80
 
 # run supervisor
