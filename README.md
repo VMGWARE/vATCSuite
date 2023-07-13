@@ -4,25 +4,55 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
+[![Build Status][ci-shield]][ci-url]
 
 ## Getting Started
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
+
+    ```sh
+    git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
     ```
+
 2. Install Composer dependencies
+
     ```sh
     composer install
     ```
+
 3. Fill in the .env file with your database credentials
+
     ```sh
     cp .env.example .env
     ```
-4. Run artisan commands
+
+4. Run artisan commands to generate a key and migrate the database
+
     ```sh
     php artisan key:generate & php artisan migrate --seed
     ```
+
+### Docker
+
+1. Pull the image
+
+    ```sh
+    docker pull insidiousfiddler/redbeards-atis-generator
+    ```
+
+2. Run the container with your database credentials
+
+    ```sh
+    docker run -d -p 80:80 insidiousfiddler/redbeards-atis-generator -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
+    ```
+
+3. Run artisan commands to generate a key and migrate the database
+
+    ```sh
+    docker exec -it <container_id> php artisan key:generate & php artisan migrate --seed
+    ```
+
+4. Visit the site at [http://<your_server_ip>/](http://<your_server_ip>/)
 
 ## Requirements
 
@@ -53,11 +83,13 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 <img src = "https://contrib.rocks/image?repo=RedbeardTFL/ATIS_GENERATOR"/>
 </a>
 
-[contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg
 [contributors-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/RedbeardTFL/ATIS_GENERATOR.svg
 [forks-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/network
-[issues-shield]: https://img.shields.io/github/issues/RedbeardTFL/ATIS_GENERATOR.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/RedbeardTFL/ATIS_GENERATOR.svg
 [issues-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/issues
-[license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/Codycody31/ATIS_GENERATOR/status.svg
+[ci-url]: https://woodpecker.vahngomes.dev/Codycody31/ATIS_GENERATOR

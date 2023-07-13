@@ -1,10 +1,10 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
+/src/.phpunit.cache
+/src/node_modules
+/src/public/build
+/src/public/hot
+/src/public/storage
 /storage/*.key
-/vendor
+/src/vendor
 .env
 .env.backup
 .env.production
