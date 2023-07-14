@@ -3,7 +3,7 @@
 /src/public/build
 /src/public/hot
 /src/public/storage
-/storage/*.key
+/src/storage/*.key
 /src/vendor
 .env
 .env.backup
