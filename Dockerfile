@@ -1,55 +1,39 @@
-FROM fhsinchy/php-nginx-base:php8.1.3-fpm-nginx1.20.2-alpine3.15
+FROM php:8.1 as php
 
-# set composer related environment variables
-ENV PATH="/composer/vendor/bin:$PATH" \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    COMPOSER_VENDOR_DIR=/var/www/vendor \
-    COMPOSER_HOME=/composer
+RUN apt-get update -y
+RUN apt-get install -y unzip libpq-dev libcurl4-gnutls-dev
+RUN docker-php-ext-install pdo pdo_mysql bcmath
 
-# install composer
-COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 
-# Copy composer files
-WORKDIR /var/www/app
-COPY ./src/composer.json ./src/composer.lock* ./
-
-# Copy the application files
+WORKDIR /var/www
 COPY ./src .
 
-# install application dependencies
-RUN composer install --no-scripts --ansi --no-interaction
+COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
 
-# add custom php-fpm pool settings, these get written at entrypoint startup
-ENV FPM_PM_MAX_CHILDREN=20 \
-    FPM_PM_START_SERVERS=2 \
-    FPM_PM_MIN_SPARE_SERVERS=1 \
-    FPM_PM_MAX_SPARE_SERVERS=3
+# ==============================================================================
+#  node
+FROM node:14-alpine as node
 
-# set application environment variables
-ENV APP_NAME="Redbeard's ATIS Generator" \
-    APP_ENV=production \
-    APP_DEBUG=false
+WORKDIR /var/www
+COPY ./src .
 
-# copy entrypoint files
-COPY ./docker/docker-php-* /usr/local/bin/
-RUN dos2unix /usr/local/bin/docker-php-entrypoint
-RUN dos2unix /usr/local/bin/docker-php-entrypoint-dev
+RUN npm install --global cross-env
+RUN npm install
 
-# copy nginx configuration
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/default.conf /etc/nginx/conf.d/default.conf
+VOLUME /var/www/node_modules
 
-# copy application code
-WORKDIR /var/www/app
-RUN composer dump-autoload -o \
-    && chown -R :www-data /var/www/app \
-    && chmod -R 775 /var/www/app/storage /var/www/app/bootstrap/cache
+# ==============================================================================
+# Production
 
-# Run storage link
-RUN php artisan storage:link
+FROM php as production
 
-# expose port 80
-EXPOSE 80
+COPY --from=node /var/www/node_modules ./node_modules
+COPY docker/entrypoint.sh /var/www/docker/entrypoint.sh
 
-# run supervisor
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+ENV PORT=8000
+
+EXPOSE 8000
+ENTRYPOINT [ "docker/entrypoint.sh" ]
