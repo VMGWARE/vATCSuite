@@ -91,5 +91,5 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 [issues-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/issues
 [license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/Codycody31/ATIS_GENERATOR/status.svg
-[ci-url]: https://woodpecker.vahngomes.dev/Codycody31/ATIS_GENERATOR
+[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/RedbeardTFL/ATIS_GENERATOR/status.svg
+[ci-url]: https://woodpecker.vahngomes.dev/RedbeardTFL/ATIS_GENERATOR
