@@ -32,9 +32,9 @@ pipeline:
       repo: insidiousfiddler/redbeards-atis-generator
       dockerfile: Dockerfile
       platforms: *platforms
-      tag: pull_${CI_PULL_REQUEST}
+      tag: pull_${CI_COMMIT_PULL_REQUEST}
     when:
       event: pull_request
 
-branches: [main]
+branches: [ main, release/* ]
 ignore_paths: [README.md, LICENSE, .github, .gitignore]
