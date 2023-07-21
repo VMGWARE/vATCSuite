@@ -111,6 +111,7 @@ COPY --chown=www-data:www-data src/.env.example .env
 
 # Composer installation
 COPY docker/install-composer.sh /usr/local/sbin/
+RUN chmod +x /usr/local/sbin/install-composer.sh
 RUN install-composer.sh
 
 # Install composer dependencies
@@ -132,10 +133,14 @@ RUN set -ex; \
 #     \
 #     rm -rf /var/lib/apt/lists/*
 
+# Copy utility scripts
 COPY docker/entrypoint.sh \
     docker/cron.sh \
     docker/queue.sh \
     /usr/local/bin/
+
+# Make scripts executable 
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/cron.sh /usr/local/bin/queue.sh
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["apache2-foreground"]
