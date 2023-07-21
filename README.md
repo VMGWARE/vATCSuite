@@ -5,6 +5,7 @@
 [![Issues][issues-shield]][issues-url]
 [![Forks][forks-shield]][forks-url]
 [![Build Status][ci-shield]][ci-url]
+[![Laravel Forge Site Deployment Status][forge-shield]][forge-url]
 
 ## Getting Started
 
@@ -93,3 +94,5 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [ci-shield]: https://woodpecker.vahngomes.dev/api/badges/RedbeardTFL/ATIS_GENERATOR/status.svg
 [ci-url]: https://woodpecker.vahngomes.dev/RedbeardTFL/ATIS_GENERATOR
+[forge-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fdfb30462-772c-4427-afe7-bb17de5c40f2%3Fdate%3D1%26commit%3D1&style=plastic
+[forge-url]: https://forge.laravel.com/servers/699079/sites/2035675
