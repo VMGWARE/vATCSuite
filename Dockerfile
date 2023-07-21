@@ -111,6 +111,7 @@ COPY --chown=www-data:www-data src/.env.example .env
 
 # Composer installation
 COPY docker/install-composer.sh /usr/local/sbin/
+RUN chmod +x /usr/local/sbin/install-composer.sh
 RUN install-composer.sh
 
 # Install composer dependencies
