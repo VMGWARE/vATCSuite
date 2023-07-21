@@ -142,5 +142,5 @@ COPY docker/entrypoint.sh \
 # Make scripts executable 
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/cron.sh /usr/local/bin/queue.sh
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["apache2-foreground"]
