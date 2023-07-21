@@ -1,39 +1,36 @@
-FROM php:8.1 as php
+FROM php:8.1-fpm
 
-RUN apt-get update -y
-RUN apt-get install -y unzip libpq-dev libcurl4-gnutls-dev
-RUN docker-php-ext-install pdo pdo_mysql bcmath
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
 
-RUN pecl install -o -f redis \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
+# Get composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
 WORKDIR /var/www
-COPY ./src .
 
-COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+# Install dependencies
+COPY composer.lock composer.json /var/www/
+RUN composer install --no-dev --no-scripts --no-progress --prefer-dist
 
-# ==============================================================================
-#  node
-FROM node:14-alpine as node
+# Copy existing application directory contents
+COPY . /var/www
 
-WORKDIR /var/www
-COPY ./src .
+# Generate app encryption key
+RUN php artisan key:generate
 
-RUN npm install --global cross-env
-RUN npm install
+# Migrate database
+RUN php artisan migrate
 
-VOLUME /var/www/node_modules
-
-# ==============================================================================
-# Production
-
-FROM php as production
-
-COPY --from=node /var/www/node_modules ./node_modules
-COPY docker/entrypoint.sh /var/www/docker/entrypoint.sh
-
-ENV PORT=8000
-
-EXPOSE 8000
-ENTRYPOINT [ "docker/entrypoint.sh" ]
+# Clear cache
+RUN php artisan config:cache
