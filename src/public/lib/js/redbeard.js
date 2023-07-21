@@ -5,10 +5,10 @@ $(document).ready(function () {
             a = $(this).val();
         if (o.test(a)) {
             $(this).val(a.replace(o, ""));
-            t--
+            t--;
         }
         if (this.type !== "checkbox") {
-            this.setSelectionRange(t, t)
+            this.setSelectionRange(t, t);
         }
     });
 
@@ -19,7 +19,7 @@ $(document).ready(function () {
      */
     function copy(text) {
         output = $(text).html();
-        navigator.clipboard.writeText(output)
+        navigator.clipboard.writeText(output);
     }
 
     /**
@@ -104,8 +104,9 @@ $(document).ready(function () {
                     </tr>
                 </thead>
                 <tbody>
-                    ${t.data.map(function (t) {
-                return `
+                    ${t.data
+                        .map(function (t) {
+                            return `
                         <tr>
                             <td><strong>${t.runway}</strong></td>
                             <td>${t.wind_dir}</td>
@@ -113,15 +114,22 @@ $(document).ready(function () {
                             <td><input class="form-check-input" type="checkbox" name="landing_runways[]" value="${t.runway}"></td>
                             <td><input class="form-check-input" type="checkbox" name="departing_runways[]" value="${t.runway}"></td>
                         </tr>
-                        `
-            }).join("")}
+                        `;
+                        })
+                        .join("")}
                 </tbody>
             </table>
             `;
-            $("#runway-output").html(Modal("Runway List for " + icao.toUpperCase(), table, "runway-modal"));
+            $("#runway-output").html(
+                Modal(
+                    "Runway List for " + icao.toUpperCase(),
+                    table,
+                    "runway-modal"
+                )
+            );
             $("#runway-modal").modal("show");
-            $(".loading").hide()
-        })
+            $(".loading").hide();
+        });
     });
 
     $("#atis-input").submit(function (t) {
@@ -129,24 +137,29 @@ $(document).ready(function () {
         t.preventDefault();
         icao = $("#icao").val();
         ident = $("#ident").val();
-        $.post(`/api/v1/airports/${icao}/atis`, $("#atis-input").serialize(), function (t) {
-            if (t.status == "error" || t.code != 200) {
-                $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
-                $("#atis-modal").modal("show");
-                $(".loading").hide();
-                return;
-            }
+        $.post(
+            `/api/v1/airports/${icao}/atis`,
+            $("#atis-input").serialize(),
+            function (t) {
+                if (t.status == "error" || t.code != 200) {
+                    $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
+                    $("#atis-modal").modal("show");
+                    $(".loading").hide();
+                    return;
+                }
 
-            if (t.data == "") {
-                $("#atis-output").html(ErrorModal("API returned empty data. Please try again."));
-                $("#atis-modal").modal("show");
-                $(".loading").hide();
-                return;
-            }
+                if (t.data == "") {
+                    $("#atis-output").html(
+                        ErrorModal("API returned empty data. Please try again.")
+                    );
+                    $("#atis-modal").modal("show");
+                    $(".loading").hide();
+                    return;
+                }
 
-            atis = t.data.spoken;
+                atis = t.data.spoken;
 
-            success = `
+                success = `
             <div class="modal fade show" id="atis-modal" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -170,33 +183,44 @@ $(document).ready(function () {
             </div>
             `;
 
-            // Show success modal
-            $("#atis-output").html(success);
-            $("#atis-modal").modal("show");
-            $(".loading").hide();
+                // Show success modal
+                $("#atis-output").html(success);
+                $("#atis-modal").modal("show");
+                $(".loading").hide();
 
-            tts = $.post(`/api/v1/airports/${icao}/tts`, { ident: ident, atis: atis }, function (t) {
-                if (t.code != 200 && t.status == "error" && t.code != 409) {
-                    $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
-                    $("#atis-modal").modal("show");
-                    $(".loading").hide();
-                    return;
-                }
+                tts = $.post(
+                    `/api/v1/tts`,
+                    { ident: ident, atis: atis, icao: icao },
+                    function (t) {
+                        if (
+                            t.code != 200 &&
+                            t.status == "error" &&
+                            t.code != 409
+                        ) {
+                            $("#atis-output").html(
+                                ErrorModal(t.message, "atis-modal")
+                            );
+                            $("#atis-modal").modal("show");
+                            $(".loading").hide();
+                            return;
+                        }
 
-                // Show download button
-                $("#download-atis").attr("href", t.data.url);
-                $("#download-atis").html("Download ATIS");
-                $("#download-atis").attr("download", t.data.name);
-            });
+                        // Show download button
+                        $("#download-atis").attr("href", t.data.url);
+                        $("#download-atis").html("Download ATIS");
+                        $("#download-atis").attr("download", t.data.name);
+                    }
+                );
 
-            $("#copy-atis").click(function () {
-                copy("#atis1")
-            })
-        })
+                $("#copy-atis").click(function () {
+                    copy("#atis1");
+                });
+            }
+        );
     });
 
     $("#squawk-generator").click(function () {
-        $("#squawk-modal").modal("show")
+        $("#squawk-modal").modal("show");
     });
 
     /**
@@ -205,7 +229,7 @@ $(document).ready(function () {
      * @returns {number} Random number
      */
     function getRandomInt() {
-        return Math.floor(Math.random() * 7 + 1)
+        return Math.floor(Math.random() * 7 + 1);
     }
 
     $("#generate-squawk").click(function () {
@@ -215,10 +239,10 @@ $(document).ready(function () {
         code = code.concat(getRandomInt());
         code = code.concat(getRandomInt());
         $("#copy-squawk").show();
-        $("#squawk-output").html(code)
+        $("#squawk-output").html(code);
     });
 
     $("#copy-squawk").click(function () {
-        copy("#squawk-output")
-    })
+        copy("#squawk-output");
+    });
 });
