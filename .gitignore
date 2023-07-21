@@ -1,21 +1,55 @@
+# Ignore PHPUnit cache
 /src/.phpunit.cache
+
+# Ignore Node.js modules
 /src/node_modules
+
+# Ignore Laravel Mix build directory
 /src/public/build
+
+# Ignore Laravel Mix hot module replacement files
 /src/public/hot
+
+# Ignore Laravel public storage directory
 /src/public/storage
+
+# Ignore Laravel storage encryption keys
 /src/storage/*.key
+
+# Ignore Composer vendor directory
 /src/vendor
+
+# Ignore application version file
 /src/version
+
+# Ignore environment files
 .env
 .env.backup
 .env.production
+
+# Ignore PHPUnit result cache
 .phpunit.result.cache
+
+# Ignore Homestead configuration files
 Homestead.json
 Homestead.yaml
+
+# Ignore Composer auth credentials
 auth.json
+
+# Ignore NPM debug log
 npm-debug.log
+
+# Ignore Yarn error log
 yarn-error.log
+
+# Ignore Fleet configuration
 /.fleet
+
+# Ignore IDE-specific files
 /.idea
 /.vscode
 .idea
+
+# Ignore SonarQube scanner workspace
+.scannerwork
