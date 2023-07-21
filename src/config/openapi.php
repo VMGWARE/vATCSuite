@@ -9,7 +9,7 @@ return [
             'info' => [
                 'title' => "Redbeard's ATIS Generator",
                 'description' => 'A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.',
-                'version' => '2.0.0-beta',
+                'version' => config('app.version'),
                 'contact' => [
                     'name' => 'Atis Support',
                     'email' => 'atis@vahngomes.dev',
