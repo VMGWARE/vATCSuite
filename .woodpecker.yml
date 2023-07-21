@@ -29,7 +29,7 @@ pipeline:
       repo: insidiousfiddler/redbeards-atis-generator
       dockerfile: Dockerfile
       platforms: *platforms
-      tag: [latest, "${CI_COMMIT_TAG#v}"]
+      tag: [latest, "${CI_COMMIT_TAG}"]
     when:
       event: tag
 
