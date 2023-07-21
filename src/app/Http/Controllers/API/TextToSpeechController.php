@@ -19,6 +19,7 @@ use App\OpenApi\Responses\TTS\GetTextToSpeech\SuccessResponse as GetTextToSpeech
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\ErrorHandler\Debug;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -246,12 +247,68 @@ class TextToSpeechController extends Controller
      *
      * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
-    public function delete(Request $request): void
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\TTS\DeleteParameters::class)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorMissingIdResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorPasswordProtectedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\SuccessResponse::class, statusCode: 200)]
+    public function delete(Request $request): JsonResponse
     {
-        // TODO: Delete mp3 atis file.
+        // Get the request parameters
+        $id = isset($request->id) ? $request->id : null;
+        $password = isset($request->password) ? $request->password : null;
+
+        // Validate the request
+        if (!isset($id)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must provide an ATIS ID.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        // Check if the ATIS audio file exists
+        $atis_file = ATISAudioFile::where('id', $id)->first();
+
+        // Check if the ATIS audio file exists
+        if ($atis_file == null || !$atis_file->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ATIS audio file not found.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        // Check if the file requires a password to delete
+        if ($atis_file->password != null) {
+            // Check if the password is correct
+            if (!isset($password) || $password != $atis_file->password) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Incorrect password.',
+                    'code' => 401,
+                    'data' => null
+                ]);
+            }
+        }
+
+        // Delete the file from the server
+        Storage::disk('local')->delete("public/atis/$id/$atis_file->file_name");
+
+        // Delete the database entry
+        $atis_file->delete();
+
+        // Return the response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ATIS audio file deleted successfully.',
+            'code' => 200,
+            'data' => null
+        ]);
     }
 }
