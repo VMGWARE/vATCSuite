@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="container d-flex justify-content-center align-items-center py-3 vh-100">
-        <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg">
+        <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg m-4">
             <form id="atis-input" method="post" class="p-4">
                 <input type="hidden" id="last-generated" value="">
                 <h2 class="fw-bold">Redbeard's ATIS Generator</h2>
