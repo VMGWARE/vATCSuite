@@ -133,10 +133,14 @@ RUN set -ex; \
 #     \
 #     rm -rf /var/lib/apt/lists/*
 
+# Copy utility scripts
 COPY docker/entrypoint.sh \
     docker/cron.sh \
     docker/queue.sh \
     /usr/local/bin/
+
+# Make scripts executable 
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/cron.sh /usr/local/bin/queue.sh
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["apache2-foreground"]
