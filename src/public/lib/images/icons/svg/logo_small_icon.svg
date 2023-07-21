@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="347.000000pt" height="390.000000pt" viewBox="0 0 347.000000 390.000000" preserveAspectRatio="xMidYMid meet">
+    <defs>
+        <mask id="mask">
+            <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+            <rect x="0" y="0" width="100%" height="100%" fill="black"/>
+        </mask>
+    </defs>
+    <g transform="translate(0.000000,390.000000) scale(0.100000,-0.100000)" fill="#0073fb" stroke="none">
+        <path d="M0 1950 l0 -1950 1735 0 1735 0 0 1950 0 1950 -1735 0 -1735 0 0
+-1950z m1070 710 l0 -490 -182 2 -183 3 -3 488 -2 487 185 0 185 0 0 -490z
+m1655 180 l0 -305 -175 0 -175 0 -3 123 -3 122 -489 0 -490 0 0 180 0 180 223
+3 c122 1 422 2 667 2 l445 0 0 -305z m0 -1370 l0 -725 -171 -3 -172 -2 -3 32
+c-2 18 -4 266 -4 550 l0 518 -490 2 -490 3 -3 165 c-1 90 0 170 2 177 4 11
+133 13 668 11 l663 -3 0 -725z m-1655 -5 l0 -365 485 0 485 0 0 -180 0 -180
+-665 0 -665 0 -2 541 c-2 297 -1 543 1 545 2 2 85 4 183 4 l178 0 0 -365z"/>
+    </g>
+</svg>

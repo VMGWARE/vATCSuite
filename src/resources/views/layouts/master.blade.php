@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="{{ secure_asset('/lib/css/overrides.css') }}" rel="stylesheet">
+    <link href="{{ asset('/lib/css/overrides.css') }}" rel="stylesheet">
 
     <script src="https://kit.fontawesome.com/6a94b5c85f.js" crossorigin="anonymous"></script>
 
@@ -28,8 +28,7 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ secure_asset('/lib/js/redbeard.js') }}">
-    </script>
+    <script src="{{ asset('/lib/js/redbeard.js') }}"></script>
 </body>
 
 </html>

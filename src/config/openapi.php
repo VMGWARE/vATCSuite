@@ -27,10 +27,6 @@ return [
                     "description" => "Production server"
                 ],
                 [
-                    "url" => "https://dev-atis.vahngomes.dev",
-                    "description" => "Development server"
-                ],
-                [
                     "url" => "http://127.0.0.1:8000",
                     "description" => "Local server"
                 ]
@@ -50,11 +46,11 @@ return [
             'tags' => [
                 [
                     'name' => 'Airport',
-                    'description' => 'Airport related endpoints',
+                    'description' => 'Endpoints for getting airport information like current ATIS and METAR.',
                 ],
                 [
                     'name' => 'Text to Speech',
-                    'description' => 'Text to Speech related endpoints',
+                    'description' => 'Endpoints for converting text to speech audio files.',
                 ]
             ],
 
