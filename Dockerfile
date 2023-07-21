@@ -1,39 +1,141 @@
-FROM php:8.1 as php
+###
+### ~ Atis Generator for Non-VATSIM Controllers ~ Dockerfile
+###
+### This file is used for dev purpose.
+###
 
-RUN apt-get update -y
-RUN apt-get install -y unzip libpq-dev libcurl4-gnutls-dev
-RUN docker-php-ext-install pdo pdo_mysql bcmath
+FROM php:8.1-apache
 
-RUN pecl install -o -f redis \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
+# opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
+LABEL org.opencontainers.image.authors="Vahn Gomes <atis@vahngomes.dev>" \
+    org.opencontainers.image.title="ATIS Generator for Non-VATSIM Controllers " \
+    org.opencontainers.image.description="A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats." \
+    org.opencontainers.image.url="https://atis.vahngomes.dev/"
 
-WORKDIR /var/www
-COPY ./src .
+# entrypoint.sh dependencies
+RUN set -ex; \
+    \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    bash \
+    busybox-static \
+    ; \
+    rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+# Install required PHP extensions
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends libzip-dev \
+    && apt-get install -y --no-install-recommends libzip-dev libgmp-dev \
+    && docker-php-ext-install pdo_mysql
 
-# ==============================================================================
-#  node
-FROM node:14-alpine as node
+RUN set -ex \ 
+    && docker-php-ext-install zip
 
-WORKDIR /var/www
-COPY ./src .
+# TODO: Find out why gmp is not working, or if it is even needed
+# RUN set -ex \
+#     # && { echo "/usr/include/gmp.h"; echo "/usr/include/x86_64-linux-gnu/gmp.h"; } | xargs -n1 ln -s \
+#     && docker-php-ext-install gmp
 
-RUN npm install --global cross-env
-RUN npm install
+RUN set -ex \
+    && pecl install apcu-5.1.21 \
+    && docker-php-ext-enable apcu
 
-VOLUME /var/www/node_modules
+RUN set -ex \
+    # Removed gmp as it is not working
+    # && docker-php-ext-enable zip gmp
+    && docker-php-ext-enable zip
 
-# ==============================================================================
-# Production
+# Set crontab for schedules
+RUN set -ex; \
+    \
+    mkdir -p /var/spool/cron/crontabs; \
+    rm -f /var/spool/cron/crontabs/root; \
+    echo '*/5 * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
 
-FROM php as production
+# Opcache
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+RUN set -ex; \
+    \
+    docker-php-ext-enable opcache; \
+    { \
+    echo '[opcache]'; \
+    echo 'opcache.enable=1'; \
+    echo 'opcache.revalidate_freq=0'; \
+    echo 'opcache.validate_timestamps=${PHP_OPCACHE_VALIDATE_TIMESTAMPS}'; \
+    echo 'opcache.max_accelerated_files=${PHP_OPCACHE_MAX_ACCELERATED_FILES}'; \
+    echo 'opcache.memory_consumption=${PHP_OPCACHE_MEMORY_CONSUMPTION}'; \
+    echo 'opcache.max_wasted_percentage=${PHP_OPCACHE_MAX_WASTED_PERCENTAGE}'; \
+    echo 'opcache.interned_strings_buffer=16'; \
+    echo 'opcache.fast_shutdown=1'; \
+    } > $PHP_INI_DIR/conf.d/opcache-recommended.ini; \
+    \
+    echo 'apc.enable_cli=1' >> $PHP_INI_DIR/conf.d/docker-php-ext-apcu.ini; \
+    \
+    echo 'memory_limit=512M' > $PHP_INI_DIR/conf.d/memory-limit.ini
 
-COPY --from=node /var/www/node_modules ./node_modules
-COPY docker/entrypoint.sh /var/www/docker/entrypoint.sh
+RUN set -ex; \
+    \
+    a2enmod headers rewrite remoteip; \
+    { \
+    echo RemoteIPHeader X-Real-IP; \
+    echo RemoteIPTrustedProxy 10.0.0.0/8; \
+    echo RemoteIPTrustedProxy 172.16.0.0/12; \
+    echo RemoteIPTrustedProxy 192.168.0.0/16; \
+    } > $APACHE_CONFDIR/conf-available/remoteip.conf; \
+    a2enconf remoteip
 
-ENV PORT=8000
+RUN set -ex; \
+    APACHE_DOCUMENT_ROOT=/var/www/html/public; \
+    sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/sites-available/*.conf; \
+    sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/apache2.conf $APACHE_CONFDIR/conf-available/*.conf
 
-EXPOSE 8000
-ENTRYPOINT [ "docker/entrypoint.sh" ]
+WORKDIR /var/www/html
+
+
+# Copy the local (outside Docker) source into the working directory,
+# copy system files into their proper homes, and set file ownership
+# correctly
+COPY --chown=www-data:www-data src/ ./
+
+RUN set -ex; \
+    \
+    mkdir -p bootstrap/cache; \
+    mkdir -p storage; \
+    chown -R www-data:www-data bootstrap/cache storage; \
+    chmod -R g+w bootstrap/cache storage
+COPY --chown=www-data:www-data src/.env.example .env
+
+# Composer installation
+COPY docker/install-composer.sh /usr/local/sbin/
+RUN install-composer.sh
+
+# Install composer dependencies
+RUN set -ex; \
+    \
+    mkdir -p storage/framework/views; \
+    composer install --no-interaction --no-progress --no-dev; \
+    composer clear-cache; \
+    rm -rf .composer
+
+# # Install node dependencies
+# RUN set -ex; \
+#     \
+#     curl -fsSL https://deb.nodesource.com/setup_18.x | bash -; \
+#     apt-get install -y nodejs; \
+#     npm install -g yarn; \
+#     # yarn run inst; \
+#     yarn run dev; \
+#     \
+#     rm -rf /var/lib/apt/lists/*
+
+COPY docker/entrypoint.sh \
+    docker/cron.sh \
+    docker/queue.sh \
+    /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["apache2-foreground"]

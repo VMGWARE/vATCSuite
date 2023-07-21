@@ -1,19 +1,27 @@
 #!/bin/bash
 
-if [ ! -f "vendor/autoload.php" ]; then
-    composer install --no-progress --no-interaction
+set -Eeo pipefail
+
+if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
+
+    ATISGENDIR=/var/www/html
+    ARTISAN="php ${ATISGENDIR}/artisan"
+
+    # Ensure storage directories are present
+    STORAGE=${ATISGENDIR}/storage
+    mkdir -p ${STORAGE}/logs
+    mkdir -p ${STORAGE}/app/public
+    mkdir -p ${STORAGE}/framework/views
+    mkdir -p ${STORAGE}/framework/cache
+    mkdir -p ${STORAGE}/framework/sessions
+    chown -R www-data:www-data ${STORAGE}
+    chmod -R g+rw ${STORAGE}
+
+    if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
+        ${ARTISAN} key:generate --no-interaction
+    else
+        echo "APP_KEY already set"
+    fi
 fi
 
-if [ ! -f ".env" ]; then
-    echo "Creating env file for env $APP_ENV"
-    cp .env.example .env
-else
-    echo "env file exists."
-fi
-
-php artisan migrate
-php artisan key:generate
-php artisan config:clear
-php artisan route:clear
-php artisan serve --port=$PORT --host=0.0.0.0 --env=.env
-exec docker-php-entrypoint "$@"
+exec "$@"
