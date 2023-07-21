@@ -12,7 +12,7 @@
 1. Clone the repo
 
     ```sh
-    git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git
+    git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git && cd ATIS_GENERATOR/src
     ```
 
 2. Install Composer dependencies
@@ -31,6 +31,18 @@
 
     ```sh
     php artisan key:generate & php artisan migrate --seed
+    ```
+
+5. Run git command to generate a version file for the footer
+
+    ```sh
+    git describe --always --tags --dirty > version
+    ```
+
+6. Run the development server
+
+    ```sh
+    php artisan serve
     ```
 
 ### Docker

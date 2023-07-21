@@ -3,6 +3,14 @@ variables:
   - &platforms "linux/amd64"
 
 pipeline:
+  - name: Generate version file
+    image: alpine/git
+    commands:
+      - cd ./src
+      - git describe --always --tags --dirty > version
+      - cat version
+      - cd ../
+
   - name: Deploy to Docker Hub
     image: *buildx_image
     secrets: [docker_username, docker_password]
@@ -36,5 +44,5 @@ pipeline:
     when:
       event: pull_request
 
-branches: [ main, release/* ]
+branches: [main, release/*]
 ignore_paths: [README.md, LICENSE, .github, .gitignore]

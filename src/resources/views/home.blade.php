@@ -157,3 +157,31 @@
         </div>
     </div>
 @stop
+
+@section('footer')
+
+    <footer class="bg-light py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md text-center text-md-left">
+                    <!-- Adjusted class: text-md-right to text-md-left -->
+                    <p class="text-muted">
+                        <i class="fab fa-github"></i> Powered by <a href="https://github.com/RedbeardTFL/ATIS_GENERATOR"
+                            target="_blank">Redbeard's ATIS
+                            Generator</a>
+                    </p>
+                </div>
+                <div class="col-md text-center text-md-right">
+                    <!-- Adjusted class: text-md-right to text-md-left -->
+                    <p class="text-muted">
+                        <i class="fas fa-code-branch"></i> Version:
+                        {{ \Tremby\LaravelGitVersion\GitVersionHelper::getVersion() }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+@endsection
