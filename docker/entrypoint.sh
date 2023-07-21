@@ -17,11 +17,15 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     chown -R www-data:www-data ${STORAGE}
     chmod -R g+rw ${STORAGE}
 
+    # Generate key if not set
     if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
         ${ARTISAN} key:generate --no-interaction
     else
         echo "APP_KEY already set"
     fi
+
+    # Link public storage
+    ${ARTISAN} storage:link
 fi
 
 exec "$@"

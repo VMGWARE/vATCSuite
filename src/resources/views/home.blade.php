@@ -7,17 +7,17 @@
         </div>
     </div>
     <div class="container d-flex justify-content-center align-items-center py-3 vh-100">
-        <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg">
+        <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg m-4">
             <form id="atis-input" method="post" class="p-4">
                 <input type="hidden" id="last-generated" value="">
-                <p class="fs-4">Redbeard's ATIS Generator</p>
-                <p class="small">A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in
+                <h2 class="fw-bold">Redbeard's ATIS Generator</h2>
+                <p class="fs-6">A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in
                     text and spoken formats.</p>
-                <p class="small fw-bold">Other Tools:</p>
-                <p class="small">
-                    <a href="#" id="squawk-generator">Squawk Code Generator</a> |
-                    <a href="#">PDC Generator</a>
-                </p>
+                <div class="my-3">
+                    <a href="#" class="btn btn-primary me-2" id="squawk-generator">
+                        <i class="fas fa-random"></i> Squawk Code Generator</a>
+                    {{-- <a href="#" class="btn btn-primary">PDC Generator</a> --}}
+                </div>
                 <div class="row">
                     <div class="col">
                         <label for="icao" class="form-label">1. icao</label>
@@ -159,7 +159,6 @@
 @stop
 
 @section('footer')
-
     <footer class="bg-light py-4 mt-auto">
         <div class="container">
             <div class="row">
@@ -181,7 +180,4 @@
             </div>
         </div>
     </footer>
-
-
-
 @endsection
