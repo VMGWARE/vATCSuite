@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new CleanUpExpiredATISAudioFiles)->withoutOverlapping();
+        $schedule->job(new CleanUpExpiredATISAudioFiles)
+            ->everyTenMinutes()
+            ->withoutOverlapping();
     }
 
     /**
