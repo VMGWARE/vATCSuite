@@ -19,7 +19,6 @@ use App\OpenApi\Responses\TTS\GetTextToSpeech\SuccessResponse as GetTextToSpeech
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\ErrorHandler\Debug;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -89,7 +88,6 @@ class TextToSpeechController extends Controller
      *
      * Generates a mp3 text-to-speech file for an airport and returns a link to it.
      *
-     * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
      * @return JsonResponse
      */
@@ -245,7 +243,6 @@ class TextToSpeechController extends Controller
      *
      * Deletes a mp3 text-to-speech file for an airport.
      *
-     * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
      * @return JsonResponse
      */
@@ -298,7 +295,7 @@ class TextToSpeechController extends Controller
         }
 
         // Delete the file from the server
-        Storage::disk('local')->delete("public/atis/$id/$atis_file->file_name");
+        Storage::delete('public/atis/' . $id . '/' . $atis_file->file_name);
 
         // Delete the database entry
         $atis_file->delete();
