@@ -20,11 +20,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
 # Install dependencies
-COPY composer.lock composer.json /var/www/
+COPY src/composer.lock src/composer.json /var/www/
 RUN composer install --no-dev --no-scripts --no-progress --prefer-dist
 
 # Copy existing application directory contents
-COPY . /var/www
+COPY src/ /var/www
 
 # Generate app encryption key
 RUN php artisan key:generate
