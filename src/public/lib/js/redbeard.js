@@ -82,6 +82,17 @@ $(document).ready(function () {
         t.preventDefault();
         $(".loading").show();
         icao = $("#icao").val();
+
+        // If icao is empty
+        if (icao == "") {
+            $("#runway-output").html(
+                ErrorModal("ICAO cannot be empty.", "runway-modal")
+            );
+            $("#runway-modal").modal("show");
+            $(".loading").hide();
+            return;
+        }
+
         $.get(`/api/v1/airports/${icao}/runways`, function (t) {
             if (t.status == "error" || t.code != 200) {
                 $("#runway-output").html(ErrorModal(t.message, "runway-modal"));
