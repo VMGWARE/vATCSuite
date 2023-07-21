@@ -31,8 +31,11 @@ class CleanUpExpiredATISAudioFiles implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::info('Cleaning up expired ATIS audio files...');
+
         // Get all expired ATIS audio files
         $expiredATISAudioFiles = ATISAudioFile::where('expires_at', '<', now())->get();
+        Log::info('Found ' . count($expiredATISAudioFiles) . ' expired ATIS audio files.');
 
         // Delete all expired ATIS audio files
         foreach ($expiredATISAudioFiles as $expiredATISAudioFile) {
@@ -41,6 +44,8 @@ class CleanUpExpiredATISAudioFiles implements ShouldQueue
             Storage::delete('public/atis/' . $id . '/' . $name);
             $expiredATISAudioFile->delete();
         }
+
+        Log::info('Finished cleaning up expired ATIS audio files.');
     }
 
     /**
