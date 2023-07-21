@@ -44,5 +44,4 @@ pipeline:
     when:
       event: pull_request
 
-branches: [main, release/*]
 ignore_paths: [README.md, LICENSE, .github, .gitignore]
