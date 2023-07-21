@@ -4,7 +4,7 @@ variables:
 
 pipeline:
   - name: Generate version file
-    image: alpine
+    image: alpine/git
     commands:
       - cd ./src
       - git describe --always --tags --dirty > version
