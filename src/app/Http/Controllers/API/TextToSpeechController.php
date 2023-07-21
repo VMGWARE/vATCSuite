@@ -6,12 +6,16 @@ use App\Custom\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\ATISAudioFile;
 use App\OpenApi\Parameters\GetAirportParameters;
+use App\OpenApi\Parameters\GetTextToSpeechParameters;
 use App\OpenApi\RequestBodies\TTS\GenerateRequestBody;
+use App\OpenApi\RequestBodies\TTS\GetTextToSpeechRequestBody;
 use App\OpenApi\Responses\TTS\ErrorGeneratingResponse;
 use App\OpenApi\Responses\TTS\ErrorRequestConflictResponse;
 use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
 use App\OpenApi\Responses\TTS\ErrorWithVoiceAPIResponse;
 use App\OpenApi\Responses\TTS\SuccessResponse;
+use App\OpenApi\Responses\TTS\GetTextToSpeech\ErrorGetTextToSpeechResponse;
+use App\OpenApi\Responses\TTS\GetTextToSpeech\SuccessResponse as GetTextToSpeechSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -25,15 +29,58 @@ class TextToSpeechController extends Controller
      *
      * Gets a link to a mp3 text-to-speech file for an airport and returns it in a JSON response.
      *
-     * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
-    public function index(string $icao, Request $request): void
+    #[OpenApi\Parameters(factory: GetTextToSpeechParameters::class)]
+    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: ErrorGetTextToSpeechResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GetTextToSpeechSuccessResponse::class, statusCode: 200)]
+    public function index(Request $request): JsonResponse
     {
-        // TODO: Get mp3 atis file and return link and id.
+        // Get the request parameters
+        $id = $request->id;
+        $icao = $request->icao;
+
+        // Validate the request
+        if (
+            !isset($icao) ||
+            !Helpers::validateIcao($icao)
+        ) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid ICAO code.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        // Get the ATIS audio file
+        $atis_file = ATISAudioFile::where('icao', $icao)->where('id', $id)->first();
+
+        // Check if the ATIS audio file exists
+        if ($atis_file == null || !$atis_file->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ATIS audio file not found.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        // Return the response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ATIS audio file found.',
+            'code' => 200,
+            'data' => [
+                'id' => $atis_file->id,
+                'name' => $atis_file->file_name,
+                'url' => $atis_file->url,
+                'expires_at' => $atis_file->expires_at,
+            ]
+        ]);
     }
 
     /**
@@ -41,7 +88,6 @@ class TextToSpeechController extends Controller
      *
      * Generates a mp3 text-to-speech file for an airport and returns a link to it.
      *
-     * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
      * @return JsonResponse
      */
@@ -53,8 +99,13 @@ class TextToSpeechController extends Controller
     #[OpenApi\Response(factory: ErrorWithVoiceAPIResponse::class, statusCode: 500)]
     #[OpenApi\Response(factory: ErrorGeneratingResponse::class, statusCode: 422)]
     #[OpenApi\Response(factory: SuccessResponse::class, statusCode: 200)]
-    public function generate(string $icao, Request $request): JsonResponse
+    public function generate(Request $request): JsonResponse
     {
+        // Get the request parameters
+        $icao = $request->icao;
+        $atis = $request->atis;
+        $ident = $request->ident;
+
         // Validate the request
         if (!Helpers::validateIcao($icao)) {
             return response()->json([
@@ -64,9 +115,6 @@ class TextToSpeechController extends Controller
                 'data' => null
             ]);
         }
-
-        $atis = $request->atis;
-        $ident = $request->ident;
 
         // Check if the request has the required parameters, not using request()->validate() for now.
         if (!isset($atis) || !isset($ident) || !isset($icao)) {
@@ -195,14 +243,69 @@ class TextToSpeechController extends Controller
      *
      * Deletes a mp3 text-to-speech file for an airport.
      *
-     * @param string $icao The ICAO code of the airport to generate the TTS for.
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
-    public function delete(string $icao, Request $request): void
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\TTS\DeleteParameters::class)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorMissingIdResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\ErrorPasswordProtectedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\Delete\SuccessResponse::class, statusCode: 200)]
+    public function delete(Request $request): JsonResponse
     {
-        // TODO: Delete mp3 atis file.
+        // Get the request parameters
+        $id = isset($request->id) ? $request->id : null;
+        $password = isset($request->password) ? $request->password : null;
+
+        // Validate the request
+        if (!isset($id)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must provide an ATIS ID.',
+                'code' => 400,
+                'data' => null
+            ]);
+        }
+
+        // Check if the ATIS audio file exists
+        $atis_file = ATISAudioFile::where('id', $id)->first();
+
+        // Check if the ATIS audio file exists
+        if ($atis_file == null || !$atis_file->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ATIS audio file not found.',
+                'code' => 404,
+                'data' => null
+            ]);
+        }
+
+        // Check if the file requires a password to delete
+        if ($atis_file->password != null) {
+            // Check if the password is correct
+            if (!isset($password) || $password != $atis_file->password) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Incorrect password.',
+                    'code' => 401,
+                    'data' => null
+                ]);
+            }
+        }
+
+        // Delete the file from the server
+        Storage::delete('public/atis/' . $id . '/' . $atis_file->file_name);
+
+        // Delete the database entry
+        $atis_file->delete();
+
+        // Return the response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ATIS audio file deleted successfully.',
+            'code' => 200,
+            'data' => null
+        ]);
     }
 }

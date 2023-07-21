@@ -34,14 +34,17 @@ Route::prefix('v1')->group(function () {
 
         // Get ATIS
         Route::get('{icao}/metar', [AirportController::class, 'metar'])->name('api.airport.metar');
+    });
 
+    // Text to Speech
+    Route::prefix('tts')->group(function () {
         // Get atis audio file
-        Route::get('{icao}/tts', [TextToSpeechController::class, 'index']);
+        Route::get('/', [TextToSpeechController::class, 'index']);
 
         // Generate atis audio file
-        Route::post('{icao}/tts', [TextToSpeechController::class, 'generate']);
+        Route::post('/', [TextToSpeechController::class, 'generate']);
 
         // Delete atis audio file
-        Route::delete('{icao}/tts', [TextToSpeechController::class, 'delete']);
+        Route::delete('/', [TextToSpeechController::class, 'delete']);
     });
 });
