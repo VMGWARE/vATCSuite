@@ -1,39 +1,53 @@
-body{
-    /*background: rgb(38, 77, 128)!important;*/
+body {
     background: rgb(40, 75, 99);
-    font-size:0.9em;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
 }
-.form-label{
-    font-weight:700;
+
+.form-label {
+    font-weight: 700;
     text-transform: uppercase;
 }
+
 .form-control,
-.form-select{
-    color: rgb(38, 77, 128);
-    text-transform:uppercase;
+.form-select {
+    color: #26507f;
+    text-transform: uppercase;
     outline: none;
-    font-size:0.9em;
+    font-size: 1em;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-.form-holder{
+
+.form-holder {
     background: rgb(217, 217, 217);
 }
-.btn-primary{
-    background:rgb(60, 110, 113);
-    color: rgb(255, 255, 255);
-    border:0;
-    font-size:0.9em;
+
+.btn-primary {
+    background: #3c6e71;
+    color: #fff;
+    border: 0;
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.hide{
-    display:none;
+.btn-primary:hover {
+    background: #2a5255;
 }
 
-.loading{
-    position:fixed;
-    top:0;
-    right:0;
-    bottom:0;
-    left:0;
-    background: rgba(0,0,0,0.5);
-    z-index:9999;
+.hide {
+    display: none;
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
 }
