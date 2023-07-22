@@ -26,6 +26,9 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
     # Link public storage
     ${ARTISAN} storage:link
+
+    # Run migrations
+    ${ARTISAN} migrate --force
 fi
 
 exec "$@"
