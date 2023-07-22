@@ -171,7 +171,7 @@
                     <p class="text-muted">
                         <i class="fas fa-code-branch"></i>
                         Version:
-                        <span>
+                        <span class="fw-bold">
                             {{ \Tremby\LaravelGitVersion\GitVersionHelper::getVersion() }}
                         </span>
                     </p>
