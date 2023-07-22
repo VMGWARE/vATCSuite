@@ -6,7 +6,7 @@
             <div class="spinner-border text-light" role="status"></div>
         </div>
     </div>
-    <div class="container d-flex justify-content-center align-items-center py-3 vh-100">
+    <div class="container d-flex justify-content-center align-items-center py-3">
         <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg m-4">
             <form id="atis-input" method="post" class="p-4">
                 <input type="hidden" id="last-generated" value="">
@@ -163,18 +163,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-md text-center text-md-left">
-                    <!-- Adjusted class: text-md-right to text-md-left -->
-                    <p class="text-muted">
-                        <i class="fab fa-github"></i> Powered by <a href="https://github.com/RedbeardTFL/ATIS_GENERATOR"
-                            target="_blank">Redbeard's ATIS
-                            Generator</a>
-                    </p>
+                    <p class="text-muted"> <i class="fas fa-plane"></i> Powered by <a
+                            href="https://github.com/RedbeardTFL/ATIS_GENERATOR" target="_blank"
+                            style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">Redbeard's ATIS Generator</a> </p>
                 </div>
                 <div class="col-md text-center text-md-right">
-                    <!-- Adjusted class: text-md-right to text-md-left -->
                     <p class="text-muted">
-                        <i class="fas fa-code-branch"></i> Version:
-                        {{ \Tremby\LaravelGitVersion\GitVersionHelper::getVersion() }}
+                        <i class="fas fa-code-branch"></i>
+                        Version:
+                        <span class="fw-bold">
+                            {{ \Tremby\LaravelGitVersion\GitVersionHelper::getVersion() }}
+                        </span>
                     </p>
                 </div>
             </div>
