@@ -77,8 +77,7 @@
                 <div class="mt-3">
                     <label for="remarks1" class="form-label">5. Remarks (optional but encouraged)</label>
                     <textarea class="form-control" id="remarks1" name="remarks1"></textarea>
-                    <button type="button" role="button" class="btn btn-primary mt-1 shadow" data-bs-toggle="modal"
-                        data-bs-target="#remarks-modal">Show Remark Templates</button>
+
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
                     <button type="submit" role="submit" class="btn btn-primary w-100">Generate ATIS</button>
