@@ -201,7 +201,7 @@ class AirportController extends Controller
         }
 
         // Get the wind data from the METAR
-        if($request->output-type == "atis"){
+        if ($request['output-type'] == 'atis') {
             if (!isset($request->landing_runways) || !isset($request->departing_runways)) {
                 return response()->json([
                     'status' => 'error',
@@ -212,14 +212,9 @@ class AirportController extends Controller
             }
         }
 
-        // If the runways are not an array, return an error
-        if (!is_array($request->landing_runways) || !is_array($request->departing_runways)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Runways must be an array.',
-                'code' => 400,
-                'data' => null
-            ]);
+        // Override the runway if requested
+        if ($request['output-type'] == 'awos') {
+            $request['override_runway'] = true;
         }
 
         // Validate ATIS identifier

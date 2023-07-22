@@ -757,7 +757,7 @@ class AtisGenerator
      */
     public function parse_atis(mixed $speak)
     {
-        if($output_type == "atis"){
+        if($this->output_type == "atis"){
             $metar = $this->metar;
             $this->station_info($speak);
             while ($part = current($metar)) {
@@ -778,7 +778,7 @@ class AtisGenerator
             $this->remarks2($this->remarks2);
             $this->ident_end($speak);
         }
-        elseif($output_type == "awos") {
+        elseif($this->output_type == "awos") {
             $metar = $this->metar;
             $this->station_info($speak);
             while ($part = current($metar)) {
