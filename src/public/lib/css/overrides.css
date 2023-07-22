@@ -1,7 +1,10 @@
 body {
+    min-height: 100vh;
     background: rgb(40, 75, 99);
     font-size: 16px;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-label {
@@ -50,4 +53,16 @@ body {
     left: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
 }
