@@ -5,17 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Custom\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\ATISAudioFile;
-use App\OpenApi\Parameters\GetAirportParameters;
-use App\OpenApi\Parameters\GetTextToSpeechParameters;
-use App\OpenApi\RequestBodies\TTS\GenerateRequestBody;
-use App\OpenApi\RequestBodies\TTS\GetTextToSpeechRequestBody;
-use App\OpenApi\Responses\TTS\ErrorGeneratingResponse;
-use App\OpenApi\Responses\TTS\ErrorRequestConflictResponse;
-use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
-use App\OpenApi\Responses\TTS\ErrorWithVoiceAPIResponse;
-use App\OpenApi\Responses\TTS\SuccessResponse;
-use App\OpenApi\Responses\TTS\GetTextToSpeech\ErrorGetTextToSpeechResponse;
-use App\OpenApi\Responses\TTS\GetTextToSpeech\SuccessResponse as GetTextToSpeechSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,10 +22,10 @@ class TextToSpeechController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: GetTextToSpeechParameters::class)]
-    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
-    #[OpenApi\Response(factory: ErrorGetTextToSpeechResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GetTextToSpeechSuccessResponse::class, statusCode: 200)]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetTextToSpeechParameters::class)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\GetTextToSpeech\ErrorGetTextToSpeechResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\GetTextToSpeech\SuccessResponse::class, statusCode: 200)]
     public function index(Request $request): JsonResponse
     {
         // Get the request parameters
@@ -92,13 +81,13 @@ class TextToSpeechController extends Controller
      * @return JsonResponse
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: GetAirportParameters::class)]
-    #[OpenApi\RequestBody(factory: GenerateRequestBody::class)]
-    #[OpenApi\Response(factory: ErrorRequestConflictResponse::class, statusCode: 409)]
-    #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
-    #[OpenApi\Response(factory: ErrorWithVoiceAPIResponse::class, statusCode: 500)]
-    #[OpenApi\Response(factory: ErrorGeneratingResponse::class, statusCode: 422)]
-    #[OpenApi\Response(factory: SuccessResponse::class, statusCode: 200)]
+    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
+    #[OpenApi\RequestBody(factory: \App\OpenApi\RequestBodies\TTS\GenerateRequestBody::class)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorRequestConflictResponse::class, statusCode: 409)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorWithVoiceAPIResponse::class, statusCode: 500)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorGeneratingResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\SuccessResponse::class, statusCode: 200)]
     public function generate(Request $request): JsonResponse
     {
         // Get the request parameters
