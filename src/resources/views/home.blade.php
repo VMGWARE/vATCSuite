@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-YET ANOTHER TEST
     <div class="loading hide">
         <div class="position-absolute top-50 start-50">
             <div class="spinner-border text-light" role="status"></div>
