@@ -56,22 +56,27 @@
 2. Run the container with your database credentials
 
     ```sh
-    docker run -d -p 80:80 insidiousfiddler/redbeards-atis-generator -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
+    docker run -d -p 8000:80 insidiousfiddler/redbeards-atis-generator -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
     ```
 
-3. Run artisan commands to generate a key and migrate the database
-
-    ```sh
-    docker exec -it <container_id> php artisan key:generate & php artisan migrate --seed
-    ```
-
-4. Visit the site at [http://<your_server_ip>/](http://<your_server_ip>/)
+3. Visit the site at [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ## Requirements
 
 1. PHP: version 8.1 or greater
 2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
 3. cURL: is used to fetch weather info, so this function must be enabled.
+4. Composer: is used to install dependencies
+
+## Roadmap
+
+### Upcoming Features and Improvements
+
+- [ ] Upgrades and Bug Fixes
+- [ ] Added testing in the CI pipeline
+- [ ] Add AWOS
+- [ ] Upgrade UI to be more modern
+- [ ] Added different TTS engine APIs, might try support for AI Generated voices
 
 ## Contributing
 
