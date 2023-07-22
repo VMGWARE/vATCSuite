@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
 
         // Check if the input element is not of type "checkbox".
-        if (this.type !== "checkbox") {
+        if (this.type !== "checkbox" && this.type !== "radio") {
             // If it's not a checkbox, set the cursor position to the stored value.
             // This ensures that the cursor position remains unchanged even after the replacement above.
             this.setSelectionRange(t, t);

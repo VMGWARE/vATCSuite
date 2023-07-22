@@ -107,9 +107,9 @@
                 <div class="modal-body text-center">
                     <p>Click the button below to generate a random IFR squawk code.</p>
                     <p id="squawk-output" class="fs-3"></p>
-                    <p>
-                        <button type="button" class="btn btn-primary" id="generate-squawk">Generate Squawk</button>
-                        <button type="button" class="btn btn-primary hide" id="copy-squawk">Copy To
+                    <p class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary col m-1" id="generate-squawk">Generate Squawk</button>
+                        <button type="button" class="btn btn-primary hide col m-1" id="copy-squawk">Copy To
                             Clipboard</button>
                     </p>
                 </div>

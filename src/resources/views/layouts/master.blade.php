@@ -18,10 +18,11 @@
 
 <body>
     {{-- Content --}}
-    <main>
+    <div class="content">
         @yield('content')
-    </main>
+    </div>
 
+    {{-- Footer --}}
     @yield('footer')
 
     {{-- Scripts --}}
