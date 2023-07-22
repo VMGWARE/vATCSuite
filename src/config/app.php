@@ -17,6 +17,17 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Voice RSS API Key
+    |--------------------------------------------------------------------------
+    |
+    | This value is the API key for the Voice RSS API. This value is used when
+    | the framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    |
+    */
     'voice-rss-key' => env('VOICE_RSS_API_KEY', 'e1f2f3f4f5f6f7f8'),
 
     /*
