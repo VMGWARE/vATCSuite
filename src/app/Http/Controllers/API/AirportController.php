@@ -214,7 +214,7 @@ class AirportController extends Controller
 
         // Override the runway if requested
         if ($request['output-type'] == 'awos') {
-            $request['override_runway'] = true;
+            $request['override_runways'] = true;
         }
 
         // Validate ATIS identifier
@@ -227,7 +227,7 @@ class AirportController extends Controller
             ]);
         }
 
-        // Define the ATIS generator
+        // Define the ATIS generator for spoken and text ATIS
         $spoken_atis = new AtisGenerator(
             $icao,
             ident: $request->ident,
@@ -235,7 +235,8 @@ class AirportController extends Controller
             departing_runways: $request->departing_runways,
             remarks1: $request->remarks1,
             remarks2: $request->remarks2,
-            override_runways: $request->override_runway
+            override_runways: $request->override_runways,
+            output_type: $request['output-type']
         );
         $text_atis = new AtisGenerator(
             $icao,
@@ -244,7 +245,8 @@ class AirportController extends Controller
             departing_runways: $request->departing_runways,
             remarks1: $request->remarks1,
             remarks2: $request->remarks2,
-            override_runways: $request->override_runway
+            override_runways: $request->override_runways,
+            output_type: $request['output-type']
         );
 
         // Generate the ATIS
