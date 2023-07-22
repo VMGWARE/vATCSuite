@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new CleanUpExpiredATISAudioFiles, 'default', 'database')
-            ->everyTenMinutes()
+            ->hourly()
             ->withoutOverlapping()
             ->timezone("America/New_York")
             ->appendOutputTo("scheduler-output.log");
