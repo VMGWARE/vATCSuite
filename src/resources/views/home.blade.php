@@ -21,10 +21,10 @@
                 <div class="row" id="output_type">
                     <div><label class="form-label">Output Type</label></div>
                     <div class="col-auto">
-                        <input type="radio" name="output-type" value="atis" checked="checked"> ATIS
+                        <input type="radio" name="output-type" id="output-type" value="atis" checked="checked"> ATIS
                     </div>
                     <div class="col-auto">
-                        <input type="radio" name="output-type" value="awos"> AWOS
+                        <input type="radio" name="output-type" id="output-type" value="awos"> AWOS
                     </div>
                 </div>
                 <div class="row my-3">

@@ -201,13 +201,15 @@ class AirportController extends Controller
         }
 
         // Get the wind data from the METAR
-        if (!isset($request->landing_runways) || !isset($request->departing_runways)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You must select at least one landing and departing runway to generate your ATIS.',
-                'code' => 400,
-                'data' => null
-            ]);
+        if($request->output-type == "atis"){
+            if (!isset($request->landing_runways) || !isset($request->departing_runways)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You must select at least one landing and departing runway to generate your ATIS.',
+                    'code' => 400,
+                    'data' => null
+                ]);
+            }
         }
 
         // If the runways are not an array, return an error

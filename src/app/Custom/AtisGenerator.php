@@ -17,6 +17,7 @@ class AtisGenerator
     private bool $ceiling = true;
     private array $parts = array();
     private mixed $override_runways;
+    private mixed $output_type;
     private array $weather_codes  = array(
         "VA"        => "volcanic ash",
         "HZ"        => "haze",
@@ -71,7 +72,7 @@ class AtisGenerator
     private array $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
 
 
-    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null)
+    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null, $output_type = null)
     {
         $this->icao                 = strtoupper($icao);
         $this->ident                = $ident;
@@ -81,6 +82,7 @@ class AtisGenerator
         $this->remarks2             = $remarks2;
         $this->override_runways     = $override_runways;
         $this->metar    = explode(" ", Helpers::fetch_metar($this->icao));
+        $this->output_type          = $output_type;
     }
 
     /**
@@ -755,25 +757,45 @@ class AtisGenerator
      */
     public function parse_atis(mixed $speak)
     {
-        $metar = $this->metar;
-        $this->station_info($speak);
-        while ($part = current($metar)) {
-            $this->zulu_time($part, $speak);
-            $this->winds_full($part, $speak);
-            $this->visibility($part, $speak);
-            $this->weather($part);
-            $this->vertical_visibility($part, $speak);
-            $this->sky_cover($part, $speak);
-            $this->temperature_dewpoint($part, $speak);
-            $this->pressure($part, $speak);
-            next($metar);
-        }
+        if($output_type == "atis"){
+            $metar = $this->metar;
+            $this->station_info($speak);
+            while ($part = current($metar)) {
+                $this->zulu_time($part, $speak);
+                $this->winds_full($part, $speak);
+                $this->visibility($part, $speak);
+                $this->weather($part);
+                $this->vertical_visibility($part, $speak);
+                $this->sky_cover($part, $speak);
+                $this->temperature_dewpoint($part, $speak);
+                $this->pressure($part, $speak);
+                next($metar);
+            }
 
-        $this->approaches(array("ils", "visual"));
-        $this->runways($this->landing_runways, $this->departing_runways, $speak);
-        $this->remarks1($this->remarks1);
-        $this->remarks2($this->remarks2);
-        $this->ident_end($speak);
+            $this->approaches(array("ils", "visual"));
+            $this->runways($this->landing_runways, $this->departing_runways, $speak);
+            $this->remarks1($this->remarks1);
+            $this->remarks2($this->remarks2);
+            $this->ident_end($speak);
+        }
+        elseif($output_type == "awos") {
+            $metar = $this->metar;
+            $this->station_info($speak);
+            while ($part = current($metar)) {
+                $this->zulu_time($part, $speak);
+                $this->winds_full($part, $speak);
+                $this->visibility($part, $speak);
+                $this->weather($part);
+                $this->vertical_visibility($part, $speak);
+                $this->sky_cover($part, $speak);
+                $this->temperature_dewpoint($part, $speak);
+                $this->pressure($part, $speak);
+                next($metar);
+            }
+        }
+        else {
+            return false;
+        }
 
         $output = array();
         while ($part = current($this->parts)) {
