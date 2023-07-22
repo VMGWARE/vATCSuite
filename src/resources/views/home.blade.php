@@ -18,18 +18,27 @@
                         <i class="fas fa-random"></i> Squawk Code Generator</a>
                     {{-- <a href="#" class="btn btn-primary">PDC Generator</a> --}}
                 </div>
-                <div class="row">
+                <div class="row" id="output_type">
+                    <div><label class="form-label">Output Type</label></div>
+                    <div class="col-auto">
+                        <input type="radio" name="output-type" value="atis" checked="checked"> ATIS
+                    </div>
+                    <div class="col-auto">
+                        <input type="radio" name="output-type" value="awos"> AWOS
+                    </div>
+                </div>
+                <div class="row my-3">
                     <div class="col">
                         <label for="icao" class="form-label">1. icao</label>
                         <input type="text" maxlength="4" class="form-control" id="icao" name="icao" required>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto awos-hide">
                         <div><label for="list-runways" class="form-label">2. Get Runways</label></div>
                         <button type="button" role="button" class="btn btn-primary" id="list-runways">
                             List Runways
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col awos-hide">
                         <label for="ident" class="form-label">3. ident</label>
                         <select class="form-select" name="ident" id="ident" required>
                             <option value="a">A</option>
@@ -61,7 +70,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3 awos-hide">
                     <div>
                         <label class="form-label">4. Select Approaches (optional)</label>
                     </div>
@@ -74,7 +83,7 @@
                         <label class="form-check-label" for="visual">Visual Approaches</label>
                     </div>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 awos-hide">
                     <label for="remarks1" class="form-label">5. Remarks (optional but encouraged)</label>
                     <textarea class="form-control" id="remarks1" name="remarks1"></textarea>
 

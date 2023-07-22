@@ -296,3 +296,12 @@ $(document).ready(function () {
         copy("#squawk-output"); // Call the 'copy' function to copy the content of the element with id "squawk-output"
     });
 });
+
+$('input[type=radio][name=output-type]').change(function(){
+    if(this.value == 'atis'){
+        $('.awos-hide').show();
+    }
+    if(this.value == 'awos'){
+        $('.awos-hide').hide();
+    }
+})
