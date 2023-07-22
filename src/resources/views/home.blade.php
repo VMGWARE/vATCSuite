@@ -82,52 +82,7 @@
                 <div class="mt-3 d-flex justify-content-center">
                     <button type="submit" role="submit" class="btn btn-primary w-100">Generate ATIS</button>
                 </div>
-                <div class="modal fade" id="remarks-modal" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Premade Remarks</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="Session on TFL / Virgin XL JoinFS Server">
-                                    <label class="form-check-label">Session on TFL / Virgin XL JoinFS Server</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="Session on TFL FSX Multiplayer Server">
-                                    <label class="form-check-label">Session on TFL FSX Multiplayer Server</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="field is ifr only">
-                                    <label class="form-check-label">Field is IFR Only</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no emergencies">
-                                    <label class="form-check-label">No Emergencies</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no jet aircraft allowed for traffic patterns">
-                                    <label class="form-check-label">No Jet Aircraft Allowed For Traffic
-                                        Patterns</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no military operations in airspace">
-                                    <label class="form-check-label">No Military Operations In Airspace</label>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
                 <div id="runway-output"></div>
             </form>
             <div id="atis-output"></div>
