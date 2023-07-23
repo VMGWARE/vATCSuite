@@ -253,7 +253,7 @@ $(document).ready(function () {
 
                         // Show the download button and set its attributes based on the response data
                         $("#download-atis").attr("href", t.data.url);
-                        $("#download-atis").html("Download ATIS");
+                        $("#download-atis").html("Download Audio");
                         $("#download-atis").attr("download", t.data.name);
                     }
                 );
