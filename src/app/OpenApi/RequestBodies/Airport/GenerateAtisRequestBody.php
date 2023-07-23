@@ -6,6 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\RequestBodyFactory;
+
 class GenerateAtisRequestBody extends RequestBodyFactory
 {
     public function build(): RequestBody
@@ -29,6 +30,13 @@ class GenerateAtisRequestBody extends RequestBodyFactory
             Schema::object('departing_runways')
                 ->description('Array of departing runways.')
                 ->required(),
+            Schema::string('output-type')
+                ->description('The output type.')
+                ->example('atis')
+                ->required(),
+            Schema::boolean('override_runways')
+                ->description('Disable the requirement for a runway to be selected.')
+                ->example(false),
         );
 
         return RequestBody::create('GenerateAtis')

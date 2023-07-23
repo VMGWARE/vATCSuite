@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
 
         // Check if the input element is not of type "checkbox".
-        if (this.type !== "checkbox") {
+        if (this.type !== "checkbox" && this.type !== "radio") {
             // If it's not a checkbox, set the cursor position to the stored value.
             // This ensures that the cursor position remains unchanged even after the replacement above.
             this.setSelectionRange(t, t);
@@ -296,3 +296,12 @@ $(document).ready(function () {
         copy("#squawk-output"); // Call the 'copy' function to copy the content of the element with id "squawk-output"
     });
 });
+
+$('input[type=radio][name=output-type]').change(function(){
+    if(this.value == 'atis'){
+        $('.awos-hide').show();
+    }
+    if(this.value == 'awos'){
+        $('.awos-hide').hide();
+    }
+})

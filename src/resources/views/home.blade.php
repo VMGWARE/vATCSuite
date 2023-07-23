@@ -18,18 +18,27 @@
                         <i class="fas fa-random"></i> Squawk Code Generator</a>
                     {{-- <a href="#" class="btn btn-primary">PDC Generator</a> --}}
                 </div>
-                <div class="row">
+                <div class="row" id="output_type">
+                    <div><label class="form-label">Output Type</label></div>
+                    <div class="col-auto">
+                        <input type="radio" name="output-type" id="output-type" value="atis" checked="checked"> ATIS
+                    </div>
+                    <div class="col-auto">
+                        <input type="radio" name="output-type" id="output-type" value="awos"> AWOS
+                    </div>
+                </div>
+                <div class="row my-3">
                     <div class="col">
                         <label for="icao" class="form-label">1. icao</label>
                         <input type="text" maxlength="4" class="form-control" id="icao" name="icao" required>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto awos-hide">
                         <div><label for="list-runways" class="form-label">2. Get Runways</label></div>
                         <button type="button" role="button" class="btn btn-primary" id="list-runways">
                             List Runways
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col awos-hide">
                         <label for="ident" class="form-label">3. ident</label>
                         <select class="form-select" name="ident" id="ident" required>
                             <option value="a">A</option>
@@ -61,7 +70,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3 awos-hide">
                     <div>
                         <label class="form-label">4. Select Approaches (optional)</label>
                     </div>
@@ -74,61 +83,15 @@
                         <label class="form-check-label" for="visual">Visual Approaches</label>
                     </div>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 awos-hide">
                     <label for="remarks1" class="form-label">5. Remarks (optional but encouraged)</label>
                     <textarea class="form-control" id="remarks1" name="remarks1"></textarea>
-                    <button type="button" role="button" class="btn btn-primary mt-1 shadow" data-bs-toggle="modal"
-                        data-bs-target="#remarks-modal">Show Remark Templates</button>
+
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
                     <button type="submit" role="submit" class="btn btn-primary w-100">Generate ATIS</button>
                 </div>
-                <div class="modal fade" id="remarks-modal" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Premade Remarks</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="Session on TFL / Virgin XL JoinFS Server">
-                                    <label class="form-check-label">Session on TFL / Virgin XL JoinFS Server</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="Session on TFL FSX Multiplayer Server">
-                                    <label class="form-check-label">Session on TFL FSX Multiplayer Server</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="field is ifr only">
-                                    <label class="form-check-label">Field is IFR Only</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no emergencies">
-                                    <label class="form-check-label">No Emergencies</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no jet aircraft allowed for traffic patterns">
-                                    <label class="form-check-label">No Jet Aircraft Allowed For Traffic
-                                        Patterns</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" class="form-check-input" name="remarks2[]"
-                                        value="no military operations in airspace">
-                                    <label class="form-check-label">No Military Operations In Airspace</label>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
                 <div id="runway-output"></div>
             </form>
             <div id="atis-output"></div>
@@ -144,9 +107,9 @@
                 <div class="modal-body text-center">
                     <p>Click the button below to generate a random IFR squawk code.</p>
                     <p id="squawk-output" class="fs-3"></p>
-                    <p>
-                        <button type="button" class="btn btn-primary" id="generate-squawk">Generate Squawk</button>
-                        <button type="button" class="btn btn-primary hide" id="copy-squawk">Copy To
+                    <p class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary col m-1" id="generate-squawk">Generate Squawk</button>
+                        <button type="button" class="btn btn-primary hide col m-1" id="copy-squawk">Copy To
                             Clipboard</button>
                     </p>
                 </div>

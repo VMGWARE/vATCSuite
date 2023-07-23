@@ -11,9 +11,9 @@ return [
                 'description' => 'A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.',
                 'version' => config('app.version'),
                 'contact' => [
-                    'name' => 'Atis Support',
-                    'email' => 'atis@vahngomes.dev',
-                    'url' => 'https://atis.vahngomes.dev/',
+                    'name' => 'The ATIS Generator Team',
+                    'email' => 'hello@atisgenerator.com',
+                    'url' => 'https://atisgenerator.com/',
                 ],
                 'license' => [
                     'name' => 'CC BY-NC-SA 4.0',
@@ -23,8 +23,12 @@ return [
 
             "servers" => [
                 [
-                    "url" => "https://atis.vahngomes.dev",
+                    "url" => "https://atisgenerator.com",
                     "description" => "Production server"
+                ],
+                [
+                    "url" => "https://dev.atisgenerator.com",
+                    "description" => "Development server"
                 ],
                 [
                     "url" => "http://127.0.0.1:8000",
@@ -32,7 +36,7 @@ return [
                 ]
             ],
 
-            'host' => 'atis.vahngomes.dev',
+            'host' => 'atisgenerator.com',
             'basePath' => '/v1',
             "schemes" => ["https", "http"],
             "securityDefinitions" => [
