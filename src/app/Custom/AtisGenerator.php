@@ -155,9 +155,12 @@ class AtisGenerator
         if (isset($this->parts["atis_ident"])) {
             return false;
         }
-
-        $this->parts["atis_ident"] = " information " . $this->spoken($this->ident, false, $speak);
-
+        if($this->output_type == "awos"){
+            $this->parts["atis_ident"] = " automated weather observation";
+        }
+        else{
+            $this->parts["atis_ident"] = " information " . $this->spoken($this->ident, false, $speak);
+        }
         return true;
     }
 
@@ -797,7 +800,6 @@ class AtisGenerator
 
         $output = array();
         while ($part = current($this->parts)) {
-
             $output[] = preg_replace("@\s+@", " ", strtoupper(Helpers::merge_recursive($part)) . "... ");
             next($this->parts);
         }
