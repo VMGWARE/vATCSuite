@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 // Atis Generator
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 // API Documentation
 Route::get('/docs', function () {
     return view('redoc');
-});
+})->name('docs');

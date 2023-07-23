@@ -91,7 +91,7 @@
                 <div class="mt-3 d-flex justify-content-center">
                     <button type="submit" role="submit" class="btn btn-primary w-100">Generate ATIS</button>
                 </div>
-                
+
                 <div id="runway-output"></div>
             </form>
             <div id="atis-output"></div>
@@ -108,7 +108,8 @@
                     <p>Click the button below to generate a random IFR squawk code.</p>
                     <p id="squawk-output" class="fs-3"></p>
                     <p class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary col m-1" id="generate-squawk">Generate Squawk</button>
+                        <button type="button" class="btn btn-primary col m-1" id="generate-squawk">Generate
+                            Squawk</button>
                         <button type="button" class="btn btn-primary hide col m-1" id="copy-squawk">Copy To
                             Clipboard</button>
                     </p>
@@ -129,6 +130,14 @@
                     <p class="text-muted"> <i class="fas fa-plane"></i> Powered by <a
                             href="https://github.com/RedbeardTFL/ATIS_GENERATOR" target="_blank"
                             style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">Redbeard's ATIS Generator</a> </p>
+                </div>
+                <div class="col-md text-center">
+                    <p class="text-muted">
+                        <i class="fas fa-book"></i>
+                        <a href="{{ route('docs') }}" target="_blank"
+                            style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">API
+                            Documentation</a>
+                    </p>
                 </div>
                 <div class="col-md text-center text-md-right">
                     <p class="text-muted">

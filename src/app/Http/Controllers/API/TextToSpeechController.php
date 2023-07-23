@@ -200,7 +200,8 @@ class TextToSpeechController extends Controller
             }
 
             // Store the file url in the database, add the url to the response
-            $atis_file->url = $file_url;
+            $atis_file->url = url($file_url);
+            
             // Set the expiration date to 2 hours from now
             $atis_file->expires_at = now()->addHours(2);
             $atis_file->update();
@@ -213,7 +214,7 @@ class TextToSpeechController extends Controller
                 'data' => [
                     'id' => $file_id,
                     'name' => $name,
-                    'url' => $file_url,
+                    'url' => url($file_url),
                     'expires_at' => $atis_file->expires_at,
                 ]
             ]);
