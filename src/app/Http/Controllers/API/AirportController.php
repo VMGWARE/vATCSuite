@@ -257,7 +257,7 @@ class AirportController extends Controller
         if ($spoken == null || $text == null) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Could not generate ATIS.',
+                'message' => 'Could not generate ATIS/AWOS.',
                 'code' => 500,
                 'data' => null
             ]);
@@ -266,7 +266,7 @@ class AirportController extends Controller
         // Return the ATIS
         return response()->json([
             'status' => 'success',
-            'message' => 'ATIS generated successfully.',
+            'message' => 'ATIS/AWOS generated successfully.',
             'code' => 200,
             'data' => [
                 'spoken' => $spoken,

@@ -212,12 +212,12 @@ $(document).ready(function () {
                         </div>
                         <div class="modal-body text-center">
                             <p class="fs-3 text-success"><i class="fa-solid fa-circle-check"></i><br>Generation Success!</p>
-                            <p>Your input has been serialized, we've gotten the weather and it's all been run through the processor. It's parsed and your ATIS ready to go! Click on the buttons below to use it.</p>
+                            <p>Your input has been serialized, we've gotten the weather and it's all been run through the processor. It's parsed and your ATIS/AWOS is ready to go! Click on the buttons below to use it.</p>
                             <div id="atis1" class="hide">${t.data.text}</div>
                             <div id="atis2" class="hide">${t.data.spoken}</div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="copy-atis">Copy ATIS To Clipboard</button>
+                            <button type="button" class="btn btn-primary" id="copy-atis">Copy To Clipboard</button>
                             <a class="btn btn-primary" id="download-atis" download>Fetching Download Link <i class="fa-solid fa-spinner fa-spin"></i></a>
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -253,7 +253,7 @@ $(document).ready(function () {
 
                         // Show the download button and set its attributes based on the response data
                         $("#download-atis").attr("href", t.data.url);
-                        $("#download-atis").html("Download ATIS");
+                        $("#download-atis").html("Download ATIS/AWOS Audio");
                         $("#download-atis").attr("download", t.data.name);
                     }
                 );
