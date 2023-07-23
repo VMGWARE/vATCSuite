@@ -25,6 +25,7 @@
 # Ignore environment files
 .env
 .env.backup
+.env.testing
 .env.production
 
 # Ignore PHPUnit result cache
