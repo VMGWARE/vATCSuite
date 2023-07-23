@@ -12,7 +12,7 @@
 1. Clone the repo
 
     ```sh
-    git clone https://github.com/RedbeardTFL/ATIS_GENERATOR.git && cd ATIS_GENERATOR/src
+    git clone https://github.com/VMGWARE/vATCSuite.git && cd vATCSuite/src
     ```
 
 2. Install Composer dependencies
@@ -72,11 +72,11 @@
 
 ### Upcoming Features and Improvements
 
-- [ ] Upgrades and Bug Fixes
-- [ ] Added testing in the CI pipeline
-- [ ] Add AWOS
-- [ ] Upgrade UI to be more modern
-- [ ] Added different TTS engine APIs, might try support for AI Generated voices
+-   [ ] Upgrades and Bug Fixes
+-   [ ] Added testing in the CI pipeline
+-   [ ] Add AWOS
+-   [ ] Upgrade UI to be more modern
+-   [ ] Added different TTS engine APIs, might try support for AI Generated voices
 
 ## Contributing
 
