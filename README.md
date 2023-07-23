@@ -97,9 +97,7 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 
 ## Contributors
 
-<a href = "https://github.com/VMGWARE/vATCSuite/graphs/contributors">
-<img src = "https://contrib.rocks/image?repo=VMGWARE/vATCSuite"/>
-</a>
+[![Contributors](https://contrib.rocks/image?repo=VMGWARE/vATCSuite)](https://github.com/VMGWARE/vATCSuite/graphs/contributors)
 
 [contributors-shield]: https://img.shields.io/github/contributors/VMGWARE/vATCSuite.svg
 [contributors-url]: https://github.com/VMGWARE/vATCSuite/graphs/contributors
