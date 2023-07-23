@@ -50,13 +50,13 @@
 1. Pull the image
 
     ```sh
-    docker pull insidiousfiddler/redbeards-atis-generator
+    docker pull insidiousfiddler/vatcsuite
     ```
 
 2. Run the container with your database credentials
 
     ```sh
-    docker run -d -p 8000:80 insidiousfiddler/redbeards-atis-generator -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
+    docker run -d -p 8000:80 insidiousfiddler/vatcsuite -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
     ```
 
 3. Visit the site at [http://127.0.0.1:8000](http://127.0.0.1:8000)
