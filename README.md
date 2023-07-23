@@ -97,19 +97,19 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 
 ## Contributors
 
-<a href = "https://github.com/RedbeardTFL/ATIS_GENERATOR/graphs/contributors">
-<img src = "https://contrib.rocks/image?repo=RedbeardTFL/ATIS_GENERATOR"/>
+<a href = "https://github.com/VMGWARE/vATCSuite/graphs/contributors">
+<img src = "https://contrib.rocks/image?repo=VMGWARE/vATCSuite"/>
 </a>
 
-[contributors-shield]: https://img.shields.io/github/contributors/RedbeardTFL/ATIS_GENERATOR.svg
-[contributors-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/RedbeardTFL/ATIS_GENERATOR.svg
-[forks-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/network
-[issues-shield]: https://img.shields.io/github/issues/RedbeardTFL/ATIS_GENERATOR.svg
-[issues-url]: https://github.com/RedbeardTFL/ATIS_GENERATOR/issues
+[contributors-shield]: https://img.shields.io/github/contributors/VMGWARE/vATCSuite.svg
+[contributors-url]: https://github.com/VMGWARE/vATCSuite/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/VMGWARE/vATCSuite.svg
+[forks-url]: https://github.com/VMGWARE/vATCSuite/network
+[issues-shield]: https://img.shields.io/github/issues/VMGWARE/vATCSuite.svg
+[issues-url]: https://github.com/VMGWARE/vATCSuite/issues
 [license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/RedbeardTFL/ATIS_GENERATOR/status.svg
-[ci-url]: https://woodpecker.vahngomes.dev/RedbeardTFL/ATIS_GENERATOR
+[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/VMGWARE/vATCSuite/status.svg
+[ci-url]: https://woodpecker.vahngomes.dev/VMGWARE/vATCSuite
 [forge-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fdfb30462-772c-4427-afe7-bb17de5c40f2%3Fdate%3D1%26commit%3D1&style=plastic
 [forge-url]: https://forge.laravel.com/servers/699079/sites/2035675
