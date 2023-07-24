@@ -1,4 +1,4 @@
-# ATIS GENERATOR
+# vATC Suite
 
 [![License: CC BY-NC-SA 4.0][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
@@ -6,6 +6,8 @@
 [![Forks][forks-shield]][forks-url]
 [![Build Status][ci-shield]][ci-url]
 [![Laravel Forge Site Deployment Status][forge-shield]][forge-url]
+
+vATC Suite provides virtual air traffic controllers with tools to generate and deliver essential airport information. Easily create ATIS broadcasts, AWOS weather reports, and pre-departure clearances to enhance realism in online flying networks.
 
 ## Getting Started
 
@@ -67,16 +69,6 @@
 2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
 3. cURL: is used to fetch weather info, so this function must be enabled.
 4. Composer: is used to install dependencies
-
-## Roadmap
-
-### Upcoming Features and Improvements
-
--   [ ] Upgrades and Bug Fixes
--   [ ] Added testing in the CI pipeline
--   [ ] Add AWOS
--   [ ] Upgrade UI to be more modern
--   [ ] Added different TTS engine APIs, might try support for AI Generated voices
 
 ## Contributing
 
