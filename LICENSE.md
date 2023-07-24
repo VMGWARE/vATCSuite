@@ -1,10 +1,10 @@
-# RedbeardTFL ATIS Generator License Agreement
+# vATC Suite License Agreement
 
-By using the RedbeardTFL ATIS Generator code (the "Code"), you are agreeing to be bound by the terms and conditions of this license agreement ("Agreement"). If you do not agree to the terms and conditions of this Agreement, do not use the Code.
+By using the vATC Suite code (the "Code"), you are agreeing to be bound by the terms and conditions of this license agreement ("Agreement"). If you do not agree to the terms and conditions of this Agreement, do not use the Code.
 
 ## License Grant
 
-RedbeardTFL grants you a non-exclusive, non-transferable, limited license to use the Code for personal or non-commercial purposes only. You may not use the Code for commercial purposes or attempt to sell or market it.
+VMG Ware grants you a non-exclusive, non-transferable, limited license to use the Code for personal or non-commercial purposes only. You may not use the Code for commercial purposes or attempt to sell or market it.
 
 ## Restrictions
 
@@ -22,11 +22,11 @@ This Agreement will terminate automatically if you fail to comply with its terms
 
 ## Disclaimer of Warranty
 
-The Code is provided "as is" and without any warranties or conditions, whether express or implied. RedbeardTFL does not warrant that the Code will meet your requirements or that it will be error-free.
+The Code is provided "as is" and without any warranties or conditions, whether express or implied. VMG Ware does not warrant that the Code will meet your requirements or that it will be error-free.
 
 ## Limitation of Liability
 
-RedbeardTFL will not be liable for any damages, including but not limited to indirect, incidental, special, or consequential damages, arising out of the use or inability to use the Code.
+VMG Ware will not be liable for any damages, including but not limited to indirect, incidental, special, or consequential damages, arising out of the use or inability to use the Code.
 
 ## Governing Law
 
@@ -34,15 +34,15 @@ This Agreement will be governed by and construed in accordance with the laws of 
 
 ## Entire Agreement
 
-This Agreement constitutes the entire agreement between you and RedbeardTFL and supersedes all prior or contemporaneous communications and proposals, whether oral or written.
+This Agreement constitutes the entire agreement between you and VMG Ware and supersedes all prior or contemporaneous communications and proposals, whether oral or written.
 
 ## Waiver
 
-The failure of RedbeardTFL to exercise or enforce any right or provision of this Agreement will not constitute a waiver of such right or provision.
+The failure of VMG Ware to exercise or enforce any right or provision of this Agreement will not constitute a waiver of such right or provision.
 
-By using the RedbeardTFL ATIS Generator code, you acknowledge that you have read this
+By using the vATC Suite code, you acknowledge that you have read this
 Agreement, understand it, and agree to be bound by its terms and conditions.
 
 ## Contact
 
-If you have any questions about this Agreement, please contact Insidious Fiddler at [atis-generator@vahngomes.dev](mailto:atis-generator@vahngomes.dev)
+If you have any questions about this Agreement, please contact the vATC Suite team at [hello@atisgenerator.com](hello@atisgenerator.com)

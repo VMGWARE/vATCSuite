@@ -1,4 +1,4 @@
-# ATIS GENERATOR
+# vATC Suite
 
 [![License: CC BY-NC-SA 4.0][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
@@ -6,6 +6,8 @@
 [![Forks][forks-shield]][forks-url]
 [![Build Status][ci-shield]][ci-url]
 [![Laravel Forge Site Deployment Status][forge-shield]][forge-url]
+
+vATC Suite provides virtual air traffic controllers with tools to generate and deliver essential airport information. Easily create ATIS broadcasts, AWOS weather reports, and pre-departure clearances to enhance realism in online flying networks.
 
 ## Getting Started
 

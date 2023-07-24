@@ -1,7 +1,7 @@
 {
-    "name": "redbeardtfl/atis-generator",
+    "name": "vmgware/vatcsuite",
     "type": "project",
-    "description": "A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.",
+    "description": "vATC Suite provides virtual air traffic controllers with essential tools like ATIS and AWOS generation to enhance realism in online flying networks.",
     "keywords": [
         "atis",
         "generator",

@@ -10,9 +10,9 @@
         <div class="form-holder col-md-8 bg-body rounded-3 shadow-lg m-4">
             <form id="atis-input" method="post" class="p-4">
                 <input type="hidden" id="last-generated" value="">
-                <h2 class="fw-bold">Redbeard's ATIS Generator</h2>
-                <p class="fs-6">A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in
-                    text and spoken formats.</p>
+                <h2 class="fw-bold">vATC Suite</h2>
+                <p class="fs-6">vATC Suite provides virtual air traffic controllers with essential tools like
+                    ATIS and AWOS generation to enhance realism in online flying networks.</p>
                 <div class="my-3">
                     <a href="#" class="btn btn-primary me-2" id="squawk-generator">
                         <i class="fas fa-random"></i> Squawk Code Generator</a>
@@ -128,8 +128,11 @@
             <div class="row">
                 <div class="col-md text-center text-md-left">
                     <p class="text-muted"> <i class="fas fa-plane"></i> Powered by <a
-                            href="https://github.com/RedbeardTFL/ATIS_GENERATOR" target="_blank"
-                            style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">Redbeard's ATIS Generator</a> </p>
+                            href="https://github.com/VMGWARE/vATCSuite" target="_blank"
+                            style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">
+                            vATC Suite
+                        </a>
+                    </p>
                 </div>
                 <div class="col-md text-center">
                     <p class="text-muted">

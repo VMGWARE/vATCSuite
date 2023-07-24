@@ -7,10 +7,10 @@
 FROM php:8.1-apache
 
 # opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
-LABEL org.opencontainers.image.authors="Vahn Gomes <atis@vahngomes.dev>" \
-    org.opencontainers.image.title="ATIS Generator for Non-VATSIM Controllers " \
-    org.opencontainers.image.description="A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats." \
-    org.opencontainers.image.url="https://atis.vahngomes.dev/"
+LABEL org.opencontainers.image.authors="The vATC Suite Team <hello@atisgenerator.com>" \
+    org.opencontainers.image.title="Essential ATC tools for virtual skies" \
+    org.opencontainers.image.description="vATC Suite provides virtual air traffic controllers with essential tools like ATIS and AWOS generation to enhance realism in online flying networks." \
+    org.opencontainers.image.url="https://atisgenerator.com/"
 
 # entrypoint.sh dependencies
 RUN set -ex; \

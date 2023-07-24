@@ -7,11 +7,12 @@ return [
         'default' => [
 
             'info' => [
-                'title' => "Redbeard's ATIS Generator",
-                'description' => 'A simple to use tool for non VATSIM/IVAO/PilotEdge controllers to generate an ATIS in text and spoken formats.',
+                'title' => "vATC Suite API",
+                'description' => 'vATC Suite provides virtual air traffic controllers with essential tools like
+                ATIS and AWOS generation to enhance realism in online flying networks.',
                 'version' => config('app.version'),
                 'contact' => [
-                    'name' => 'The ATIS Generator Team',
+                    'name' => 'The vATC Suite Team',
                     'email' => 'hello@atisgenerator.com',
                     'url' => 'https://atisgenerator.com/',
                 ],
