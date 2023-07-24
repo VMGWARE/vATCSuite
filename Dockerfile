@@ -2,6 +2,7 @@
 ### ~ Essential ATC tools for virtual skies ~ Dockerfile
 ###
 ### This file is used for dev purpose. But we use it to build the production image as well.
+### OS: Debian
 ###
 
 FROM php:8.1-apache
@@ -34,11 +35,11 @@ RUN set -ex \
 
 # Install exif extension
 RUN apt-get install -y libexif-dev \
-  && docker-php-ext-install exif
+    && docker-php-ext-install exif
 
 # Install supervisor
 RUN apt-get update && apt-get install -y supervisor \
-  && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # TODO: Find out why gmp is not working, or if it is even needed
 # RUN set -ex \
@@ -54,12 +55,18 @@ RUN set -ex \
     # && docker-php-ext-enable zip gmp
     && docker-php-ext-enable zip
 
+# Install cron
+RUN apt-get update \
+    && apt-get install -y cron \ 
+    && cron \
+    && rm -rf /etc/cron.*/*
+
 # Set crontab for schedules
 RUN set -ex; \
     \
     mkdir -p /var/spool/cron/crontabs; \
     rm -f /var/spool/cron/crontabs/root; \
-    echo '* * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
+    echo '* * * * * php /var/www/html/artisan schedule:run -v >/proc/1/fd/1 2>/proc/1/fd/2' > /var/spool/cron/crontabs/www-data
 
 # Opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
