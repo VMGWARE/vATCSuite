@@ -13,10 +13,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // Clean up expired ATIS audio files
         $schedule->job(new CleanUpExpiredATISAudioFiles, 'default', 'database')
             ->everyThirtyMinutes()
             ->withoutOverlapping()
             ->appendOutputTo("scheduler-output.log");
+
+        // Generate sitemap
+        $schedule->command('sitemap:generate')->daily();
     }
 
     /**

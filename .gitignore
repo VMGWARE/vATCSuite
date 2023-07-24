@@ -54,3 +54,6 @@ yarn-error.log
 
 # Ignore SonarQube scanner workspace
 .scannerwork
+
+# Others
+src/public/sitemap.xml
