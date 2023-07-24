@@ -7,6 +7,10 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     ATISGENDIR=/var/www/html
     ARTISAN="php ${ATISGENDIR}/artisan"
 
+    # Run supervisor
+    echo "Starting supervisord"
+    supervisord -c /etc/supervisor/supervisord.conf
+
     # Ensure storage directories are present
     STORAGE=${ATISGENDIR}/storage
     mkdir -p ${STORAGE}/logs

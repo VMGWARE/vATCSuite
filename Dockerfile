@@ -36,6 +36,10 @@ RUN set -ex \
 RUN apt-get install -y libexif-dev \
   && docker-php-ext-install exif
 
+# Install supervisor
+RUN apt-get update && apt-get install -y supervisor \
+  && rm -rf /var/lib/apt/lists/*
+
 # TODO: Find out why gmp is not working, or if it is even needed
 # RUN set -ex \
 #     # && { echo "/usr/include/gmp.h"; echo "/usr/include/x86_64-linux-gnu/gmp.h"; } | xargs -n1 ln -s \
@@ -142,6 +146,9 @@ COPY docker/entrypoint.sh \
     docker/cron.sh \
     docker/queue.sh \
     /usr/local/bin/
+
+# Copy supervisor config
+COPY docker/supervisor-queue.conf /etc/supervisor/conf.d/
 
 # Make scripts executable 
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/cron.sh /usr/local/bin/queue.sh
