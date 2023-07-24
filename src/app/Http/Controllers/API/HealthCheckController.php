@@ -43,8 +43,8 @@ class HealthCheckController extends Controller
         // Response
         $response = [
             'status' => $status,
-            'code' => $status === 'healthy' ? 200 : 503,
-            'message' => $status === 'healthy' ? 'API v1 is up and running!' : 'API v1 is having issues.',
+            'code' => $status === 'ok' ? 200 : 503,
+            'message' => $status === 'ok' ? 'API v1 is up and running!' : 'API v1 is having issues.',
             'data' => [
                 'uptime' => 'N/A', // TODO: Get uptime from 'uptime' command
                 'timestamp' => now()->toAtomString(),
