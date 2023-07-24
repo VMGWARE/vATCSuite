@@ -70,16 +70,6 @@ vATC Suite provides virtual air traffic controllers with tools to generate and d
 3. cURL: is used to fetch weather info, so this function must be enabled.
 4. Composer: is used to install dependencies
 
-## Roadmap
-
-### Upcoming Features and Improvements
-
--   [ ] Upgrades and Bug Fixes
--   [ ] Added testing in the CI pipeline
--   [ ] Add AWOS
--   [ ] Upgrade UI to be more modern
--   [ ] Added different TTS engine APIs, might try support for AI Generated voices
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
