@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\HealthCheckController;
 use App\Http\Controllers\API\AirportController;
 use App\Http\Controllers\API\TextToSpeechController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 // API v1 Routes
 Route::prefix('v1')->group(function () {
+    // Health check
+    Route::get('/health', [HealthCheckController::class, 'index'])->name('api.healthcheck');
 
     // Airports
     Route::prefix('airports')->group(function () {

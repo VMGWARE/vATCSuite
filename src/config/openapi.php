@@ -56,7 +56,11 @@ return [
                 [
                     'name' => 'Text to Speech',
                     'description' => 'Endpoints for converting text to speech audio files.',
-                ]
+                ],
+                [
+                    'name' => 'Utilities',
+                    'description' => 'Endpoints for getting information about the API.',
+                ],
             ],
 
             'security' => [
