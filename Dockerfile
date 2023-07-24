@@ -1,7 +1,7 @@
 ###
-### ~ Atis Generator for Non-VATSIM Controllers ~ Dockerfile
+### ~ Essential ATC tools for virtual skies ~ Dockerfile
 ###
-### This file is used for dev purpose.
+### This file is used for dev purpose. But we use it to build the production image as well.
 ###
 
 FROM php:8.1-apache
