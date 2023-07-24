@@ -19,7 +19,8 @@ class ErrorResponse extends ResponseFactory implements Reusable
             Schema::object('data')->properties(
                 Schema::string('uptime')->example('3 days 2 hours'),
                 Schema::string('timestamp')->example('2021-01-01 00:00:00'),
-                Schema::string('version')->example('1.0.0'),
+                Schema::string('app_version')->example('1.0.0'),
+                Schema::string('api_version')->example('v1'),
                 Schema::number('diskspace')->example(50.0),
                 Schema::number('latency')->example(0.123)
             ),

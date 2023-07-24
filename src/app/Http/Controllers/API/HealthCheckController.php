@@ -48,7 +48,8 @@ class HealthCheckController extends Controller
             'data' => [
                 'uptime' => 'N/A', // TODO: Get uptime from 'uptime' command
                 'timestamp' => now()->toAtomString(),
-                'version' => config('app.version'),
+                'app_version' => config('app.version'),
+                'api_version' => 'v1',
                 'diskspace' => disk_free_space('/') / disk_total_space('/') * 100,
                 'latency' => round(microtime(true) - LARAVEL_START, 3),
                 'dependencies' => $dependencies
