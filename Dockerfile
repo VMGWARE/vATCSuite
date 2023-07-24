@@ -32,6 +32,10 @@ RUN set -ex \
 RUN set -ex \ 
     && docker-php-ext-install zip
 
+# Install exif extension
+RUN apt-get install -y libexif-dev \
+  && docker-php-ext-install exif
+
 # TODO: Find out why gmp is not working, or if it is even needed
 # RUN set -ex \
 #     # && { echo "/usr/include/gmp.h"; echo "/usr/include/x86_64-linux-gnu/gmp.h"; } | xargs -n1 ln -s \
