@@ -56,4 +56,4 @@ yarn-error.log
 .scannerwork
 
 # Generated sitemap
-sitemap.xml
+src/public/sitemap.xml
