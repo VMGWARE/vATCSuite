@@ -2,6 +2,7 @@
 ### ~ Essential ATC tools for virtual skies ~ Dockerfile
 ###
 ### This file is used for dev purpose. But we use it to build the production image as well.
+### OS: Debian
 ###
 
 FROM php:8.1-apache
@@ -34,7 +35,11 @@ RUN set -ex \
 
 # Install exif extension
 RUN apt-get install -y libexif-dev \
-  && docker-php-ext-install exif
+    && docker-php-ext-install exif
+
+# Install supervisor
+RUN apt-get update && apt-get install -y supervisor \
+    && rm -rf /var/lib/apt/lists/*
 
 # TODO: Find out why gmp is not working, or if it is even needed
 # RUN set -ex \
@@ -50,12 +55,21 @@ RUN set -ex \
     # && docker-php-ext-enable zip gmp
     && docker-php-ext-enable zip
 
+# Install cron
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install -y cron \
+    # Remove package lists for smaller image sizes
+    && rm -rf /var/lib/apt/lists/* \
+    && which cron \
+    && rm -rf /etc/cron.*/*
+
 # Set crontab for schedules
 RUN set -ex; \
     \
     mkdir -p /var/spool/cron/crontabs; \
     rm -f /var/spool/cron/crontabs/root; \
-    echo '* * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
+    echo '* * * * * /usr/local/bin/php /var/www/html/artisan schedule:run -v >/proc/1/fd/1 2>/proc/1/fd/2\n#' >> /var/spool/cron/crontabs/root \
+    && crontab /var/spool/cron/crontabs/root
 
 # Opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
@@ -137,11 +151,21 @@ RUN set -ex; \
 #     \
 #     rm -rf /var/lib/apt/lists/*
 
+# Ensure the log file exists
+RUN set -ex; \
+    \
+    rm -f /var/www/html/storage/logs/laravel.log; \
+    touch /var/www/html/storage/logs/laravel.log; \
+    chown www-data:www-data /var/www/html/storage/logs/laravel.log;
+
 # Copy utility scripts
 COPY docker/entrypoint.sh \
     docker/cron.sh \
     docker/queue.sh \
     /usr/local/bin/
+
+# Copy supervisor config
+COPY docker/supervisor-queue.conf /etc/supervisor/conf.d/
 
 # Make scripts executable 
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/cron.sh /usr/local/bin/queue.sh
