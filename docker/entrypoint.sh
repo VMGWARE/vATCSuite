@@ -7,7 +7,12 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     ATISGENDIR=/var/www/html
     ARTISAN="php ${ATISGENDIR}/artisan"
 
+    # Push env vars for cron
+    echo "Loading env vars for cron"
+    env > /etc/environment
+
     # Start cron
+    echo "Starting cron"
     cron -L 2
 
     # Run supervisor

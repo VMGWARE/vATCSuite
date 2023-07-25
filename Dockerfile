@@ -151,6 +151,13 @@ RUN set -ex; \
 #     \
 #     rm -rf /var/lib/apt/lists/*
 
+# Ensure the log file exists
+RUN set -ex; \
+    \
+    rm -f /var/www/html/storage/logs/laravel.log; \
+    touch /var/www/html/storage/logs/laravel.log; \
+    chown www-data:www-data /var/www/html/storage/logs/laravel.log;
+
 # Copy utility scripts
 COPY docker/entrypoint.sh \
     docker/cron.sh \
