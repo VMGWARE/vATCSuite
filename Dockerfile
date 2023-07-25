@@ -57,8 +57,10 @@ RUN set -ex \
 
 # Install cron
 RUN apt-get update \
-    && apt-get install -y cron \ 
-    && cron \
+    && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install -y cron \
+    # Remove package lists for smaller image sizes
+    && rm -rf /var/lib/apt/lists/* \
+    && which cron \
     && rm -rf /etc/cron.*/*
 
 # Set crontab for schedules
@@ -66,7 +68,8 @@ RUN set -ex; \
     \
     mkdir -p /var/spool/cron/crontabs; \
     rm -f /var/spool/cron/crontabs/root; \
-    echo '* * * * * php /var/www/html/artisan schedule:run -v >/proc/1/fd/1 2>/proc/1/fd/2' > /var/spool/cron/crontabs/www-data
+    echo '* * * * * /usr/local/bin/php /var/www/html/artisan schedule:run -v >/proc/1/fd/1 2>/proc/1/fd/2\n#' >> /var/spool/cron/crontabs/root \
+    && crontab /var/spool/cron/crontabs/root
 
 # Opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \

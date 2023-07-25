@@ -7,6 +7,9 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     ATISGENDIR=/var/www/html
     ARTISAN="php ${ATISGENDIR}/artisan"
 
+    # Start cron
+    cron -L 2
+
     # Run supervisor
     echo "Starting supervisord"
     supervisord -c /etc/supervisor/supervisord.conf
