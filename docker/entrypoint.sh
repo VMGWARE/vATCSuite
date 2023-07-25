@@ -42,8 +42,8 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     # Run migrations
     ${ARTISAN} migrate --force
 
-    # Generate the sitemap
-    ${ARTISAN} sitemap:generate
+    # Generate the sitemap, we queue it so that apache can start up before it runs
+    ${ARTISAN} sitemap:queue
 fi
 
 exec "$@"
