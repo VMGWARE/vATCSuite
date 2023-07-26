@@ -11,7 +11,6 @@
     "require": {
         "php": "^8.1",
         "ext-curl": "*",
-        "backpack/backupmanager": "^5.0",
         "backpack/crud": "^6.0",
         "backpack/logmanager": "^5.0",
         "backpack/permissionmanager": "^7.0",

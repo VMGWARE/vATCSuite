@@ -30,9 +30,6 @@ RUN set -ex \
     && apt-get install -y --no-install-recommends libzip-dev libgmp-dev \
     && docker-php-ext-install pdo_mysql
 
-# Install mysqldump
-RUN apt-get update && apt-get install -y mysql-client
-
 RUN set -ex \ 
     && docker-php-ext-install zip
 
