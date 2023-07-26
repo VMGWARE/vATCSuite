@@ -47,6 +47,9 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
     # Configure the site
     ${ARTISAN} site:configure
+
+    # Install laravel backpack
+    ${ARTISAN} backpack:install --no-interaction
 fi
 
 exec "$@"
