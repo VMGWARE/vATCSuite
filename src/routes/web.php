@@ -22,3 +22,6 @@ Route::get('/', function () {
 Route::get('/docs', function () {
     return view('redoc');
 })->name('docs');
+
+// Import additional routes from the routes directory
+include __DIR__ . '/backpack/custom.php';
