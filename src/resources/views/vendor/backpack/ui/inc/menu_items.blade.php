@@ -12,3 +12,8 @@
     <x-backpack::menu-dropdown-item title="Roles" icon="la la-group" :link="backpack_url('role')" />
     <x-backpack::menu-dropdown-item title="Permissions" icon="la la-key" :link="backpack_url('permission')" />
 </x-backpack::menu-dropdown>
+
+<!-- Advanced -->
+<x-backpack::menu-dropdown title="Advanced" icon="la la-cog">
+    <x-backpack::menu-dropdown-item title="Logs" icon="la la-list" :link="backpack_url('log')" />
+</x-backpack::menu-dropdown>
