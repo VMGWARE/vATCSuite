@@ -13,7 +13,7 @@ return [
 
     // enable the datatables-responsive plugin, which hides columns if they don't fit?
     // if not, a horizontal scrollbar will be shown instead
-    'responsiveTable' => true,
+    'responsiveTable' => false,
 
     // stores pagination and filters in localStorage for two hours
     // whenever the user tries to see that page, backpack loads the previous pagination and filtration
@@ -47,7 +47,7 @@ return [
     'actionsColumnPriority' => 1,
 
     // Nest action buttons within a dropdown in actions column
-    'lineButtonsAsDropdown' => false,
+    'lineButtonsAsDropdown' => true,
 
     // Show a "Reset" button next to the List operation subheading
     // (Showing 1 to 25 of 9999 entries. Reset)

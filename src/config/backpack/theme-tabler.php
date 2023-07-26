@@ -40,7 +40,8 @@ return [
      */
     'styles' => [
         base_path('vendor/backpack/theme-tabler/resources/assets/css/color-adjustments.css'),
-        base_path('vendor/backpack/theme-tabler/resources/assets/css/colors.css'),
+        // base_path('vendor/backpack/theme-tabler/resources/assets/css/colors.css'),
+        base_path('resources/assets/css/colors.css'),
     ],
 
     /**
@@ -51,11 +52,9 @@ return [
      */
     'options' => [
         /**
-        /**
          * The available color modes.
          */
         'colorModes' => [
-            'system' => 'la-desktop',
             'light' => 'la-sun',
             'dark' => 'la-moon',
         ],
@@ -63,7 +62,7 @@ return [
         /**
          * The color mode used by default.
          */
-        'defaultColorMode' => 'system', // system, light, dark
+        'defaultColorMode' => 'dark', // light, dark
 
         /**
          * When true, a switch is displayed to let admins choose their favorite theme mode.
@@ -158,13 +157,13 @@ return [
     ],
 
     /**
-     * 4th Layer of customization
-     *
-     * Alright, if nothing so far met your need, then you still have an easy way to build
-     * a custom layout using the already existing components of this theme.
-     *
-     * 1. Create a new blade file in resources/views/layouts/your-custom-layout.blade.php
-     * 2. Replace the value of layout on this file with "your-custom-layout"
-     * 3. Customize the blade and place components such as sidebar, header, top-bar, where you need them!
-     */
+ * 4th Layer of customization
+ *
+ * Alright, if nothing so far met your need, then you still have an easy way to build
+ * a custom layout using the already existing components of this theme.
+ *
+ * 1. Create a new blade file in resources/views/layouts/your-custom-layout.blade.php
+ * 2. Replace the value of layout on this file with "your-custom-layout"
+ * 3. Customize the blade and place components such as sidebar, header, top-bar, where you need them!
+ */
 ];
