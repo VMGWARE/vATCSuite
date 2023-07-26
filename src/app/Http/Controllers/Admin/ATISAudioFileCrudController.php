@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
 class ATISAudioFileCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation {
         destroy as traitDestroy;
     }
@@ -31,7 +30,7 @@ class ATISAudioFileCrudController extends CrudController
         CRUD::setModel(\App\Models\ATISAudioFile::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/atis-audio-file');
         CRUD::setEntityNameStrings('ATIS Audio File', 'ATIS Audio Files');
-        $this->crud->denyAccess('create');
+        $this->crud->denyAccess(['create', 'update']);
     }
 
     /**
@@ -42,23 +41,38 @@ class ATISAudioFileCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        // CRUD::setFromDb(); // set columns from db columns.
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
-    }
+        // Define the columns you want to display in the list view
+        CRUD::addColumn([
+            'name' => 'icao',
+            'label' => 'ICAO Code',
+        ]);
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
+        CRUD::addColumn([
+            'name' => 'ident',
+            'label' => 'Ident',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'zulu',
+            'label' => 'Zulu',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'url',
+            'label' => 'Audio URL',
+            'type' => 'url', // This will make the column clickable
+            'limit' => 100, // Truncate the URL text to 100 characters
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'expires_at',
+            'label' => 'Expires At',
+            'type' => 'datetime',
+        ]);
+
+        // Add more columns as needed
     }
 
     /**
