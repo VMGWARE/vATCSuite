@@ -41,7 +41,17 @@ vATC Suite provides virtual air traffic controllers with tools to generate and d
     git describe --always --tags --dirty > version
     ```
 
-6. Run the development server
+6. Run artisan commands to configure the site and install backpack
+
+    ```sh
+    php artisan site:configure
+    ```
+
+    ```sh
+    php artisan backpack:install --no-interaction
+    ```
+
+7. Run the development server
 
     ```sh
     php artisan serve
