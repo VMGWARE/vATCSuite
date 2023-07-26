@@ -13,7 +13,7 @@ return [
 
     // enable the datatables-responsive plugin, which hides columns if they don't fit?
     // if not, a horizontal scrollbar will be shown instead
-    'responsiveTable' => false,
+    'responsiveTable' => true,
 
     // stores pagination and filters in localStorage for two hours
     // whenever the user tries to see that page, backpack loads the previous pagination and filtration
