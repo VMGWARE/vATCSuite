@@ -75,9 +75,9 @@ class ConfigureSite extends Command
             $this->info('Root user not configured. Please set APP_ROOT_USER and APP_ROOT_PASSWORD in your .env file.');
             return;
         } else {
-            // Check if the user exists
-            if (\App\Models\User::where('email', $rootUser)->exists()) {
-                $this->info('Root user already exists.');
+            // Check if the user exists, or if an admin user exists.
+            if (\App\Models\User::where('email', $rootUser)->exists() || \App\Models\User::role('admin')->exists()) {
+                $this->info('Root user already exists. Skipping creation.');
                 return;
             }
 
