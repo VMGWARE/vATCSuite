@@ -28,7 +28,8 @@ RUN set -ex \
     && apt-get update \
     && apt-get install -y --no-install-recommends libzip-dev \
     && apt-get install -y --no-install-recommends libzip-dev libgmp-dev \
-    && docker-php-ext-install pdo_mysql
+    && docker-php-ext-install pdo_mysql \
+    && apt-get install -y --no-install-recommends mysql-client
 
 RUN set -ex \ 
     && docker-php-ext-install zip
