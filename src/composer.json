@@ -16,6 +16,7 @@
         "backpack/logmanager": "^5.0",
         "backpack/permissionmanager": "^7.0",
         "backpack/theme-coreuiv4": "^1.0",
+        "backpack/theme-tabler": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
