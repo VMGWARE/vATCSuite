@@ -31,9 +31,9 @@ RUN set -ex \
     && docker-php-ext-install pdo_mysql
 
 # Install mysqldump
-RUN set -ex \
-    && apt-get update \
-    && apt-get install -y mysql-community-client
+RUN echo "deb http://repo.mysql.com/apt/debian/ buster mysql-apt-config" > /etc/apt/sources.list.d/mysql.list
+RUN wget https://repo.mysql.com/RPM-GPG-KEY-mysql -O /tmp/RPM-GPG-KEY-mysql && apt-key add /tmp/RPM-GPG-KEY-mysql
+RUN apt-get update && apt-get install -y mysql-community-client
 
 RUN set -ex \ 
     && docker-php-ext-install zip
