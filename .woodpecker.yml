@@ -15,7 +15,7 @@ services:
 
 pipeline:
   - name: Testing
-    image: composer:latest
+    image: sineverba/php8xc:latest
     environment:
       DB_HOST: mysql
       DB_PORT: "3306"
