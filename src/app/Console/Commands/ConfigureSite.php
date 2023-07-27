@@ -97,7 +97,7 @@ class ConfigureSite extends Command
         $this->info('Creating default settings...');
 
         // Matomo
-        if (Setting::get('matomo_enable') === null) {
+        if (Setting::where('key', 'matomo_enable')->count() === 0) {
             $matomoEnable = new Setting();
             $matomoEnable->key = 'matomo_enable';
             $matomoEnable->name = 'Enable Matomo Analytics';
@@ -107,7 +107,7 @@ class ConfigureSite extends Command
             $matomoEnable->active = '1';
             $matomoEnable->save();
         }
-        if (Setting::get('matomo_url') === null) {
+        if (Setting::where('key', 'matomo_url')->count() === 0) {
             $matomoUrl = new Setting();
             $matomoUrl->key = 'matomo_url';
             $matomoUrl->name = 'Matomo URL';
@@ -117,7 +117,7 @@ class ConfigureSite extends Command
             $matomoUrl->active = '1';
             $matomoUrl->save();
         }
-        if (Setting::get('matomo_site_id') === null) {
+        if (Setting::where('key', 'matomo_site_id')->count() === 0) {
             $matomoSiteId = new Setting();
             $matomoSiteId->key = 'matomo_site_id';
             $matomoSiteId->name = 'Matomo Site ID';
@@ -129,7 +129,7 @@ class ConfigureSite extends Command
         }
 
         // Google Analytics
-        if (Setting::get('google_analytics_enable') === null) {
+        if (Setting::where('key', 'google_analytics_enable')->count() === 0) {
             $googleAnalyticsEnable = new Setting();
             $googleAnalyticsEnable->key = 'google_analytics_enable';
             $googleAnalyticsEnable->name = 'Enable Google Analytics';
@@ -139,7 +139,7 @@ class ConfigureSite extends Command
             $googleAnalyticsEnable->active = '1';
             $googleAnalyticsEnable->save();
         }
-        if (Setting::get('google_analytics_tracking_id') === null) {
+        if (Setting::where('key', 'google_analytics_tracking_id')->count() === 0) {
             $googleAnalyticsTrackingId = new Setting();
             $googleAnalyticsTrackingId->key = 'google_analytics_tracking_id';
             $googleAnalyticsTrackingId->name = 'Google Analytics Tracking ID';
