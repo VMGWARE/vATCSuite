@@ -17,3 +17,9 @@
     <x-backpack::menu-dropdown-item title="Logs" icon="la la-list" :link="backpack_url('log')" />
     <x-backpack::menu-dropdown-item title="Settings" icon="la la-cog" :link="backpack_url('setting')" />
 </x-backpack::menu-dropdown>
+
+<!-- Resources -->
+<x-backpack::menu-dropdown title="Resources" icon="la la-book">
+    <x-backpack::menu-dropdown-item title="API Documentation" icon="la la-book" :link="route('docs')" />
+    <x-backpack::menu-dropdown-item title="GitHub" icon="la la-github" :link="'https://github.com/VMGWARE/vATCSuite'" target="_blank" />
+</x-backpack::menu-dropdown>
