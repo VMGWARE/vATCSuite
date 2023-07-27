@@ -10,8 +10,7 @@ services:
       MYSQL_DATABASE: vatcsuite
       MYSQL_USER: vatcsuite
       MYSQL_PASSWORD: vatcsuite
-    ports:
-      - 3306:3306
+    ports: ["3306:3306"]
 
 pipeline:
   - name: Testing
