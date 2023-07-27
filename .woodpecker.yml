@@ -22,10 +22,11 @@ pipeline:
       DB_DATABASE: vatcsuite
       DB_USERNAME: vatcsuite
       DB_PASSWORD: vatcsuite
-      APP_KEY: base64:YXJkIGF0IGEgZGVjb2RlIGJhc2U2NCBzdHJpbmc=
     commands:
       - cd ./src
       - composer install
+      - cp .env.example .env
+      - php artisan key:generate
       - php artisan test
       - cd ../
 
