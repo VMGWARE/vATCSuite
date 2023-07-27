@@ -33,7 +33,6 @@ pipeline:
     commands:
       - cd ./src
       - cp .env.example .env
-      - ping mysql
       - echo "DB_HOST=${DB_HOST}"
       - echo "Waiting for MySQL to start..."
       - sleep 30
