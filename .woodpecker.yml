@@ -20,6 +20,14 @@ pipeline:
       - composer install
       - cd ../
 
+  - name: Generate version file
+    image: alpine/git
+    commands:
+      - cd ./src
+      - git describe --always --tags --dirty > version
+      - cat version
+      - cd ../
+
   - name: Configure Site
     image: php:8.1-cli
     environment:
@@ -28,13 +36,11 @@ pipeline:
       DB_DATABASE: vatc-suite
       DB_USERNAME: root
       DB_PASSWORD: ""
-
     commands:
       - cd ./src
       - cp .env.example .env
-      - echo "DB_HOST=${DB_HOST}"
       - echo "Waiting for MySQL to start..."
-      - sleep 30
+      - sleep 10
       - php artisan key:generate
       - php artisan migrate --force
       - php artisan site:configure
@@ -51,14 +57,6 @@ pipeline:
     commands:
       - cd ./src
       - php artisan test
-      - cd ../
-
-  - name: Generate version file
-    image: alpine/git
-    commands:
-      - cd ./src
-      - git describe --always --tags --dirty > version
-      - cat version
       - cd ../
 
   - name: Deploy to Docker Hub
