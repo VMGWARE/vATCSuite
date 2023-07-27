@@ -22,7 +22,7 @@ pipeline:
       - cd ../
 
   - name: Configure Site
-    image: sineverba/php8xc:latest
+    image: php:8.1-cli
     environment:
       DB_HOST: mysql
       DB_PORT: "3306"
@@ -33,13 +33,17 @@ pipeline:
     commands:
       - cd ./src
       - cp .env.example .env
+      - ping mysql
+      - echo "DB_HOST=${DB_HOST}"
+      - echo "Waiting for MySQL to start..."
+      - sleep 30
       - php artisan key:generate
       - php artisan migrate --force
       - php artisan site:configure
       - cd ../
 
   - name: Testing
-    image: sineverba/php8xc:latest
+    image: php:8.1-cli
     environment:
       DB_HOST: mysql
       DB_PORT: "3306"
