@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->overrideConfigValues();
     }
 
     /**
@@ -22,5 +22,18 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             \URL::forceScheme('https');
         }
+    }
+
+    /**
+     * Override config values from the database.
+     */
+    protected function overrideConfigValues()
+    {
+        $config = [];
+        if (config('settings.skin'))
+            $config['backpack.base.skin'] = config('settings.skin');
+        if (config('settings.show_powered_by'))
+            $config['backpack.base.show_powered_by'] = config('settings.show_powered_by') == '1';
+        config($config);
     }
 }
