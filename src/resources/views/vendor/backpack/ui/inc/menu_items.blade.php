@@ -15,4 +15,5 @@
 <!-- Advanced -->
 <x-backpack::menu-dropdown title="Advanced" icon="la la-cog">
     <x-backpack::menu-dropdown-item title="Logs" icon="la la-list" :link="backpack_url('log')" />
+    <x-backpack::menu-dropdown-item title="Settings" icon="la la-cog" :link="backpack_url('setting')" />
 </x-backpack::menu-dropdown>

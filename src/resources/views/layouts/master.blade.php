@@ -20,6 +20,12 @@
 
     <!-- Favicon -->
     @include('components.favicon')
+
+    {{-- Matomo --}}
+    @include('components.matomo')
+
+    {{-- Google Analytics --}}
+    @include('components.gtag')
 </head>
 
 <body>

@@ -42,6 +42,12 @@
             padding: 0;
         }
     </style>
+
+    {{-- Matomo --}}
+    @include('components.matomo')
+
+    {{-- Google Analytics --}}
+    @include('components.gtag')
 </head>
 
 <body>
