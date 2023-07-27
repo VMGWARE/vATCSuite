@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'vATC Suite'),
+    'name' => 'vATC Suite',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,7 +164,7 @@ return [
     */
 
     'maintenance' => [
-        'driver' => 'file',
+        'driver' => 'cache',
         // 'store'  => 'redis',
     ],
 
