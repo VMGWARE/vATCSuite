@@ -10,14 +10,15 @@ services:
       MYSQL_DATABASE: vatcsuite
       MYSQL_USER: vatcsuite
       MYSQL_PASSWORD: vatcsuite
-    ports: ["3306:3306"]
+    ports:
+      - 3306:3306
 
 pipeline:
   - name: Testing
     image: php:8.1-cli
     environment:
       DB_HOST: mysql
-      DB_PORT: 3306
+      DB_PORT: "3306"
       DB_DATABASE: vatcsuite
       DB_USERNAME: vatcsuite
       DB_PASSWORD: vatcsuite
