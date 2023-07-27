@@ -25,6 +25,7 @@ pipeline:
     commands:
       - cd ./src
       - composer install
+      - php artisan key:generate
       - php artisan test
       - cd ../
 
