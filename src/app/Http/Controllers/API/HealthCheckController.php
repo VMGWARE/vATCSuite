@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 use Illuminate\Http\JsonResponse;
-use PDO;
 
 #[OpenApi\PathItem]
 class HealthCheckController extends Controller

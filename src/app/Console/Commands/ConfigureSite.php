@@ -6,7 +6,6 @@ use Backpack\Settings\app\Models\Setting;
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\DB;
 
 class ConfigureSite extends Command
 {

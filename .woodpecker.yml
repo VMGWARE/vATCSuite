@@ -1,14 +1,61 @@
 variables:
   - &buildx_image "woodpeckerci/plugin-docker-buildx"
-  - &platforms "linux/amd64"
+  - &platforms "linux/amd64,linux/arm64"
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vatc-suite
+    ports:
+      - 3306:3306
 
 pipeline:
+  - name: Install Dependencies
+    image: sineverba/php8xc:latest
+    commands:
+      - cd ./src
+      - composer install
+      - cd ../
+
   - name: Generate version file
     image: alpine/git
     commands:
       - cd ./src
       - git describe --always --tags --dirty > version
       - cat version
+      - cd ../
+
+  - name: Configure Site
+    image: sineverba/php8xc:latest
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: vatc-suite
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    commands:
+      - cd ./src
+      - cp .env.example .env
+      - echo "Waiting for MySQL to start..."
+      - sleep 5
+      - php artisan key:generate
+      - php artisan migrate --force
+      - php artisan site:configure
+      - cd ../
+
+  - name: Testing
+    image: sineverba/php8xc:latest
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: vatc-suite
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    commands:
+      - cd ./src
+      - php artisan test
       - cd ../
 
   - name: Deploy to Docker Hub
