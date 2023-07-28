@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="loading-container hide" id="loading">
+    <div class="loading-container" id="loading" style="display: none;">
         <div class="loading">
             <img src="{{ asset('lib/images/loading.svg') }}" alt="Loading..." class="img-fluid" width="150">
         </div>
