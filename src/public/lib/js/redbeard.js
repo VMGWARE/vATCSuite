@@ -96,7 +96,7 @@ $(document).ready(function () {
     // On click event for the element with id "list-runways"
     $("#list-runways").click(function (t) {
         t.preventDefault(); // Prevent default action of the click event
-        $(".loading").show(); // Show the loading element
+        $("#loading").show(); // Show the loading element
         icao = $("#icao").val(); // Get the value of the input with id "icao"
 
         // If icao is empty
@@ -106,7 +106,7 @@ $(document).ready(function () {
                 ErrorModal("ICAO cannot be empty.", "runway-modal")
             );
             $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
-            $(".loading").hide(); // Hide the loading element
+            $("#loading").hide(); // Hide the loading element
             return; // Exit the function
         }
 
@@ -117,7 +117,7 @@ $(document).ready(function () {
                 // Show an error modal with the received error message
                 $("#runway-output").html(ErrorModal(t.message, "runway-modal"));
                 $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
-                $(".loading").hide(); // Hide the loading element
+                $("#loading").hide(); // Hide the loading element
                 return; // Exit the function
             }
 
@@ -128,11 +128,11 @@ $(document).ready(function () {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col"><i class="fa-solid fa-road"></i></th>
-                            <th scope="col"><i class="fa-solid fa-wind"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plus-minus"></i><i class="fa-solid fa-wind"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plane-arrival"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plane-departure"></i></th>
+                            <th scope="col"><i class="fa-solid fa-road" title="Runway"></i></th>
+                            <th scope="col"><i class="fa-solid fa-wind" title="Wind"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plus-minus"></i><i class="fa-solid fa-wind" title="Difference"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plane-arrival" title="Arrival"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plane-departure" title="Departure"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,13 +163,13 @@ $(document).ready(function () {
                 )
             );
             $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
-            $(".loading").hide(); // Hide the loading element
+            $("#loading").hide(); // Hide the loading element
         });
     });
 
     // On form submit event for the element with id "atis-input"
     $("#atis-input").submit(function (t) {
-        $(".loading").show(); // Show the loading element
+        $("#loading").show(); // Show the loading element
         t.preventDefault(); // Prevent the default form submission
         icao = $("#icao").val(); // Get the value of the input with id "icao"
         ident = $("#ident").val(); // Get the value of the input with id "ident"
@@ -184,7 +184,7 @@ $(document).ready(function () {
                     // Show an error modal with the received error message
                     $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
                     $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                    $(".loading").hide(); // Hide the loading element
+                    $("#loading").hide(); // Hide the loading element
                     return; // Exit the function
                 }
 
@@ -195,7 +195,7 @@ $(document).ready(function () {
                         ErrorModal("API returned empty data. Please try again.")
                     );
                     $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                    $(".loading").hide(); // Hide the loading element
+                    $("#loading").hide(); // Hide the loading element
                     return; // Exit the function
                 }
 
@@ -229,7 +229,7 @@ $(document).ready(function () {
                 // Show the success modal
                 $("#atis-output").html(success);
                 $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                $(".loading").hide(); // Hide the loading element
+                $("#loading").hide(); // Hide the loading element
 
                 // Make an HTTP POST request to another API endpoint with data for text-to-speech
                 tts = $.post(
@@ -247,7 +247,7 @@ $(document).ready(function () {
                                 ErrorModal(t.message, "atis-modal")
                             );
                             $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                            $(".loading").hide(); // Hide the loading element
+                            $("#loading").hide(); // Hide the loading element
                             return; // Exit the function
                         }
 
@@ -295,13 +295,18 @@ $(document).ready(function () {
     $("#copy-squawk").click(function () {
         copy("#squawk-output"); // Call the 'copy' function to copy the content of the element with id "squawk-output"
     });
-});
 
-$('input[type=radio][name=output-type]').change(function(){
-    if(this.value == 'atis'){
-        $('.awos-hide').show();
-    }
-    if(this.value == 'awos'){
-        $('.awos-hide').hide();
-    }
-})
+    // On click event for the element with id "metar-generator"
+    $("input[type=radio][name=output-type]").change(function () {
+        // Check if the value of the selected radio button is "metar"
+        if (this.value == "atis") {
+            // Show the element with class "atis-hide"
+            $(".awos-hide").show();
+        }
+        // Check if the value of the selected radio button is "awos"
+        if (this.value == "awos") {
+            // Hide the element with class "atis-hide"
+            $(".awos-hide").hide();
+        }
+    });
+});

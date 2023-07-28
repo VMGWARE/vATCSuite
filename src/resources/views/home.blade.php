@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="loading hide">
-        <div class="position-absolute top-50 start-50">
-            <div class="spinner-border text-light" role="status"></div>
+    <div class="loading-container hide" id="loading">
+        <div class="loading">
+            <img src="{{ asset('lib/images/loading.svg') }}" alt="Loading..." class="img-fluid" width="150">
         </div>
     </div>
     <div class="container d-flex justify-content-center align-items-center py-3">

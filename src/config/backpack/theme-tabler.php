@@ -28,7 +28,7 @@ return [
      * Pick a login page layout.
      * Possible values: default, illustration, cover
      */
-    'auth_layout' => 'default', // default, illustration, cover
+    'auth_layout' => 'cover', // default, illustration, cover
 
     /**
      * Here you can easily load your own extra css styles.
