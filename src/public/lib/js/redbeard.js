@@ -295,13 +295,18 @@ $(document).ready(function () {
     $("#copy-squawk").click(function () {
         copy("#squawk-output"); // Call the 'copy' function to copy the content of the element with id "squawk-output"
     });
-});
 
-$("input[type=radio][name=output-type]").change(function () {
-    if (this.value == "atis") {
-        $(".awos-hide").show();
-    }
-    if (this.value == "awos") {
-        $(".awos-hide").hide();
-    }
+    // On click event for the element with id "metar-generator"
+    $("input[type=radio][name=output-type]").change(function () {
+        // Check if the value of the selected radio button is "metar"
+        if (this.value == "atis") {
+            // Show the element with class "atis-hide"
+            $(".awos-hide").show();
+        }
+        // Check if the value of the selected radio button is "awos"
+        if (this.value == "awos") {
+            // Hide the element with class "atis-hide"
+            $(".awos-hide").hide();
+        }
+    });
 });
