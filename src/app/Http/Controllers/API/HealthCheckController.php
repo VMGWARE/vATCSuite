@@ -37,6 +37,10 @@ class HealthCheckController extends Controller
             }
         }
 
+        // Disk space
+        $diskspace = disk_free_space('/') / disk_total_space('/') * 100;
+        $diskspace = round($diskspace, 2);
+
         // Response
         $response = [
             'status' => $status,
@@ -47,8 +51,8 @@ class HealthCheckController extends Controller
                 'timestamp' => now()->toAtomString(),
                 'app_version' => config('app.version'),
                 'api_version' => 'v1',
-                'diskspace' => disk_free_space('/') / disk_total_space('/') * 100,
-                'latency' => round(microtime(true) - LARAVEL_START, 3),
+                'diskspace' => $diskspace,
+                'latency' => round(microtime(true) - LARAVEL_START, 3) . 's',
                 'dependencies' => $dependencies
             ]
         ];
