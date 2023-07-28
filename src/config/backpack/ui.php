@@ -63,7 +63,7 @@ return [
     'home_link' => 'admin',
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<img src="' . asset("/lib/images/icons/logo_small_icon.png") . '" alt="vATC Suite" style="height: 35px; width: auto; margin-top: -3px; margin-right: 10px; margin-left: 10px; margin-bottom: -3px;"/><b>vATC</b> Suite',
+    'project_logo'   => '<img src="/lib/images/icons/logo_small_icon.png" alt="vATC Suite" style="height: 35px; width: auto; margin-top: -3px; margin-right: 10px; margin-left: 10px; margin-bottom: -3px;"/><b>vATC</b> Suite',
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,
