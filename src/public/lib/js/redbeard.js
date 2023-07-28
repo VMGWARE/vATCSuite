@@ -128,11 +128,11 @@ $(document).ready(function () {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col"><i class="fa-solid fa-road"></i></th>
-                            <th scope="col"><i class="fa-solid fa-wind"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plus-minus"></i><i class="fa-solid fa-wind"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plane-arrival"></i></th>
-                            <th scope="col"><i class="fa-solid fa-plane-departure"></i></th>
+                            <th scope="col"><i class="fa-solid fa-road" title="Runway"></i></th>
+                            <th scope="col"><i class="fa-solid fa-wind" title="Wind"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plus-minus"></i><i class="fa-solid fa-wind" title="Difference"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plane-arrival" title="Arrival"></i></th>
+                            <th scope="col"><i class="fa-solid fa-plane-departure" title="Departure"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -297,11 +297,11 @@ $(document).ready(function () {
     });
 });
 
-$('input[type=radio][name=output-type]').change(function(){
-    if(this.value == 'atis'){
-        $('.awos-hide').show();
+$("input[type=radio][name=output-type]").change(function () {
+    if (this.value == "atis") {
+        $(".awos-hide").show();
     }
-    if(this.value == 'awos'){
-        $('.awos-hide').hide();
+    if (this.value == "awos") {
+        $(".awos-hide").hide();
     }
-})
+});
