@@ -18,5 +18,4 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('atis-audio-file', 'ATISAudioFileCrudController');
     Route::crud('airport', 'AirportCrudController');
-    Route::crud('user', 'UserCrudController');
 }); // this should be the absolute last line of this file
