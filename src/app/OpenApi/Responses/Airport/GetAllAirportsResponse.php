@@ -13,15 +13,18 @@ class GetAllAirportsResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         $response = Schema::object()->properties(
-            Schema::string('status')->example('success'),
-            Schema::string('message')->example('Airports retrieved successfully.'),
-            Schema::integer('code')->example(200),
+            Schema::string('status')
+                ->example('success')
+                ->enum('success', 'error')
+                ->description('Status of the response'),
+            Schema::string('message')->example('Airports retrieved successfully.')->description('Message of the response'),
+            Schema::integer('code')->example(200)->description('Code of the response'),
             Schema::array('data')->items(
                 Schema::object()->properties(
-                    Schema::integer('id')->example(1),
-                    Schema::string('icao')->example('AGEV'),
-                    Schema::string('name')->example('Geva Airport'),
-                    Schema::string('runways')->example('33,15')
+                    Schema::integer('id')->example(1)->description('Id of the airport'),
+                    Schema::string('icao')->example('AGEV')->description('ICAO of the airport'),
+                    Schema::string('name')->example('Geva Airport')->description('Name of the airport'),
+                    Schema::string('runways')->example('33,15')->description('Runways of the airport'),
                 )
             ),
         );

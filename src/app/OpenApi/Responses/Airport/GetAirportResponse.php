@@ -13,32 +13,32 @@ class GetAirportResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         $response = Schema::object()->properties(
-            Schema::string('status')->example('success'),
-            Schema::string('message')->example('Airport retrieved successfully.'),
-            Schema::integer('code')->example(200),
+            Schema::string('status')->example('success')->enum('success', 'error')->description('Status of the response'),
+            Schema::string('message')->example('Airport retrieved successfully.')->description('Message of the response'),
+            Schema::integer('code')->example(200)->description('Code of the response'),
             Schema::object('data')->properties(
                 Schema::object('airport')
                     ->properties(
-                        Schema::string('id')->example('3649'),
-                        Schema::string('icao')->example('KJAX'),
-                        Schema::string('name')->example('Jacksonville International Airport'),
-                        Schema::string('runways')->example('26,08,32,14'),
+                        Schema::string('id')->example('3649')->description('Id of the airport'),
+                        Schema::string('icao')->example('KJAX')->description('ICAO of the airport'),
+                        Schema::string('name')->example('Jacksonville International Airport')->description('Name of the airport'),
+                        Schema::string('runways')->example('26,08,32,14')->description('Runways of the airport'),
                         Schema::string('created_at')->example('2023-05-28T20:25:09.000000Z'),
                         Schema::string('updated_at')->example('2023-05-28T20:25:09.000000Z'),
                     ),
-                Schema::string('metar')->example('KJAX 291556Z 30008KT 10SM FEW050 BKN250 29/14 A2992 RMK AO2 SLP131 T02890144'),
+                Schema::string('metar')->example('KJAX 291556Z 30008KT 10SM FEW050 BKN250 29/14 A2992 RMK AO2 SLP131 T02890144')->description('METAR of the airport'),
                 Schema::object('wind')
                     ->properties(
-                        Schema::string('dir')->example('300'),
-                        Schema::string('speed')->example('08'),
-                        Schema::string('gust_speed')->nullable(),
+                        Schema::string('dir')->example('300')->description('Wind direction of the airport'),
+                        Schema::string('speed')->example('08')->description('Wind speed of the airport'),
+                        Schema::string('gust_speed')->nullable()->example('12')->description('Wind gust speed of the airport'),
                     ),
                 Schema::array('runways')->items(
                     Schema::object()->properties(
-                        Schema::string('runway')->example('32'),
-                        Schema::string('runway_hdg')->example('320'),
-                        Schema::string('wind_dir')->example('300'),
-                        Schema::string('wind_diff')->example('20'),
+                        Schema::string('runway')->example('32')->description('Runway number'),
+                        Schema::string('runway_hdg')->example('320')->description('Runway heading'),
+                        Schema::string('wind_dir')->example('300')->description('Wind direction'),
+                        Schema::string('wind_diff')->example('20')->description('Wind difference over runway'),
                     ),
                 ),
             ),

@@ -14,11 +14,15 @@ class AtisResponse extends ResponseFactory implements Reusable
     {
         $response = Schema::object()->properties(
             Schema::string('status')
-                ->example('success'),
+                ->example('success')
+                ->enum('success', 'error')
+                ->description('Status of the response'),
             Schema::string('message')
-                ->example('ATIS generated successfully.'),
+                ->example('ATIS generated successfully.')
+                ->description('Message of the response'),
             Schema::integer('code')
-                ->example(200),
+                ->example(200)
+                ->description('Code of the response'),
             Schema::object('data')->properties(
                 Schema::string('spoken')
                     ->example('JACKSONVILLE INTERNATIONAL AIRPORT INFORMATION ALPHA...  ONE THREE FIVE SIX ZULU...  WINND TWO FOUR ZERO AT SIX KNOTS...  VISIBILITY 10 OR MORE MILES...  CEILING TWO FIVE THOUSAND BROKEN...  TEMPERATURE TWO FIVE, DEWPOINT ONE SEVEN...  ALTIMETER TWO NINER NINER FOUR, QNH ONE ZERO ONE FOUR...  SIMULTANEOUS ILS AND VISUAL APPROACHES IN USE...  LANDING AND DEPARTING RUNWAY TWO SIX...  TEST...  SESSION ON TFL / VIRGIN XL JOINFS SERVER. SESSION ON TFL FSX MULTIPLAYER SERVER. FIELD IS IFR ONLY. NO EMERGENCIES...  ADVISE CONTROLLER ON INITIAL CONTACT THAT YOU HAVE INFORMATION ALPHA... ')
