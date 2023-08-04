@@ -45,7 +45,7 @@ class GetAirportResponse extends ResponseFactory implements Reusable
         );
 
         return Response::create('GetAirport')
-            ->description('Get Airport information')
+            ->description('Response for successful retrieval of an airport.')
             ->content(MediaType::json()->schema($response));
     }
 }

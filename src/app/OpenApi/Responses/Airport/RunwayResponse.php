@@ -28,7 +28,7 @@ class RunwayResponse extends ResponseFactory implements Reusable
         );
 
         return Response::create('GetAirportRunways')
-            ->description('Get Airport Runways information')
+            ->description('Response for successful retrieval of an airport runways.')
             ->content(MediaType::json()->schema($response));
     }
 }
