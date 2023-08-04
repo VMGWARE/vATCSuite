@@ -11,9 +11,11 @@ use Illuminate\Http\JsonResponse;
 class HealthCheckController extends Controller
 {
     /**
-     * API Health Check
+     * API Health Check.
      *
-     * @return JsonResponse
+     * Checks the health status of the API and its dependencies, returning a JSON response with the results.
+     *
+     * @return JsonResponse Returns a JSON response containing the API health status and information.
      */
     #[OpenApi\Operation(tags: ['Utilities'])]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\Utilities\HealthCheck\ErrorResponse::class, statusCode: 503)]
