@@ -32,7 +32,7 @@ body:
       label: Version
       description: What version of our code are you running?
       options:
-        - 1.0.0 (Default)
+        - ${{ steps.set_versions.outputs.versions }}
     validations:
       required: true
   - type: dropdown
@@ -45,6 +45,7 @@ body:
         - Chrome
         - Safari
         - Microsoft Edge
+        - Other
   - type: textarea
     id: logs
     attributes:

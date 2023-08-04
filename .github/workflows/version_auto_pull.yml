@@ -1,0 +1,22 @@
+name: "Version Auto Pull"
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  update_versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set Versions
+        id: set_versions
+        run: |
+          TAGS=$(git tag)
+          VERSIONS=""
+          for tag in $TAGS; do
+            VERSIONS="${VERSIONS} - $tag\n"
+          done
+          echo "::set-output name=versions::$VERSIONS"
