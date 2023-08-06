@@ -7,9 +7,9 @@ return [
         'default' => [
 
             'info' => [
-                'title' => "vATC Suite API",
+                'title' => "vATC Suite",
                 'description' => 'vATC Suite provides virtual air traffic controllers with essential tools like
-                ATIS and AWOS generation to enhance realism in online flying networks.',
+                ATIS and AWOS generation to enhance realism in online flying networks.<hr>',
                 'version' => config('app.version'),
                 'contact' => [
                     'name' => 'The vATC Suite Team',
@@ -61,6 +61,10 @@ return [
                     'name' => 'Utilities',
                     'description' => 'Endpoints for getting information about the API.',
                 ],
+                [
+                    'name' => 'Miscellaneous',
+                    'description' => 'Miscellaneous endpoints, that do not fit into any other category.',
+                ]
             ],
 
             'security' => [
