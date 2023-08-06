@@ -14,12 +14,12 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 class TextToSpeechController extends Controller
 {
     /**
-     * Get Airport TTS.
+     * Get Airport TTS (Text-to-Speech).
      *
-     * Gets a link to a mp3 text-to-speech file for an airport and returns it in a JSON response.
+     * Retrieves a link to an MP3 text-to-speech file for an airport using its ICAO code and ID, returning it in a JSON response.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param Request $request The HTTP request containing the 'icao' and 'id' parameters.
+     * @return JsonResponse Returns a JSON response containing the link to the TTS audio file.
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetTextToSpeechParameters::class)]
@@ -73,9 +73,9 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Generate Airport TTS.
+     * Generate Airport TTS (Text-to-Speech)
      *
-     * Generates a mp3 text-to-speech file for an airport and returns a link to it.
+     * Generates a link to an MP3 ATIS text-to-speech file for an airport using its ICAO code and ID
      *
      * @param Request $request
      * @return JsonResponse
@@ -201,7 +201,7 @@ class TextToSpeechController extends Controller
 
             // Store the file url in the database, add the url to the response
             $atis_file->url = url($file_url);
-            
+
             // Set the expiration date to 2 hours from now
             $atis_file->expires_at = now()->addHours(2);
             $atis_file->update();
@@ -229,12 +229,12 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Delete Airport TTS.
+     * Delete Airport TTS (Text-to-Speech).
      *
-     * Deletes a mp3 text-to-speech file for an airport.
+     * Deletes an MP3 text-to-speech file for an airport using its ID and password (if required).
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param Request $request The HTTP request containing the 'id' and 'password' (optional) parameters.
+     * @return JsonResponse Returns a JSON response indicating the success or failure of the delete operation.
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\TTS\DeleteParameters::class)]

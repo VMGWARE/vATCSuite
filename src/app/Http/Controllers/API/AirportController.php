@@ -21,12 +21,12 @@ use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
 class AirportController extends Controller
 {
     /**
-     * Get Airport.
+     * Get Airport Information.
      *
-     * Gets an airport from the database and returns it in a JSON response.
+     * Retrieves detailed information about an airport using its ICAO code and returns it in a JSON response.
      *
-     * @param string $icao The ICAO code of the airport to get.
-     * @return JsonResponse
+     * @param string $icao The ICAO code of the airport to fetch information for.
+     * @return JsonResponse Returns a JSON response containing the airport information.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
@@ -78,8 +78,9 @@ class AirportController extends Controller
     /**
      * Get All Airports.
      *
-     * Gets all airports in the database and returns them in a JSON response.
-     * @return JsonResponse
+     * Retrieves a list of all airports from the database and returns them in a JSON response.
+     *
+     * @return JsonResponse Returns a JSON response containing the list of airports.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Response(factory: GetAllAirportsResponse::class, statusCode: 200)]
@@ -97,10 +98,10 @@ class AirportController extends Controller
     /**
      * Get Airport Runways.
      *
-     * Gets the runways for an airport and returns them in a JSON response.
+     * Retrieves the runways information for an airport using its ICAO code and returns them in a JSON response.
      *
-     * @param string $icao The ICAO code of the airport to get runways for.
-     * @return JsonResponse
+     * @param string $icao The ICAO code of the airport to fetch runways information for.
+     * @return JsonResponse Returns a JSON response containing the runways information.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
@@ -151,7 +152,7 @@ class AirportController extends Controller
     /**
      * Get Airport ATIS.
      *
-     * Gets the ATIS for an airport and returns it in a JSON response.
+     * Returns ATIS for the specified airport in spoken and text format
      *
      * @param string $icao The ICAO code of the airport to get the ATIS for.
      * @param Request $request
@@ -278,10 +279,10 @@ class AirportController extends Controller
     /**
      * Get Airport METAR.
      *
-     * Gets the METAR for an airport and returns it in a JSON response.
+     * Retrieves the METAR (Meteorological Aerodrome Report) for an airport using its ICAO code and returns it in a JSON response.
      *
-     * @param string $icao The ICAO code of the airport to get the METAR for.
-     * @return JsonResponse
+     * @param string $icao The ICAO code of the airport to fetch METAR for.
+     * @return JsonResponse Returns a JSON response containing the METAR data.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]

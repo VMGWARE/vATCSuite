@@ -33,6 +33,7 @@ class GenerateAtisRequestBody extends RequestBodyFactory
             Schema::string('output-type')
                 ->description('The output type.')
                 ->example('atis')
+                ->enum('atis', 'awos')
                 ->required(),
             Schema::boolean('override_runways')
                 ->description('Disable the requirement for a runway to be selected.')

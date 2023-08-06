@@ -14,23 +14,27 @@ class AtisResponse extends ResponseFactory implements Reusable
     {
         $response = Schema::object()->properties(
             Schema::string('status')
-                ->example('success'),
+                ->example('success')
+                ->enum('success', 'error')
+                ->description('Status of the response. Can be either "success" or "error".'),
             Schema::string('message')
-                ->example('ATIS generated successfully.'),
+                ->example('ATIS generated successfully.')
+                ->description('A human-readable message providing additional information about the response.'),
             Schema::integer('code')
-                ->example(200),
+                ->example(200)
+                ->description('An optional status code for the response. It typically indicates the HTTP status code.'),
             Schema::object('data')->properties(
                 Schema::string('spoken')
-                    ->example('JACKSONVILLE INTERNATIONAL AIRPORT INFORMATION ALPHA...  ONE THREE FIVE SIX ZULU...  WINND TWO FOUR ZERO AT SIX KNOTS...  VISIBILITY 10 OR MORE MILES...  CEILING TWO FIVE THOUSAND BROKEN...  TEMPERATURE TWO FIVE, DEWPOINT ONE SEVEN...  ALTIMETER TWO NINER NINER FOUR, QNH ONE ZERO ONE FOUR...  SIMULTANEOUS ILS AND VISUAL APPROACHES IN USE...  LANDING AND DEPARTING RUNWAY TWO SIX...  TEST...  SESSION ON TFL / VIRGIN XL JOINFS SERVER. SESSION ON TFL FSX MULTIPLAYER SERVER. FIELD IS IFR ONLY. NO EMERGENCIES...  ADVISE CONTROLLER ON INITIAL CONTACT THAT YOU HAVE INFORMATION ALPHA... ')
+                    ->example('JACKSONVILLE INTERNATIONAL AIRPORT INFORMATION ALPHA...')
                     ->description('Spoken ATIS text.'),
                 Schema::string('text')
-                    ->example('JACKSONVILLE INTERNATIONAL AIRPORT INFORMATION A...  1356Z...  WIND 240 AT 6 KNOTS...  VISIBILITY 10 OR MORE MILES...  CEILING 25000 BROKEN...  TEMPERATURE 25, DEWPOINT 17...  ALTIMETER 2994, QNH 1014...  SIMULTANEOUS ILS AND VISUAL APPROACHES IN USE...  LANDING AND DEPARTING RUNWAY 26...  TEST...  SESSION ON TFL / VIRGIN XL JOINFS SERVER. SESSION ON TFL FSX MULTIPLAYER SERVER. FIELD IS IFR ONLY. NO EMERGENCIES...  ADVISE CONTROLLER ON INITIAL CONTACT THAT YOU HAVE INFORMATION A... ')
+                    ->example('JACKSONVILLE INTERNATIONAL AIRPORT INFORMATION A...')
                     ->description('Raw ATIS text, without any formatting or converting of letters to words.'),
             )
         );
 
         return Response::create('AtisSuccess')
-            ->description('Successful ATIS text generation.')
+            ->description('Response for successful ATIS text generation.')
             ->content(MediaType::json()->schema($response));
     }
 }
