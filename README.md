@@ -1,4 +1,4 @@
-# vATC Suite
+# vATC Suite - Essential ATC Tools for Virtual Skies
 
 [![License: CC BY-NC-SA 4.0][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
