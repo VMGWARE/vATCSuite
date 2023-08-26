@@ -621,9 +621,6 @@ class AtisGenerator
             return false;
         }
 
-        // ddd($parts, sizeof($parts));
-
-        // If $parts contains ils, then the airport has ils approaches
         if (sizeof($parts) == 1) {
             $this->parts["approaches"] = $parts[0] . " approaches in use";
 
