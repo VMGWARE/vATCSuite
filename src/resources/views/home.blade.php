@@ -75,11 +75,11 @@
                         <label class="form-label">4. Select Approaches (optional)</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="checkbox" class="form-check-input" id="ils" name="approaches[]">
+                        <input type="checkbox" class="form-check-input" id="ils" name="approaches[]" value="ils">
                         <label class="form-check-label" for="ils">ILS Approaches</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="checkbox" class="form-check-input" id="visual" name="approaches[]">
+                        <input type="checkbox" class="form-check-input" id="visual" name="approaches[]" value="visual">
                         <label class="form-check-label" for="visual">Visual Approaches</label>
                     </div>
                 </div>

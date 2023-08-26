@@ -237,7 +237,8 @@ class AirportController extends Controller
             remarks1: $request->remarks1,
             remarks2: $request->remarks2,
             override_runways: $request->override_runways,
-            output_type: $request['output-type']
+            output_type: $request['output-type'],
+            approaches: $request->approaches,
         );
         $text_atis = new AtisGenerator(
             $icao,
@@ -247,7 +248,8 @@ class AirportController extends Controller
             remarks1: $request->remarks1,
             remarks2: $request->remarks2,
             override_runways: $request->override_runways,
-            output_type: $request['output-type']
+            output_type: $request['output-type'],
+            approaches: $request->approaches,
         );
 
         // Generate the ATIS
