@@ -18,6 +18,7 @@ class AtisGenerator
     private array $parts = array();
     private mixed $override_runways;
     private mixed $output_type;
+    private array $approaches;
     private array $weather_codes  = array(
         "VA"        => "volcanic ash",
         "HZ"        => "haze",
@@ -72,7 +73,7 @@ class AtisGenerator
     private array $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
 
 
-    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null, $output_type = null)
+    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null, $output_type = null, $approaches = [])
     {
         $this->icao                 = strtoupper($icao);
         $this->ident                = $ident;
@@ -83,6 +84,7 @@ class AtisGenerator
         $this->override_runways     = $override_runways;
         $this->metar    = explode(" ", Helpers::fetch_metar($this->icao));
         $this->output_type          = $output_type;
+        $this->approaches          = $approaches;
     }
 
     /**
@@ -155,10 +157,9 @@ class AtisGenerator
         if (isset($this->parts["atis_ident"])) {
             return false;
         }
-        if($this->output_type == "awos"){
+        if ($this->output_type == "awos") {
             $this->parts["atis_ident"] = " automated weather observation";
-        }
-        else{
+        } else {
             $this->parts["atis_ident"] = " information " . $this->spoken($this->ident, false, $speak);
         }
         return true;
@@ -620,15 +621,18 @@ class AtisGenerator
             return false;
         }
 
+        // ddd($parts, sizeof($parts));
+
+        // If $parts contains ils, then the airport has ils approaches
         if (sizeof($parts) == 1) {
             $this->parts["approaches"] = $parts[0] . " approaches in use";
 
             return true;
+        } else {
+            $this->parts["approaches"] = "simultaneous ils and visual approaches in use";
+
+            return true;
         }
-
-        $this->parts["approaches"] = "simultaneous ils and visual approaches in use";
-
-        return true;
     }
 
     /**
@@ -775,7 +779,7 @@ class AtisGenerator
                 next($metar);
             }
 
-            $this->approaches(array("ils", "visual"));
+            $this->approaches($this->approaches);
             $this->runways($this->landing_runways, $this->departing_runways, $speak);
             $this->remarks1($this->remarks1);
             $this->remarks2($this->remarks2);
