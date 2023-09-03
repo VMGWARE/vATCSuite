@@ -14,13 +14,18 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 class TextToSpeechController extends Controller
 {
     /**
-     * Get a link to an Airport TTS (Text-to-Speech) file.
+     * Retrieve the URL for an Airport TTS (Text-to-Speech) audio file.
      *
-     * Retrieves a link to an MP3 text-to-speech file for an airport using its ICAO code and ID, returning it in a JSON response.
-     * If you are looking to generate a new ATIS audio file, go down to the 'Generate an Airport TTS (Text-to-Speech) file' section.
+     * This method is responsible for fetching the URL of a TTS audio file associated with an airport. 
+     * To identify the correct file, it uses the provided ICAO code and ID from the HTTP request.
+     * In the event the desired TTS audio file doesn't exist, an error response is returned.
+     * If you need to create a new ATIS audio file, please refer to the documentation under the 'Generate an Airport TTS (Text-to-Speech) file' section.
      *
-     * @param Request $request The HTTP request containing the 'icao' and 'id' parameters.
-     * @return JsonResponse Returns a JSON response containing the link to the TTS audio file.
+     * @param Request $request An instance of the HTTP request which should contain both 'icao' and 'id' parameters.
+     * @return JsonResponse A JSON response. It can be:
+     *                      1. A success response with the audio file details.
+     *                      2. An error response indicating an invalid ICAO code.
+     *                      3. An error response indicating the ATIS audio file was not found.
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetTextToSpeechParameters::class)]
@@ -74,12 +79,22 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Generate the Airport TTS (Text-to-Speech) file.
+     * Generate the Airport TTS (Text-to-Speech) audio file.
      *
-     * Generates the MP3 text-to-speech file for an airport using its ICAO code, ATIS, and ATIS identifier, returning it in a JSON response.
+     * This method handles the creation of a TTS audio file for an airport. It requires the ICAO code, ATIS, 
+     * and the ATIS identifier to generate the MP3 audio file. Once generated, the audio file's details are returned in a JSON response.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param Request $request An instance of the HTTP request which should contain:
+     *                          - 'icao': The International Civil Aviation Organization (ICAO) code for the airport.
+     *                          - 'atis': The Automated Terminal Information Service (ATIS) for the airport.
+     *                          - 'ident': The identifier for the ATIS.
+     * @return JsonResponse A JSON response that can indicate:
+     *                      1. A success response after successfully generating the audio file.
+     *                      2. An error response if the provided ICAO code is invalid.
+     *                      3. An error response if required parameters are missing.
+     *                      4. An error response if the ATIS audio file already exists.
+     *                      5. An error response for issues with the VoiceRSS API.
+     *                      6. An error response if the generated audio file cannot be saved.
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
@@ -230,12 +245,19 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Delete the Airport TTS (Text-to-Speech) file.
+     * Delete a specific Airport TTS (Text-to-Speech) audio file.
      *
-     * Deletes an MP3 text-to-speech file for an airport using its ID and password (if required).
+     * This method facilitates the removal of a TTS audio file linked to an airport. The file to be deleted 
+     * is identified using its unique ID, and if the file is password-protected, the correct password must also be provided.
      *
-     * @param Request $request The HTTP request containing the 'id' and 'password' (optional) parameters.
-     * @return JsonResponse Returns a JSON response indicating the success or failure of the delete operation.
+     * @param Request $request An instance of the HTTP request which should contain:
+     *                          - 'id': The unique identifier for the ATIS audio file.
+     *                          - 'password': (optional) The password for the file if it's password-protected.
+     * @return JsonResponse A JSON response that can indicate:
+     *                      1. A success response after successfully deleting the audio file.
+     *                      2. An error response if the ID isn't provided.
+     *                      3. An error response if the ATIS audio file isn't found.
+     *                      4. An error response if the provided password is incorrect.
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\TTS\DeleteParameters::class)]
