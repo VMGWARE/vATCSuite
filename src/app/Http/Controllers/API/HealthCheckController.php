@@ -11,11 +11,28 @@ use Illuminate\Http\JsonResponse;
 class HealthCheckController extends Controller
 {
     /**
-     * API Health Check.
+     * API Health Check Endpoint.
      *
-     * Checks the health status of the API and its dependencies, returning a JSON response with the results.
+     * This method provides an endpoint to verify the health status of the API and its underlying infrastructure. It checks 
+     * various dependencies such as the database and storage capabilities, reports on the available disk space, latency, 
+     * and API version details. Based on these checks, it will return a status indicating the health of the API.
      *
-     * @return JsonResponse Returns a JSON response containing the API health status and information.
+     * Key Return Values:
+     * - 'OK': Indicates that the component or dependency is functioning correctly.
+     * - 'Error': Signifies that there's an issue with that particular component or dependency.
+     *
+     * @return JsonResponse A structured JSON response containing:
+     *                      - 'status': Overall health status of the API, either 'ok' or 'error'.
+     *                      - 'code': HTTP status code, either 200 (OK) or 503 (Service Unavailable).
+     *                      - 'message': A brief message indicating the status of the API.
+     *                      - 'data': An array of diagnostic information including:
+     *                                 * 'uptime': The uptime of the service (To be implemented).
+     *                                 * 'timestamp': Current timestamp.
+     *                                 * 'app_version': The version of the application.
+     *                                 * 'api_version': The version of the API being used.
+     *                                 * 'diskspace': Percentage of free disk space.
+     *                                 * 'latency': Time taken for the request to be processed.
+     *                                 * 'dependencies': An array reporting the status of various dependencies.
      */
     #[OpenApi\Operation(tags: ['Utilities'])]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\Utilities\HealthCheck\ErrorResponse::class, statusCode: 503)]
