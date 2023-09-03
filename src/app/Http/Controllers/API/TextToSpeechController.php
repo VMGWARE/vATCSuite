@@ -14,7 +14,7 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 class TextToSpeechController extends Controller
 {
     /**
-     * Get Airport TTS (Text-to-Speech).
+     * Get a link to an Airport TTS (Text-to-Speech) file.
      *
      * Retrieves a link to an MP3 text-to-speech file for an airport using its ICAO code and ID, returning it in a JSON response.
      *
@@ -73,9 +73,9 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Generate Airport TTS (Text-to-Speech)
+     * Generate the Airport TTS (Text-to-Speech) file.
      *
-     * Generates a link to an MP3 ATIS text-to-speech file for an airport using its ICAO code and ID
+     * Generates the MP3 text-to-speech file for an airport using its ICAO code, ATIS, and ATIS identifier, returning it in a JSON response.
      *
      * @param Request $request
      * @return JsonResponse
