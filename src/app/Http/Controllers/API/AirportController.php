@@ -21,12 +21,24 @@ use App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse;
 class AirportController extends Controller
 {
     /**
-     * Get Airport Information.
+     * Airport Information Retrieval Endpoint.
      *
-     * Retrieves detailed information about an airport using its ICAO code and returns it in a JSON response.
+     * This method provides an endpoint to fetch detailed information about an airport based on its ICAO code. In addition 
+     * to basic airport details, the method attempts to fetch and provide the METAR data for the given airport, which includes 
+     * current weather conditions. Additionally, based on the METAR wind data, it provides information on the relevant runways 
+     * at the airport.
      *
-     * @param string $icao The ICAO code of the airport to fetch information for.
-     * @return JsonResponse Returns a JSON response containing the airport information.
+     * @param string $icao The ICAO code representing the airport. This should be a valid four-character ICAO identifier.
+     *
+     * @return JsonResponse A structured JSON response containing:
+     *                      - 'status': Indicates the result of the request, either 'success' or 'error'.
+     *                      - 'message': A brief description about the outcome of the request.
+     *                      - 'code': HTTP status code reflecting the result.
+     *                      - 'data': An array of information about the airport including:
+     *                                 * 'airport': Detailed information about the airport fetched from the database.
+     *                                 * 'metar': The METAR data for the given airport, containing weather conditions.
+     *                                 * 'wind': An array containing wind speed and direction.
+     *                                 * 'runways': A list of relevant runways based on wind direction.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
@@ -76,11 +88,17 @@ class AirportController extends Controller
     }
 
     /**
-     * Get All Airports.
+     * Fetch All Airports Endpoint.
      *
-     * Retrieves a list of all airports from the database and returns them in a JSON response.
+     * This endpoint retrieves a comprehensive list of all airports stored in the database. For improved readability 
+     * and compactness, the timestamps (i.e., 'created_at' and 'updated_at') associated with each airport record are 
+     * excluded from the response.
      *
-     * @return JsonResponse Returns a JSON response containing the list of airports.
+     * @return JsonResponse A structured JSON response containing:
+     *                      - 'status': Always 'success' for this endpoint given its nature.
+     *                      - 'message': A brief description of the outcome, indicating successful retrieval.
+     *                      - 'code': HTTP status code, 200 indicating success.
+     *                      - 'data': An array of airports, each with its attributes minus the timestamps.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Response(factory: GetAllAirportsResponse::class, statusCode: 200)]
@@ -96,12 +114,20 @@ class AirportController extends Controller
     }
 
     /**
-     * Get Airport Runways.
+     * Fetch Airport Runways Endpoint.
      *
-     * Retrieves the runways information for an airport using its ICAO code and returns them in a JSON response.
+     * This endpoint fetches runway information for a specified airport using its ICAO code. It makes use of METAR 
+     * data to assist in providing detailed runway info.
+     * 
+     * Note: The METAR data is essential for fetching detailed runway information. If METAR data isn't available, 
+     * the response will reflect that.
      *
-     * @param string $icao The ICAO code of the airport to fetch runways information for.
-     * @return JsonResponse Returns a JSON response containing the runways information.
+     * @param string $icao The ICAO code of the desired airport.
+     * @return JsonResponse A structured JSON response containing:
+     *                      - 'status': Can be 'success' if retrieval was successful or 'error' otherwise.
+     *                      - 'message': A brief description of the outcome.
+     *                      - 'code': HTTP status code, which varies based on the outcome.
+     *                      - 'data': The runway information or null if an error occurred.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
@@ -150,13 +176,28 @@ class AirportController extends Controller
     }
 
     /**
-     * Get Airport ATIS.
-     *
-     * Returns ATIS for the specified airport in spoken and text format
-     *
-     * @param string $icao The ICAO code of the airport to get the ATIS for.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieve ATIS Information for the Specified Airport.
+     * 
+     * This method generates and returns the ATIS (Automatic Terminal Information Service) 
+     * information for an airport identified by its ICAO code. The ATIS data is provided 
+     * in two formats: spoken and text. Input parameters, such as the airport's ICAO code 
+     * and related request details (e.g., landing and departing runways, remarks), drive 
+     * the generation of the ATIS.
+     * 
+     * @param string $icao     The ICAO code for which to generate the ATIS.
+     * @param Request $request Contains various parameters necessary for ATIS generation 
+     *                         such as selected runways, remarks, and more.
+     * 
+     * @return JsonResponse    A JSON formatted response which contains the generated ATIS 
+     *                         data in both spoken and text formats.
+     * 
+     * @throws ValidationException If the provided ICAO code or any other required parameter is invalid.
+     * 
+     * @see AtisGenerator For details on how ATIS is generated.
+     * 
+     * @apiNote Ensure that the ICAO code and other request details are valid before making 
+     *          the request. In the event of any error, appropriate status and error messages 
+     *          will be returned.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
@@ -279,16 +320,27 @@ class AirportController extends Controller
     }
 
     /**
-     * Get Airport METAR.
-     *
-     * Retrieves the METAR (Meteorological Aerodrome Report) for an airport using its ICAO code and returns it in a JSON response.
-     *
-     * @param string $icao The ICAO code of the airport to fetch METAR for.
-     * @return JsonResponse Returns a JSON response containing the METAR data.
+     * Retrieve METAR Data for the Specified Airport.
+     * 
+     * This method fetches the METAR (Meteorological Aerodrome Report) for an airport, which provides 
+     * current weather conditions at that airport. The report is identified using the airport's ICAO code.
+     * 
+     * @param string $icao     The ICAO code representing the airport for which the METAR data is desired.
+     * 
+     * @return JsonResponse    A JSON formatted response containing either the METAR data or an appropriate error message.
+     * 
+     * @throws ValidationException If the provided ICAO code is invalid.
+     * 
+     * @see Helpers::fetch_metar For details on how METAR data is fetched.
+     * 
+     * @apiNote Ensure the ICAO code is valid and represents a recognized airport before making 
+     *          the request. If METAR data is not available for the specified airport, an error will be returned.
      */
     #[OpenApi\Operation(tags: ['Airport'])]
     #[OpenApi\Parameters(factory: GetAirportParameters::class)]
     #[OpenApi\Response(factory: ErrorValidatingIcaoResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\Airport\MetarResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\Airport\MetarNotFoundResponse::class, statusCode: 404)]
     public function metar(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
@@ -306,7 +358,7 @@ class AirportController extends Controller
         if ($metar == null) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
+                'message' => 'Could not find METAR data for the requested airport.',
                 'code' => 404,
                 'data' => null
             ]);
