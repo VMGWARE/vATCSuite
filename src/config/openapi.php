@@ -51,19 +51,19 @@ return [
             'tags' => [
                 [
                     'name' => 'Airport',
-                    'description' => 'Endpoints for getting airport information like current ATIS and METAR.',
+                    'description' => 'Endpoints related to airport functionalities. This includes retrieving METAR data, ATIS information, runway details, and more.',
                 ],
                 [
                     'name' => 'Text to Speech',
-                    'description' => 'Endpoints for converting text to speech audio files.',
+                    'description' => 'Endpoints dedicated to converting text inputs into spoken word audio files, facilitating audible content for users.',
                 ],
                 [
                     'name' => 'Utilities',
-                    'description' => 'Endpoints for getting information about the API.',
+                    'description' => 'Endpoints providing insights and diagnostic details about the API, its health, version, and other utility functions.',
                 ],
                 [
                     'name' => 'Miscellaneous',
-                    'description' => 'Miscellaneous endpoints, that do not fit into any other category.',
+                    'description' => 'A collection of endpoints serving varied purposes, which don\'t particularly belong to the predefined categories.',
                 ]
             ],
 
