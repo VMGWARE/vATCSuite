@@ -188,8 +188,8 @@ class TextToSpeechController extends Controller
             $file_id = $atis_file->id;
 
             // Write the file to the server storage
-            Storage::disk()->put("public/atis/$file_id/$name", $output);
-            $file_url = Storage::url("public/atis/$file_id/$name");
+            Storage::disk()->put("atis/$file_id/$name", $output);
+            $file_url = Storage::url("atis/$file_id/$name");
             if (!$file_url) {
                 // Delete the database entry
                 $atis_file->delete();
@@ -203,7 +203,7 @@ class TextToSpeechController extends Controller
             }
 
             // Validate that the file exists
-            if (!Storage::disk()->exists("public/atis/$file_id/$name")) {
+            if (!Storage::disk()->exists("atis/$file_id/$name")) {
                 // Delete the database entry
                 $atis_file->delete();
 
@@ -216,7 +216,7 @@ class TextToSpeechController extends Controller
             }
 
             // Store the file url in the database, add the url to the response
-            $atis_file->url = Storage::url("public/atis/$file_id/$name");
+            $atis_file->url = Storage::url("atis/$file_id/$name");
 
             // Set the expiration date to 2 hours from now
             $atis_file->expires_at = now()->addHours(2);
@@ -230,7 +230,7 @@ class TextToSpeechController extends Controller
                 'data' => [
                     'id' => $file_id,
                     'name' => $name,
-                    'url' => Storage::url("public/atis/$file_id/$name"),
+                    'url' => Storage::url("atis/$file_id/$name"),
                     'expires_at' => $atis_file->expires_at,
                 ]
             ]);
@@ -308,7 +308,7 @@ class TextToSpeechController extends Controller
         }
 
         // Delete the file from the server
-        Storage::delete('public/atis/' . $id . '/' . $atis_file->file_name);
+        Storage::delete('atis/' . $id . '/' . $atis_file->file_name);
 
         // Delete the database entry
         $atis_file->delete();
