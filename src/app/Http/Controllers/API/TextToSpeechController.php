@@ -188,9 +188,7 @@ class TextToSpeechController extends Controller
             $file_id = $atis_file->id;
 
             // Write the file to the server storage
-            Storage::disk(
-                env('FILESYSTEM_DISK')
-            )->put("public/atis/$file_id/$name", $output);
+            Storage::disk()->put("public/atis/$file_id/$name", $output);
             $file_url = Storage::url("public/atis/$file_id/$name");
             if (!$file_url) {
                 // Delete the database entry
@@ -205,7 +203,7 @@ class TextToSpeechController extends Controller
             }
 
             // Validate that the file exists
-            if (!Storage::disk(env('FILESYSTEM_DISK'))->exists("public/atis/$file_id/$name")) {
+            if (!Storage::disk()->exists("public/atis/$file_id/$name")) {
                 // Delete the database entry
                 $atis_file->delete();
 
