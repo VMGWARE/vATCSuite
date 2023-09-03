@@ -188,7 +188,9 @@ class TextToSpeechController extends Controller
             $file_id = $atis_file->id;
 
             // Write the file to the server storage
-            Storage::disk('local')->put("public/atis/$file_id/$name", $output);
+            Storage::disk(
+                env('FILESYSTEM_DISK')
+            )->put("public/atis/$file_id/$name", $output);
             $file_url = Storage::url("public/atis/$file_id/$name");
             if (!$file_url) {
                 // Delete the database entry
@@ -203,7 +205,7 @@ class TextToSpeechController extends Controller
             }
 
             // Validate that the file exists
-            if (!Storage::disk('local')->exists("public/atis/$file_id/$name")) {
+            if (!Storage::disk(env('FILESYSTEM_DISK'))->exists("public/atis/$file_id/$name")) {
                 // Delete the database entry
                 $atis_file->delete();
 
@@ -216,7 +218,7 @@ class TextToSpeechController extends Controller
             }
 
             // Store the file url in the database, add the url to the response
-            $atis_file->url = url($file_url);
+            $atis_file->url = Storage::url("public/atis/$file_id/$name");
 
             // Set the expiration date to 2 hours from now
             $atis_file->expires_at = now()->addHours(2);
@@ -230,7 +232,7 @@ class TextToSpeechController extends Controller
                 'data' => [
                     'id' => $file_id,
                     'name' => $name,
-                    'url' => url($file_url),
+                    'url' => Storage::url("public/atis/$file_id/$name"),
                     'expires_at' => $atis_file->expires_at,
                 ]
             ]);
