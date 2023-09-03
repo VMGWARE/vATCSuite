@@ -7,9 +7,8 @@ return [
         'default' => [
 
             'info' => [
-                'title' => "vATC Suite",
-                'description' => 'vATC Suite provides virtual air traffic controllers with essential tools like
-                ATIS and AWOS generation to enhance realism in online flying networks.<hr>',
+                'title' => "vATC Suite - Essential ATC Tools for Virtual Skies",
+                'description' => 'vATC Suite equips virtual air traffic controllers with tools essential for generating and delivering crucial airport information, including ATIS broadcasts, AWOS weather reports, and pre-departure clearances, all aimed at augmenting realism in online flying networks.<hr>',
                 'version' => config('app.version'),
                 'contact' => [
                     'name' => 'The vATC Suite Team',
@@ -19,6 +18,7 @@ return [
                 'license' => [
                     'name' => 'CC BY-NC-SA 4.0',
                     'url' => 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                    'description' => 'Distributed under the CC BY-NC-SA 4.0 License. Please note there are additional licensing conditions available in the included LICENSE file.',
                 ],
             ],
 
