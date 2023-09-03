@@ -95,10 +95,10 @@ class ATISAudioFileCrudController extends CrudController
         // Delete the file from the filesystem
         $id = $atisFile->id;
         $name = $atisFile->file_name;
-        Storage::delete('public/atis/' . $id . '/' . $name);
+        Storage::delete('atis/' . $id . '/' . $name);
 
         // Check if the file was deleted
-        if (Storage::exists('public/atis/' . $id . '/' . $name)) {
+        if (Storage::exists('atis/' . $id . '/' . $name)) {
             abort(500);
         }
 

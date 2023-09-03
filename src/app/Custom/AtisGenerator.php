@@ -18,7 +18,7 @@ class AtisGenerator
     private array $parts = array();
     private mixed $override_runways;
     private mixed $output_type;
-    private array $approaches;
+    private mixed $approaches;
     private array $weather_codes  = array(
         "VA"        => "volcanic ash",
         "HZ"        => "haze",
