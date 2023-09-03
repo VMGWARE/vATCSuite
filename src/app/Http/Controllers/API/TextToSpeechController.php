@@ -183,6 +183,12 @@ class TextToSpeechController extends Controller
             $atis_file->atis = $atis;
             $atis_file->zulu = $zulu;
             $atis_file->file_name = $name;
+            $atis_file->storage_location = env('FILESYSTEM_DRIVER', 'local');
+            if (strpos($atis, 'AUTOMATED WEATHER OBSERVATION') !== false) {
+                $atis_file->output_type = 'AWOS';
+            } else {
+                $atis_file->output_type = 'ATIS';
+            }
             $atis_file->save();
 
             $file_id = $atis_file->id;
