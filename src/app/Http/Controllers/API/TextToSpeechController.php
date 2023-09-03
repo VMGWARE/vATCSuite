@@ -17,6 +17,7 @@ class TextToSpeechController extends Controller
      * Get a link to an Airport TTS (Text-to-Speech) file.
      *
      * Retrieves a link to an MP3 text-to-speech file for an airport using its ICAO code and ID, returning it in a JSON response.
+     * If you are looking to generate a new ATIS audio file, go down to the 'Generate an Airport TTS (Text-to-Speech) file' section.
      *
      * @param Request $request The HTTP request containing the 'icao' and 'id' parameters.
      * @return JsonResponse Returns a JSON response containing the link to the TTS audio file.
@@ -229,7 +230,7 @@ class TextToSpeechController extends Controller
     }
 
     /**
-     * Delete Airport TTS (Text-to-Speech).
+     * Delete the Airport TTS (Text-to-Speech) file.
      *
      * Deletes an MP3 text-to-speech file for an airport using its ID and password (if required).
      *
