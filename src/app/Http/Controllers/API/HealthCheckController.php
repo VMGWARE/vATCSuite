@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 use Illuminate\Http\JsonResponse;
+use App\Custom\Helpers;
 
 #[OpenApi\PathItem]
 class HealthCheckController extends Controller
@@ -76,6 +77,6 @@ class HealthCheckController extends Controller
             ]
         ];
 
-        return response()->json($response);
+        return Helpers::response($response['message'], $response['data'], $response['code'], $response['status']);
     }
 }
