@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
+use Illuminate\Support\Facades\Log;
 
 #[OpenApi\PathItem]
 class TextToSpeechController extends Controller
@@ -96,6 +97,7 @@ class TextToSpeechController extends Controller
      *                      4. An error response if the ATIS audio file already exists.
      *                      5. An error response for issues with the VoiceRSS API.
      *                      6. An error response if the generated audio file cannot be saved.
+     * @throws \Exception
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
     #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
@@ -163,87 +165,90 @@ class TextToSpeechController extends Controller
 
         // Initialize the TextToSpeech class
         $tts = new TextToSpeech($atis, 'en-us', 'VoiceRSS');
-        $output = $tts->generateAudio();
-
-        if ($output) {
-            // Define some variables
-            $zulu = gmdate("dHi");
-            $icao = strtoupper($icao);
-            $ident = strtoupper($ident);
-            $name = $icao . "_ATIS_" . $ident . "_" . $zulu . "Z.mp3";
-
-            // Create the database entry
-            $atis_file = new ATISAudioFile;
-            $atis_file->icao = $icao;
-            $atis_file->ident = $ident;
-            $atis_file->atis = $atis;
-            $atis_file->zulu = $zulu;
-            $atis_file->file_name = $name;
-            $atis_file->storage_location = env('FILESYSTEM_DRIVER', 'local');
-            if (strpos($atis, 'AUTOMATED WEATHER OBSERVATION') !== false) {
-                $atis_file->output_type = 'AWOS';
-            } else {
-                $atis_file->output_type = 'ATIS';
-            }
-            $atis_file->save();
-
-            $file_id = $atis_file->id;
-
-            // Write the file to the server storage
-            Storage::disk()->put("atis/$file_id/$name", $output);
-            $file_url = Storage::url("atis/$file_id/$name");
-            if (!$file_url) {
-                // Delete the database entry
-                $atis_file->delete();
-
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Could not generate ATIS audio file.',
-                    'code' => 422,
-                    'data' => null
-                ]);
-            }
-
-            // Validate that the file exists
-            if (!Storage::disk()->exists("atis/$file_id/$name")) {
-                // Delete the database entry
-                $atis_file->delete();
-
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Could not generate ATIS audio file.',
-                    'code' => 422,
-                    'data' => null
-                ]);
-            }
-
-            // Store the file url in the database, add the url to the response
-            $atis_file->url = Storage::url("atis/$file_id/$name");
-
-            // Set the expiration date to 2 hours from now
-            $atis_file->expires_at = now()->addHours(2);
-            $atis_file->update();
+        try {
+            $output = $tts->generateAudio();
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
             // Return the response
             return response()->json([
-                'status' => 'success',
-                'message' => 'ATIS generated successfully.',
-                'code' => 200,
-                'data' => [
-                    'id' => $file_id,
-                    'name' => $name,
-                    'url' => Storage::url("atis/$file_id/$name"),
-                    'expires_at' => $atis_file->expires_at,
-                ]
-            ]);
-        } else {
-            return response()->json([
                 'status' => 'error',
-                'message' => 'Could not generate ATIS audio file.',
+                'message' => 'There was an error generating the ATIS audio file.',
                 'code' => 500,
                 'data' => null
             ]);
         }
+
+        // Define some variables
+        $zulu = gmdate("dHi");
+        $icao = strtoupper($icao);
+        $ident = strtoupper($ident);
+        $name = $icao . "_ATIS_" . $ident . "_" . $zulu . "Z.mp3";
+
+        // Create the database entry
+        $atis_file = new ATISAudioFile;
+        $atis_file->icao = $icao;
+        $atis_file->ident = $ident;
+        $atis_file->atis = $atis;
+        $atis_file->zulu = $zulu;
+        $atis_file->file_name = $name;
+        $atis_file->storage_location = env('FILESYSTEM_DRIVER', 'local');
+        if (strpos($atis, 'AUTOMATED WEATHER OBSERVATION') !== false) {
+            $atis_file->output_type = 'AWOS';
+        } else {
+            $atis_file->output_type = 'ATIS';
+        }
+        $atis_file->save();
+
+        $file_id = $atis_file->id;
+
+        // Write the file to the server storage
+        Storage::disk()->put("atis/$file_id/$name", $output);
+        $file_url = Storage::url("atis/$file_id/$name");
+        if (!$file_url) {
+            // Delete the database entry
+            $atis_file->delete();
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not generate ATIS audio file.',
+                'code' => 422,
+                'data' => null
+            ]);
+        }
+
+        // Validate that the file exists
+        if (!Storage::disk()->exists("atis/$file_id/$name")) {
+            // Delete the database entry
+            $atis_file->delete();
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Could not generate ATIS audio file.',
+                'code' => 422,
+                'data' => null
+            ]);
+        }
+
+        // Store the file url in the database, add the url to the response
+        $atis_file->url = Storage::url("atis/$file_id/$name");
+
+        // Set the expiration date to 2 hours from now
+        $atis_file->expires_at = now()->addHours(2);
+        $atis_file->update();
+
+        // Return the response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ATIS generated successfully.',
+            'code' => 200,
+            'data' => [
+                'id' => $file_id,
+                'name' => $name,
+                'url' => Storage::url("atis/$file_id/$name"),
+                'expires_at' => $atis_file->expires_at,
+            ]
+        ]);
     }
 
     /**
