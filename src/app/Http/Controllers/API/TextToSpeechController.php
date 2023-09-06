@@ -107,6 +107,7 @@ class TextToSpeechController extends Controller
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorWithVoiceAPIResponse::class, statusCode: 500)]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorGeneratingResponse::class, statusCode: 422)]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\SuccessResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\VoiceAPIConfigurationDependencyFailedResponse::class, statusCode: 424)]
     public function generate(Request $request): JsonResponse
     {
         // Get the request parameters
@@ -150,21 +151,27 @@ class TextToSpeechController extends Controller
             ]);
         }
 
-        // Create the atis audio file
+        // API Details
+        // TODO: This logic should be moved to the Helper class
+        $VoiceEngine = config('app.voice-engine');
         $VOICE_RSS_API_KEY = config('app.voice-rss-key');
+        $ELEVEN_LABS_API_KEY = config('app.eleven-labs-key');
 
-        // Validate the API key
-        if (!isset($VOICE_RSS_API_KEY) || empty($VOICE_RSS_API_KEY)) {
+        // Make sure at least one API key is set
+        if (!isset($VOICE_RSS_API_KEY) && !isset($ELEVEN_LABS_API_KEY)) {
+            Log::error('Your server voice API configuration is incorrect. Please check your .env file.');
+
+            // Return the response
             return response()->json([
                 'status' => 'error',
-                'message' => 'The VoiceRSS API key is not set.',
-                'code' => 500,
+                'message' => 'Server voice API configuration error.',
+                'code' => 424,
                 'data' => null
             ]);
         }
 
         // Initialize the TextToSpeech class
-        $tts = new TextToSpeech($atis, 'en-us', 'VoiceRSS');
+        $tts = new TextToSpeech($atis, 'en-us', $VoiceEngine);
         try {
             $output = $tts->generateAudio();
         } catch (\Exception $e) {
