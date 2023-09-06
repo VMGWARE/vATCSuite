@@ -108,8 +108,8 @@ class TextToSpeech
                 'voice' => 'DefaultVoice',
                 'model_id' => 'eleven_monolingual_v1',
                 'voice_settings' => [
-                    'stability' => 0,
-                    'similarity_boost' => 0,
+                    'stability' => 0.50,
+                    'similarity_boost' => 0.75,
                     'style' => 0,
                     'use_speaker_boost' => true
                 ]
