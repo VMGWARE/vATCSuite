@@ -265,6 +265,8 @@ $(document).ready(function () {
                             );
                         }
 
+                        // TODO: When an error is found here, the modal has a weird issue of not closing the backdrop when the close button is clicked.
+
                         // Display the error message. Assuming ErrorModal is a function you use to show errors
                         $("#atis-output").html(
                             ErrorModal(errorMessage, "atis-modal")
