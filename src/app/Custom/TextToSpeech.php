@@ -41,20 +41,21 @@ class TextToSpeech
      *              - use_speaker_boost: bool (default true), ...
      *      - AnotherTTSAPI (if added later):
      *          - ...
+     * @param array|null $apiKeys (Optional) The API keys for the TTS engines. Keys should be engine names with associated API key as value.
      * @throws Exception If the TTS engine is not supported.
      */
-    public function __construct($text, $language = 'en-us', $engine = 'VoiceRSS', $options = [])
+    public function __construct($text, $language = 'en-us', $engine = 'VoiceRSS', $options = [], $apiKeys = [])
     {
         // Set the properties
         $this->text = $text;
         $this->language = $language;
         $this->engine = $engine;
 
-        // You can store API keys in a config file and access them here
-        $this->API_KEYS = [
+        // Prioritize the provided API keys over the default ones
+        $this->API_KEYS = array_merge([
             'VoiceRSS' => config('app.voice-rss-key'),
             'ElevenLabs' => config('app.eleven-labs-key'),
-        ];
+        ], $apiKeys);
 
         // Voice mapping for Eleven Labs API
         $this->ELEVEN_LABS_VOICE_MAP = [
