@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Custom\Helpers;
+use App\Custom\TextToSpeech;
 use App\Http\Controllers\Controller;
 use App\Models\ATISAudioFile;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class TextToSpeechController extends Controller
     /**
      * Retrieve the URL for an Airport TTS (Text-to-Speech) audio file.
      *
-     * This method is responsible for fetching the URL of a TTS audio file associated with an airport. 
+     * This method is responsible for fetching the URL of a TTS audio file associated with an airport.
      * To identify the correct file, it uses the provided ICAO code and ID from the HTTP request.
      * In the event the desired TTS audio file doesn't exist, an error response is returned.
      * If you need to create a new ATIS audio file, please refer to the documentation under the 'Generate an Airport TTS (Text-to-Speech) file' section.
@@ -81,7 +82,7 @@ class TextToSpeechController extends Controller
     /**
      * Generate the Airport TTS (Text-to-Speech) audio file.
      *
-     * This method handles the creation of a TTS audio file for an airport. It requires the ICAO code, ATIS, 
+     * This method handles the creation of a TTS audio file for an airport. It requires the ICAO code, ATIS,
      * and the ATIS identifier to generate the MP3 audio file. Once generated, the audio file's details are returned in a JSON response.
      *
      * @param Request $request An instance of the HTTP request which should contain:
@@ -159,17 +160,12 @@ class TextToSpeechController extends Controller
                 'data' => null
             ]);
         }
-        $ch = curl_init("https://api.voicerss.org/?key=$VOICE_RSS_API_KEY&hl=en-us&c=MP3&v=John&f=16khz_16bit_stereo&src=" . rawurlencode($atis));
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_NOBODY, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        $output = curl_exec($ch);
-        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        if ($status == 200) {
+
+        // Initialize the TextToSpeech class
+        $tts = new TextToSpeech($atis, 'en-us', 'VoiceRSS');
+        $output = $tts->generateAudio();
+
+        if ($output) {
             // Define some variables
             $zulu = gmdate("dHi");
             $icao = strtoupper($icao);
@@ -243,7 +239,7 @@ class TextToSpeechController extends Controller
         } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Could not generate ATIS using the VoiceRSS API.',
+                'message' => 'Could not generate ATIS audio file.',
                 'code' => 500,
                 'data' => null
             ]);
@@ -253,7 +249,7 @@ class TextToSpeechController extends Controller
     /**
      * Delete a specific Airport TTS (Text-to-Speech) audio file.
      *
-     * This method facilitates the removal of a TTS audio file linked to an airport. The file to be deleted 
+     * This method facilitates the removal of a TTS audio file linked to an airport. The file to be deleted
      * is identified using its unique ID, and if the file is password-protected, the correct password must also be provided.
      *
      * @param Request $request An instance of the HTTP request which should contain:
