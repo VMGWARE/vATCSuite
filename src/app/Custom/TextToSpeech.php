@@ -19,11 +19,25 @@ class TextToSpeech
     /**
      * Create a new TextToSpeech instance.
      *
-     * @param string $text The text to be converted to speech
-     * @param string $language The language of the text
-     * @param string $engine The TTS engine to be used
-     * @param array $options Additional options for the TTS engine
-     * @throws Exception If the TTS engine is not supported
+     * @param string $text The text to be converted to speech.
+     * @param string $language The language of the text (currently only used with VoiceRSS).
+     * @param string $engine The TTS engine to be used ('VoiceRSS', 'ElevenLabs', ...).
+     * @param array $options Additional options for the TTS engine:
+     *      - VoiceRSS:
+     *          - format: 'MP3' (default), ...
+     *          - voice: 'John' (default), ...
+     *          - rate: '16khz_16bit_stereo' (default), ...
+     *      - ElevenLabs:
+     *          - voice: 'DefaultVoice' (default), 'Rachel', 'Clyde', ... (refer to $ELEVEN_LABS_VOICE_MAP)
+     *          - model_id: 'eleven_monolingual_v1' (default), ...
+     *          - voice_settings: 
+     *              - stability: int (default 0), ...
+     *              - similarity_boost: int (default 0), ...
+     *              - style: int (default 0), ...
+     *              - use_speaker_boost: bool (default true), ...
+     *      - AnotherTTSAPI (if added later):
+     *          - ...
+     * @throws Exception If the TTS engine is not supported.
      */
     public function __construct($text, $language = 'en-us', $engine = 'VoiceRSS', $options = [])
     {
@@ -174,36 +188,52 @@ class TextToSpeech
      * Generate the audio file using Eleven Labs.
      *
      * @return bool|string Returns the generated audio data or false on failure
+     * @throws Exception If the API request fails
      */
     private function generateWithElevenLabs()
     {
-        $endpoint = "https://api.elevenlabs.com/v1/text-to-speech/" . $this->ELEVEN_LABS_VOICE_MAP[$this->OPTIONS['voice']];
+        // Voice ID mapped from the voice name provided in options
+        $voiceId = $this->ELEVEN_LABS_VOICE_MAP[$this->OPTIONS['voice']] ?? null;
 
-        $ch = curl_init($endpoint);
+        if (!$voiceId) {
+            throw new Exception('Invalid voice name for Eleven Labs API');
+        }
 
-        $postData = [
-            'text' => $this->text,
-            'model_id' => $this->OPTIONS['model_id'],
-            'voice_settings' => $this->OPTIONS['voice_settings']
+        // Endpoint
+        $url = "https://api.elevenlabs.io/v1/text-to-speech/{$voiceId}";
+
+        // Curl request setup
+        $ch = curl_init($url);
+
+        $headers = [
+            'accept: audio/mpeg',
+            'xi-api-key: ' . $this->API_KEYS['ElevenLabs'],
+            'Content-Type: application/json'
         ];
 
-        curl_setopt($ch, CURLOPT_POST, true);
+        $postData = [
+            "text" => $this->text,
+            "model_id" => $this->OPTIONS['model_id'],
+            "voice_settings" => $this->OPTIONS['voice_settings']
+        ];
+
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'xi-api-key: ' . $this->API_KEYS['ElevenLabs']
-        ]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
         $output = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         curl_close($ch);
 
         if ($status == 200) {
-            return $output;
+            return $output;  // Return the generated audio data
         }
 
-        throw new Exception('Eleven Labs API Error');
+        throw new Exception('Eleven Labs API Error');  // Handle error as per your requirements
     }
+
 
 
     // Implement other TTS engines similarly:
