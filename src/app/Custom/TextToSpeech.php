@@ -121,15 +121,15 @@ class TextToSpeech
     {
         // Generate the audio file using the specified engine
         switch ($this->engine) {
-            // VoiceRSS
+                // VoiceRSS
             case 'VoiceRSS':
                 return $this->generateWithVoiceRSS();
-            // Eleven Labs
+                // Eleven Labs
             case 'ElevenLabs':
                 return $this->generateWithElevenLabs();
                 // case 'AnotherTTSAPI':
                 //     return $this->generateWithAnotherTTSAPI();
-            // Unsupported engine
+                // Unsupported engine
             default:
                 throw new Exception('Unsupported TTS Engine');
         }
