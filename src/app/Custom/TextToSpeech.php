@@ -6,6 +6,10 @@ use Exception;
 
 /**
  * Text to Speech Generator.
+ * 
+ * Supported TTS engines:
+ *     - VoiceRSS   
+ *    - Eleven Labs
  */
 class TextToSpeech
 {
@@ -50,7 +54,6 @@ class TextToSpeech
         $this->API_KEYS = [
             'VoiceRSS' => config('app.voice-rss-key'),
             'ElevenLabs' => config('app.eleven-labs-key'),
-            // 'AnotherTTSAPI' => config('app.another-tts-key'),
         ];
 
         // Voice mapping for Eleven Labs API
@@ -114,7 +117,6 @@ class TextToSpeech
                     'use_speaker_boost' => true
                 ]
             ],
-            // 'AnotherTTSAPI' => [ ... ]
         ];
 
         // Check if the engine is supported
@@ -141,8 +143,6 @@ class TextToSpeech
                 // Eleven Labs
             case 'ElevenLabs':
                 return $this->generateWithElevenLabs();
-                // case 'AnotherTTSAPI':
-                //     return $this->generateWithAnotherTTSAPI();
                 // Unsupported engine
             default:
                 throw new Exception('Unsupported TTS Engine');
@@ -233,9 +233,4 @@ class TextToSpeech
 
         throw new Exception('Eleven Labs API Error');  // Handle error as per your requirements
     }
-
-
-
-    // Implement other TTS engines similarly:
-    // private function generateWithAnotherTTSAPI() { ... }
 }
