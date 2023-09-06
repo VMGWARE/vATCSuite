@@ -100,7 +100,6 @@ class TextToSpeechController extends Controller
      * @throws \Exception
      */
     #[OpenApi\Operation(tags: ['Text to Speech'])]
-    #[OpenApi\Parameters(factory: \App\OpenApi\Parameters\GetAirportParameters::class)]
     #[OpenApi\RequestBody(factory: \App\OpenApi\RequestBodies\TTS\GenerateRequestBody::class)]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorRequestConflictResponse::class, statusCode: 409)]
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\ErrorValidatingIcaoResponse::class, statusCode: 400)]

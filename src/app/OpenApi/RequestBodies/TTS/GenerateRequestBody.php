@@ -12,6 +12,10 @@ class GenerateRequestBody extends RequestBodyFactory
     public function build(): RequestBody
     {
         $response = Schema::object()->properties(
+            Schema::string('icao')
+                ->example('KJAX')
+                ->description('The ATIS ident letter.')
+                ->required(),
             Schema::string('ident')
                 ->example('A')
                 ->description('The ATIS ident letter.')
