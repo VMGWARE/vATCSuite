@@ -45,12 +45,7 @@ class TextToSpeechController extends Controller
             !isset($icao) ||
             !Helpers::validateIcao($icao)
         ) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         // Get the ATIS audio file
@@ -58,26 +53,16 @@ class TextToSpeechController extends Controller
 
         // Check if the ATIS audio file exists
         if ($atis_file == null || !$atis_file->exists()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'ATIS audio file not found.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('ATIS audio file not found.', null, 404, 'error');
         }
 
         // Return the response
-        return response()->json([
-            'status' => 'success',
-            'message' => 'ATIS audio file found.',
-            'code' => 200,
-            'data' => [
-                'id' => $atis_file->id,
-                'name' => $atis_file->file_name,
-                'url' => $atis_file->url,
-                'expires_at' => $atis_file->expires_at,
-            ]
-        ]);
+        return Helpers::response('ATIS audio file found.',  [
+            'id' => $atis_file->id,
+            'name' => $atis_file->file_name,
+            'url' => $atis_file->url,
+            'expires_at' => $atis_file->expires_at,
+        ], 200);
     }
 
     /**
@@ -116,38 +101,23 @@ class TextToSpeechController extends Controller
 
         // Validate the request
         if (!Helpers::validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         // Check if the request has the required parameters, not using request()->validate() for now.
         if (!isset($atis) || !isset($ident) || !isset($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You must provide an ATIS, ATIS identifier, and ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('You must provide an ATIS, ATIS identifier, and ICAO code.', null, 400, 'error');
         }
 
         // Check if the ATIS already exists in the database
         $atis_file = ATISAudioFile::where('icao', $icao)->where('ident', $ident)->where('atis', $atis)->first();
         if ($atis_file != null && $atis_file->exists()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This ATIS audio file already exists.',
-                'code' => 409, // Conflict error code
-                'data' => [
-                    'id' => $atis_file->id,
-                    'name' => $atis_file->file_name,
-                    'url' => $atis_file->url,
-                    'expires_at' => $atis_file->expires_at,
-                ]
-            ]);
+            return Helpers::response('This ATIS audio file already exists.', [
+                'id' => $atis_file->id,
+                'name' => $atis_file->file_name,
+                'url' => $atis_file->url,
+                'expires_at' => $atis_file->expires_at,
+            ], 409, 'error');
         }
 
         // API Details
@@ -161,12 +131,7 @@ class TextToSpeechController extends Controller
             Log::error('Your server voice API configuration is incorrect. Please check your .env file.');
 
             // Return the response
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Server voice API configuration error.',
-                'code' => 424,
-                'data' => null
-            ]);
+            return Helpers::response('Server voice API configuration error.', null, 424, 'error');
         }
 
         // Initialize the TextToSpeech class
@@ -177,12 +142,7 @@ class TextToSpeechController extends Controller
             Log::error($e->getMessage());
 
             // Return the response
-            return response()->json([
-                'status' => 'error',
-                'message' => 'There was an error generating the ATIS audio file.',
-                'code' => 500,
-                'data' => null
-            ]);
+            return Helpers::response('There was an error generating the ATIS audio file.', null, 500, 'error');
         }
 
         // Define some variables
@@ -215,12 +175,7 @@ class TextToSpeechController extends Controller
             // Delete the database entry
             $atis_file->delete();
 
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not generate ATIS audio file.',
-                'code' => 422,
-                'data' => null
-            ]);
+            return Helpers::response('Could not generate ATIS audio file.', null, 422, 'error');
         }
 
         // Validate that the file exists
@@ -228,12 +183,7 @@ class TextToSpeechController extends Controller
             // Delete the database entry
             $atis_file->delete();
 
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not generate ATIS audio file.',
-                'code' => 422,
-                'data' => null
-            ]);
+            return Helpers::response('Could not generate ATIS audio file.', null, 422, 'error');
         }
 
         // Store the file url in the database, add the url to the response
@@ -244,17 +194,12 @@ class TextToSpeechController extends Controller
         $atis_file->update();
 
         // Return the response
-        return response()->json([
-            'status' => 'success',
-            'message' => 'ATIS generated successfully.',
-            'code' => 200,
-            'data' => [
-                'id' => $file_id,
-                'name' => $name,
-                'url' => Storage::url("atis/$file_id/$name"),
-                'expires_at' => $atis_file->expires_at,
-            ]
-        ]);
+        return Helpers::response('ATIS generated successfully.', [
+            'id' => $file_id,
+            'name' => $name,
+            'url' => Storage::url("atis/$file_id/$name"),
+            'expires_at' => $atis_file->expires_at,
+        ], 200);
     }
 
     /**
@@ -286,12 +231,7 @@ class TextToSpeechController extends Controller
 
         // Validate the request
         if (!isset($id)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You must provide an ATIS ID.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('You must provide an ATIS ID.', null, 400, 'error');
         }
 
         // Check if the ATIS audio file exists
@@ -299,24 +239,14 @@ class TextToSpeechController extends Controller
 
         // Check if the ATIS audio file exists
         if ($atis_file == null || !$atis_file->exists()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'ATIS audio file not found.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('ATIS audio file not found.', null, 404, 'error');
         }
 
         // Check if the file requires a password to delete
         if ($atis_file->password != null) {
             // Check if the password is correct
             if (!isset($password) || $password != $atis_file->password) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Incorrect password.',
-                    'code' => 401,
-                    'data' => null
-                ]);
+                return Helpers::response('Incorrect password.', null, 401, 'error');
             }
         }
 
@@ -327,11 +257,6 @@ class TextToSpeechController extends Controller
         $atis_file->delete();
 
         // Return the response
-        return response()->json([
-            'status' => 'success',
-            'message' => 'ATIS audio file deleted successfully.',
-            'code' => 200,
-            'data' => null
-        ]);
+        return Helpers::response('ATIS audio file deleted successfully.', null, 200);
     }
 }
