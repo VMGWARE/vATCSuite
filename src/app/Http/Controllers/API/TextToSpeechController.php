@@ -120,14 +120,8 @@ class TextToSpeechController extends Controller
             ], 409, 'error');
         }
 
-        // API Details
-        // TODO: This logic should be moved to the Helper class
-        $VoiceEngine = config('app.voice-engine');
-        $VOICE_RSS_API_KEY = config('app.voice-rss-key');
-        $ELEVEN_LABS_API_KEY = config('app.eleven-labs-key');
-
         // Make sure at least one API key is set
-        if (!isset($VOICE_RSS_API_KEY) && !isset($ELEVEN_LABS_API_KEY)) {
+        if (!TextToSpeech::hasApiKey()) {
             Log::error('Your server voice API configuration is incorrect. Please check your .env file.');
 
             // Return the response
@@ -135,7 +129,7 @@ class TextToSpeechController extends Controller
         }
 
         // Initialize the TextToSpeech class
-        $tts = new TextToSpeech($atis, 'en-us', $VoiceEngine);
+        $tts = new TextToSpeech($atis, 'en-us', config('app.voice-engine'));
         try {
             $output = $tts->generateAudio();
         } catch (\Exception $e) {

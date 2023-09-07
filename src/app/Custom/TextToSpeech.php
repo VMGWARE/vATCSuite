@@ -280,4 +280,16 @@ class TextToSpeech
 
         return $convertedAudioData;
     }
+
+    /**
+     * Check if the API keys are valid.
+     *
+     * @return bool Returns true if the API keys are valid.
+     */
+    public static function hasApiKey(): bool
+    {
+        $apiKeys = config('app.voice-rss-key') . config('app.eleven-labs-key');
+
+        return !empty($apiKeys);
+    }
 }
