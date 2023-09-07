@@ -3,6 +3,8 @@
 namespace App\Custom;
 
 use Exception;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Audio\Mp3;
 
 /**
  * Text to Speech Generator.
@@ -233,5 +235,49 @@ class TextToSpeech
         }
 
         throw new Exception('Eleven Labs API Error');  // Handle error as per your requirements
+    }
+
+    /**
+     * Convert the provided audio data to MP3. (Beta)
+     *
+     * @param string $audioData The raw audio data.
+     * @param string $outputFormat The desired output format ('mp3', 'wav', etc.)
+     * @return string Returns the converted audio data.
+     * @throws Exception if the conversion fails.
+     */
+    public function convertToFormat(string $audioData, string $outputFormat = 'mp3'): string
+    {
+        // Save the audio data to a temporary file
+        $tempInputFile = tempnam(sys_get_temp_dir(), 'tts_');
+        file_put_contents($tempInputFile, $audioData);
+
+        $tempOutputFile = tempnam(sys_get_temp_dir(), 'tts_converted_');
+
+        // Initialize FFMpeg
+        $ffmpeg = FFMpeg::create();
+
+        // Open the temporary audio file
+        $audio = $ffmpeg->open($tempInputFile);
+
+        // Convert to desired format
+        switch ($outputFormat) {
+            case 'mp3':
+                $format = new Mp3();
+                break;
+                // Add other cases as necessary (e.g., 'wav', 'ogg', etc.)
+            default:
+                throw new Exception("Unsupported output format: $outputFormat");
+        }
+
+        $audio->save($format, $tempOutputFile);
+
+        // Read the converted audio and return
+        $convertedAudioData = file_get_contents($tempOutputFile);
+
+        // Cleanup temporary files
+        unlink($tempInputFile);
+        unlink($tempOutputFile);
+
+        return $convertedAudioData;
     }
 }
