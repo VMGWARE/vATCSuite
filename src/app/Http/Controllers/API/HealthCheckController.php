@@ -93,10 +93,8 @@ class HealthCheckController extends Controller
             $uptime = file_get_contents(base_path('atisgen.txt'));
 
             # Remove the last line break
+            // TODO: Add logic to calculate the uptime
             $uptime = str_replace("\n", '', $uptime);
-
-            # Calculate the uptime
-            $uptime = now()->diffForHumans($uptime, true);
         } catch (\Exception $e) {
             $uptime = 'Unknown';
         }
