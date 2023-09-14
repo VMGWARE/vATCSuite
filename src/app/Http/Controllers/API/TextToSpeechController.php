@@ -94,10 +94,15 @@ class TextToSpeechController extends Controller
     #[OpenApi\Response(factory: \App\OpenApi\Responses\TTS\VoiceAPIConfigurationDependencyFailedResponse::class, statusCode: 424)]
     public function generate(Request $request): JsonResponse
     {
+        // Variables
+        $engine = config('app.voice-engine');
+        $API_KEYS = [];
+
         // Get the request parameters
         $icao = $request->icao;
         $atis = $request->atis;
         $ident = $request->ident;
+        $options = $request->options ?? null;
 
         // Validate the request
         if (!Helpers::validateIcao($icao)) {
@@ -109,9 +114,24 @@ class TextToSpeechController extends Controller
             return Helpers::response('You must provide an ATIS, ATIS identifier, and ICAO code.', null, 400, 'error');
         }
 
+        // Check if custom tts engine info was provided
+        if (isset($options)) {
+            // Check if the custom config is valid
+            if (!TextToSpeech::validateCustomConfig($options)) {
+                return Helpers::response('Invalid custom config.', null, 400, 'error');
+            }
+
+            // Set the API key
+            $API_KEYS[$options['engine']] = $options['api_key'];
+
+            // Set the engine
+            $engine = $options['engine'];
+        }
+
         // Check if the ATIS already exists in the database
-        $atis_file = ATISAudioFile::where('icao', $icao)->where('ident', $ident)->where('atis', $atis)->first();
-        if ($atis_file != null && $atis_file->exists()) {
+        $atis_file = ATISAudioFile::where('icao', $icao)->where('ident', $ident)->where('atis', $atis)->where('custom_atis', false)->first();
+        // Don't through if options are set, as we will always generate a new file if options are set
+        if ($atis_file != null && $atis_file->exists() && !isset($options)) {
             return Helpers::response('This ATIS audio file already exists.', [
                 'id' => $atis_file->id,
                 'name' => $atis_file->file_name,
@@ -121,17 +141,33 @@ class TextToSpeechController extends Controller
         }
 
         // Make sure at least one API key is set
-        if (!TextToSpeech::hasApiKey()) {
+        if (!TextToSpeech::hasApiKey() && !$options) {
             Log::error('Your server voice API configuration is incorrect. Please check your .env file.');
 
             // Return the response
             return Helpers::response('Server voice API configuration error.', null, 424, 'error');
         }
 
-        // Initialize the TextToSpeech class
-        $tts = new TextToSpeech($atis, 'en-us', config('app.voice-engine'));
+        $tts = null;
+        // Check if custom tts engine info was provided
+        if (isset($options)) {
+            // Initialize the TextToSpeech class
+            $tts = new TextToSpeech($atis, 'en-us', $engine, $options, $API_KEYS);
+        } else {
+            // Initialize the TextToSpeech class
+            $tts = new TextToSpeech($atis, 'en-us', $engine);
+        }
+
         try {
             $output = $tts->generateAudio();
+
+            // Check if the output is empty
+            if (empty($output) || $output == "ERROR: The API key is not available!") {
+                Log::error('There was an error generating the ATIS audio file.');
+
+                // Return the response
+                return Helpers::response('There was an error generating the ATIS audio file.', null, 500, 'error');
+            }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
@@ -158,6 +194,7 @@ class TextToSpeechController extends Controller
         } else {
             $atis_file->output_type = 'ATIS';
         }
+        $atis_file->custom_atis = isset($options) ? true : false;
         $atis_file->save();
 
         $file_id = $atis_file->id;
