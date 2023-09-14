@@ -50,6 +50,9 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
     # Install laravel backpack
     ${ARTISAN} backpack:install --no-interaction
+
+    # Write to a file the current time
+    date > atisgen.txt
 fi
 
 exec "$@"

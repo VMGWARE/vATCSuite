@@ -67,7 +67,7 @@ class HealthCheckController extends Controller
             'code' => $status === 'ok' ? 200 : 503,
             'message' => $status === 'ok' ? 'API v1 is up and running!' : 'API v1 is having issues.',
             'data' => [
-                'uptime' => 'N/A', // TODO: Get uptime from 'uptime' command
+                'uptime' => self::uptime(),
                 'timestamp' => now()->toAtomString(),
                 'app_version' => config('app.version'),
                 'api_version' => 'v1',
@@ -78,5 +78,28 @@ class HealthCheckController extends Controller
         ];
 
         return Helpers::response($response['message'], $response['data'], $response['code'], $response['status']);
+    }
+
+    /**
+     * Get the uptime of the server.
+     *
+     * @return string The uptime of the server.
+     */
+    private static function uptime(): string
+    {
+        # Read from the atisgen.txt file
+        try {
+            # In root of the project: atisgen.txt
+            $uptime = file_get_contents(base_path('atisgen.txt'));
+
+            # Remove the last line break
+            $uptime = str_replace("\n", '', $uptime);
+
+            # Calculate the uptime
+            $uptime = now()->diffForHumans($uptime, true);
+        } catch (\Exception $e) {
+            $uptime = 'Unknown';
+        }
+        return $uptime;
     }
 }

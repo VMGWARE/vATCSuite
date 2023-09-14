@@ -57,3 +57,5 @@ yarn-error.log
 
 # Others
 src/public/sitemap.xml
+# Used to log the time the container had finished building
+atisgen.txt
