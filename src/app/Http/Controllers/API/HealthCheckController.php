@@ -90,14 +90,60 @@ class HealthCheckController extends Controller
         # Read from the atisgen.txt file
         try {
             # In root of the project: atisgen.txt
-            $uptime = file_get_contents(base_path('atisgen.txt'));
+            $uptime = file_get_contents(storage_path('app/uptime.txt'));
 
             # Remove the last line break
-            // TODO: Add logic to calculate the uptime
-            $uptime = str_replace("\n", '', $uptime);
+            $uptime = trim($uptime);
+
+            // If the uptime is empty, return 'Unknown'
+            if (empty($uptime)) {
+                return 'Unknown';
+            }
+
+            // Assuming the downtime timestamp
+            $downtimeTimestamp = intval($uptime);
+
+            // Get the current timestamp
+            $currentTimestamp = time();
+
+            // Calculate the uptime duration in seconds
+            $uptimeInSeconds = $currentTimestamp - $downtimeTimestamp;
+
+            // Format the uptime for a human-readable display
+            $uptimeFormatted = self::formatUptime($uptimeInSeconds);
+
+            // Return the uptime
+            $uptime = $uptimeFormatted;
         } catch (\Exception $e) {
             $uptime = 'Unknown';
         }
         return $uptime;
+    }
+
+    private static function formatUptime($uptimeInSeconds)
+    {
+        $uptime = "";
+
+        $days = floor($uptimeInSeconds / 86400);
+        if ($days > 0) {
+            $uptime .= "$days days, ";
+            $uptimeInSeconds %= 86400;
+        }
+
+        $hours = floor($uptimeInSeconds / 3600);
+        if ($hours > 0) {
+            $uptime .= "$hours hours, ";
+            $uptimeInSeconds %= 3600;
+        }
+
+        $minutes = floor($uptimeInSeconds / 60);
+        if ($minutes > 0) {
+            $uptime .= "$minutes minutes, ";
+        }
+
+        $seconds = $uptimeInSeconds % 60;
+        $uptime .= "$seconds seconds";
+
+        return rtrim($uptime, ', '); // Remove trailing comma and space
     }
 }
