@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 use Illuminate\Http\JsonResponse;
+use App\Custom\Helpers;
 
 #[OpenApi\PathItem]
 class HealthCheckController extends Controller
@@ -66,7 +67,7 @@ class HealthCheckController extends Controller
             'code' => $status === 'ok' ? 200 : 503,
             'message' => $status === 'ok' ? 'API v1 is up and running!' : 'API v1 is having issues.',
             'data' => [
-                'uptime' => 'N/A', // TODO: Get uptime from 'uptime' command
+                'uptime' => self::uptime(),
                 'timestamp' => now()->toAtomString(),
                 'app_version' => config('app.version'),
                 'api_version' => 'v1',
@@ -76,6 +77,73 @@ class HealthCheckController extends Controller
             ]
         ];
 
-        return response()->json($response);
+        return Helpers::response($response['message'], $response['data'], $response['code'], $response['status']);
+    }
+
+    /**
+     * Get the uptime of the server.
+     *
+     * @return string The uptime of the server.
+     */
+    private static function uptime(): string
+    {
+        # Read from the atisgen.txt file
+        try {
+            # In root of the project: atisgen.txt
+            $uptime = file_get_contents(storage_path('app/uptime.txt'));
+
+            # Remove the last line break
+            $uptime = trim($uptime);
+
+            // If the uptime is empty, return 'Unknown'
+            if (empty($uptime)) {
+                return 'Unknown';
+            }
+
+            // Assuming the downtime timestamp
+            $downtimeTimestamp = intval($uptime);
+
+            // Get the current timestamp
+            $currentTimestamp = time();
+
+            // Calculate the uptime duration in seconds
+            $uptimeInSeconds = $currentTimestamp - $downtimeTimestamp;
+
+            // Format the uptime for a human-readable display
+            $uptimeFormatted = self::formatUptime($uptimeInSeconds);
+
+            // Return the uptime
+            $uptime = $uptimeFormatted;
+        } catch (\Exception $e) {
+            $uptime = 'Unknown';
+        }
+        return $uptime;
+    }
+
+    private static function formatUptime($uptimeInSeconds)
+    {
+        $uptime = "";
+
+        $days = floor($uptimeInSeconds / 86400);
+        if ($days > 0) {
+            $uptime .= "$days days, ";
+            $uptimeInSeconds %= 86400;
+        }
+
+        $hours = floor($uptimeInSeconds / 3600);
+        if ($hours > 0) {
+            $uptime .= "$hours hours, ";
+            $uptimeInSeconds %= 3600;
+        }
+
+        $minutes = floor($uptimeInSeconds / 60);
+        if ($minutes > 0) {
+            $uptime .= "$minutes minutes, ";
+        }
+
+        $seconds = $uptimeInSeconds % 60;
+        $uptime .= "$seconds seconds";
+
+        return rtrim($uptime, ', '); // Remove trailing comma and space
     }
 }

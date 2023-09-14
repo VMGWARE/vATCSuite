@@ -47,22 +47,12 @@ class AirportController extends Controller
     public function index(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         $airport = AirportModel::where('icao', strtoupper($icao))->first();
         if (!$airport) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not locate airport with ICAO code ' . strtoupper($icao) . ' in the database.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('Could not locate airport with ICAO code ' . strtoupper($icao) . ' in the database.', null, 404, 'error');
         }
 
         $metar = Helpers::fetch_metar($icao);
@@ -74,16 +64,11 @@ class AirportController extends Controller
             $runways = Helpers::parse_runways($icao, $wind['dir']);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Airport retrieved successfully.',
-            'code' => 200,
-            'data' => [
-                'airport' => $airport,
-                'metar' => $metar,
-                'wind' => $wind,
-                'runways' => $runways,
-            ]
+        return Helpers::response('Airport retrieved successfully.', [
+            'airport' => $airport,
+            'metar' => $metar,
+            'wind' => $wind,
+            'runways' => $runways,
         ]);
     }
 
@@ -105,12 +90,7 @@ class AirportController extends Controller
     public function all(): JsonResponse
     {
         $airports = AirportModel::all()->makeHidden(['created_at', 'updated_at']);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Airports retrieved successfully.',
-            'code' => 200,
-            'data' => $airports,
-        ]);
+        return Helpers::response('Airports retrieved successfully.', $airports);
     }
 
     /**
@@ -136,43 +116,23 @@ class AirportController extends Controller
     public function runways(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         $airport = AirportModel::where('icao', strtoupper($icao))->first();
 
         if (!$airport) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . '.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('Could not find airport with ICAO code ' . strtoupper($icao) . '.', null, 404, 'error');
         }
 
         $metar = Helpers::fetch_metar($icao);
         if ($metar == null) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('Could not find METAR data for ' . strtoupper($icao) . '.', null, 404, 'error');
         }
         $wind = Helpers::get_wind($metar);
         $runways = Helpers::parse_runways($icao, $wind['dir']);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Runways retrieved successfully.',
-            'code' => 200,
-            'data' => $runways,
-        ]);
+        return Helpers::response('Runways retrieved successfully.', $runways);
     }
 
     /**
@@ -208,12 +168,7 @@ class AirportController extends Controller
     {
         // Validate ICAO code
         if (!Helpers::validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         // Get the airport from the database
@@ -221,12 +176,7 @@ class AirportController extends Controller
 
         // If the airport is not found in the database, return an error
         if (!$airport) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find airport with ICAO code ' . strtoupper($icao) . ' in the database.',
-                'code' => 4041,
-                'data' => null
-            ]);
+            return Helpers::response('Could not find airport with ICAO code ' . strtoupper($icao) . ' in the database.', null, 404, 'error');
         }
 
         // Fetch the METAR data for the airport
@@ -234,23 +184,13 @@ class AirportController extends Controller
 
         // Ensure that the METAR data was found
         if ($metar == null) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find METAR data for ' . strtoupper($icao) . '.',
-                'code' => 4042,
-                'data' => null
-            ]);
+            return Helpers::response('Could not find METAR data for ' . strtoupper($icao) . '.', null, 404, 'error');
         }
 
         // Get the wind data from the METAR
         if ($request['output-type'] == 'atis') {
             if (!isset($request->landing_runways) || !isset($request->departing_runways)) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'You must select at least one landing and departing runway to generate your ATIS.',
-                    'code' => 400,
-                    'data' => null
-                ]);
+                return Helpers::response('You must select at least one landing and departing runway to generate your ATIS.', null, 400, 'error');
             }
         }
 
@@ -261,12 +201,7 @@ class AirportController extends Controller
 
         // Validate ATIS identifier
         if (!isset($request->ident) || !ctype_alpha($request->ident)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You must provide an ATIS identifier.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('You must provide an ATIS identifier.', null, 400, 'error');
         }
 
         // Define the ATIS generator for spoken and text ATIS
@@ -299,23 +234,13 @@ class AirportController extends Controller
 
         // If the ATIS could not be generated, return an error
         if ($spoken == null || $text == null) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not generate ATIS/AWOS.',
-                'code' => 500,
-                'data' => null
-            ]);
+            return Helpers::response('Could not generate ATIS/AWOS.', null, 500, 'error');
         }
 
         // Return the ATIS
-        return response()->json([
-            'status' => 'success',
-            'message' => 'ATIS/AWOS generated successfully.',
-            'code' => 200,
-            'data' => [
-                'spoken' => $spoken,
-                'text' => $text,
-            ]
+        return Helpers::response('ATIS/AWOS generated successfully.', [
+            'spoken' => $spoken,
+            'text' => $text,
         ]);
     }
 
@@ -344,33 +269,18 @@ class AirportController extends Controller
     public function metar(string $icao): JsonResponse
     {
         if (!Helpers::validateIcao($icao)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid ICAO code.',
-                'code' => 400,
-                'data' => null
-            ]);
+            return Helpers::response('Invalid ICAO code.', null, 400, 'error');
         }
 
         $metar = Helpers::fetch_metar($icao);
 
         // If the icao is not found in the response, return an error
         if ($metar == null) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Could not find METAR data for the requested airport.',
-                'code' => 404,
-                'data' => null
-            ]);
+            return Helpers::response('Could not find METAR data for the requested airport.', null, 404, 'error');
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'METAR data retrieved successfully.',
-            'code' => 200,
-            'data' => [
-                'metar' => $metar,
-            ]
+        return Helpers::response('METAR data retrieved successfully.', [
+            'metar' => $metar,
         ]);
     }
 }

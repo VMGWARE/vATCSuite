@@ -4,6 +4,7 @@ namespace App\Custom;
 
 use Illuminate\Support\Facades\Cache;
 use \App\Models\Airport;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Helper functions.
@@ -169,5 +170,29 @@ class Helpers
         array_multisort($select_diff, SORT_ASC, $output);
 
         return $output;
+    }
+
+    /**
+     * Generates a standardized JSON response.
+     *
+     * This function constructs a JSON response with a consistent structure,
+     * containing fields for status, code, message, and optional data.
+     *
+     * @param string $message    A descriptive message for the response.
+     * @param mixed  $data       Optional payload to include in the response. Can be of any type.
+     * @param int    $code       HTTP status code for the response. Defaults to 200 (OK).
+     * @param string $status     Response status, usually indicative of the result (e.g., "success" or "error").
+     *                           Defaults to "success".
+     *
+     * @return JsonResponse      A JsonResponse object with the structured data.
+     */
+    public static function response(string $message, mixed $data = null, int $code = 200, string $status = "success"): JsonResponse
+    {
+        return response()->json([
+            "status" => $status,
+            "code" => $code,
+            "message" => $message,
+            "data" => $data
+        ], $code);
     }
 }

@@ -111,20 +111,12 @@ $(document).ready(function () {
         }
 
         // Make an HTTP GET request to the specified API endpoint
-        $.get(`/api/v1/airports/${icao}/runways`, function (t) {
-            // Check if the response has an error status or the code is not 200
-            if (t.status == "error" || t.code != 200) {
-                // Show an error modal with the received error message
-                $("#runway-output").html(ErrorModal(t.message, "runway-modal"));
-                $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
-                $("#loading").hide(); // Hide the loading element
-                return; // Exit the function
-            }
+        $.get(`/api/v1/airports/${icao}/runways`)
+            .done(function (t) {
+                // TODO: If no runways, show a success message with an override runways button
 
-            // TODO: If no runways, show a success message with an override runways button
-
-            // Create a table containing information about runways
-            table = `
+                // Create a table containing information about runways
+                table = `
                 <table class="table">
                     <thead>
                         <tr>
@@ -154,17 +146,38 @@ $(document).ready(function () {
                 </table>
                 `;
 
-            // Show the generated table in a modal with title and id "runway-modal"
-            $("#runway-output").html(
-                Modal(
-                    "Runway List for " + icao.toUpperCase(),
-                    table,
-                    "runway-modal"
-                )
-            );
-            $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
-            $("#loading").hide(); // Hide the loading element
-        });
+                // Show the generated table in a modal with title and id "runway-modal"
+                $("#runway-output").html(
+                    Modal(
+                        "Runway List for " + icao.toUpperCase(),
+                        table,
+                        "runway-modal"
+                    )
+                );
+                $("#runway-modal").modal("show"); // Show the modal with id "runway-modal"
+                $("#loading").hide(); // Hide the loading element
+            })
+            .fail(function (jqXHR) {
+                // This block is triggered when there's an error in the request
+                let errorMessage = "Unknown error.";
+
+                // Check if the error response has JSON format
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    errorMessage = jqXHR.responseJSON.message;
+                    console.warn("Error fetching runways:", errorMessage);
+                } else {
+                    // If the response isn't in JSON format, just display the response text
+                    errorMessage = jqXHR.responseText;
+                    console.warn("Error fetching runways:", errorMessage);
+                }
+
+                // Display the error message. Assuming ErrorModal is a function you use to show errors
+                $("#runway-output").html(
+                    ErrorModal(errorMessage, "runway-modal")
+                );
+                $("#runway-modal").modal("show");
+                $("#loading").hide();
+            });
     });
 
     // On form submit event for the element with id "atis-input"
@@ -175,19 +188,8 @@ $(document).ready(function () {
         ident = $("#ident").val(); // Get the value of the input with id "ident"
 
         // Make an HTTP POST request to the specified API endpoint with serialized form data
-        $.post(
-            `/api/v1/airports/${icao}/atis`,
-            $("#atis-input").serialize(),
-            function (t) {
-                // Check if the response has an error status or the code is not 200
-                if (t.status == "error" || t.code != 200) {
-                    // Show an error modal with the received error message
-                    $("#atis-output").html(ErrorModal(t.message, "atis-modal"));
-                    $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                    $("#loading").hide(); // Hide the loading element
-                    return; // Exit the function
-                }
-
+        $.post(`/api/v1/airports/${icao}/atis`, $("#atis-input").serialize())
+            .done(function (t) {
                 // If the response data is empty
                 if (t.data == "") {
                     // Show an error modal with a specific message
@@ -232,38 +234,71 @@ $(document).ready(function () {
                 $("#loading").hide(); // Hide the loading element
 
                 // Make an HTTP POST request to another API endpoint with data for text-to-speech
-                tts = $.post(
-                    `/api/v1/tts`,
-                    { ident: ident, atis: atis, icao: icao },
-                    function (t) {
-                        // Check if the response has an error status or the code is not 200 or 409
-                        if (
-                            t.code != 200 &&
-                            t.status == "error" &&
-                            t.code != 409
-                        ) {
-                            // Show an error modal with the received error message
-                            $("#atis-output").html(
-                                ErrorModal(t.message, "atis-modal")
-                            );
-                            $("#atis-modal").modal("show"); // Show the modal with id "atis-modal"
-                            $("#loading").hide(); // Hide the loading element
-                            return; // Exit the function
-                        }
-
+                tts = $.post(`/api/v1/tts`, {
+                    ident: ident,
+                    atis: atis,
+                    icao: icao,
+                })
+                    .done(function (t) {
                         // Show the download button and set its attributes based on the response data
                         $("#download-atis").attr("href", t.data.url);
                         $("#download-atis").html("Download ATIS/AWOS Audio");
                         $("#download-atis").attr("download", t.data.name);
-                    }
-                );
+                    })
+                    .fail(function (jqXHR) {
+                        // This block is triggered when there's an error in the request
+                        let errorMessage = "Unknown error.";
+
+                        // Check if the error response has JSON format
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            errorMessage = jqXHR.responseJSON.message;
+                            console.warn(
+                                "Error fetching ATIS audio:",
+                                errorMessage
+                            );
+                        } else {
+                            // If the response isn't in JSON format, just display the response text
+                            errorMessage = jqXHR.responseText;
+                            console.warn(
+                                "Error fetching ATIS audio:",
+                                errorMessage
+                            );
+                        }
+
+                        // TODO: When an error is found here, the modal has a weird issue of not closing the backdrop when the close button is clicked.
+
+                        // Display the error message. Assuming ErrorModal is a function you use to show errors
+                        $("#atis-output").html(
+                            ErrorModal(errorMessage, "atis-modal")
+                        );
+                        $("#atis-modal").modal("show");
+                        $("#loading").hide();
+                    });
 
                 // On click event for the element with id "copy-atis"
                 $("#copy-atis").click(function () {
                     copy("#atis1"); // Call the 'copy' function to copy the content of the element with id "atis1"
                 });
-            }
-        );
+            })
+            .fail(function (jqXHR) {
+                // This block is triggered when there's an error in the request
+                let errorMessage = "Unknown error.";
+
+                // Check if the error response has JSON format
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    errorMessage = jqXHR.responseJSON.message;
+                    console.warn("Error fetching ATIS:", errorMessage);
+                } else {
+                    // If the response isn't in JSON format, just display the response text
+                    errorMessage = jqXHR.responseText;
+                    console.warn("Error fetching ATIS:", errorMessage);
+                }
+
+                // Display the error message. Assuming ErrorModal is a function you use to show errors
+                $("#atis-output").html(ErrorModal(errorMessage, "atis-modal"));
+                $("#atis-modal").modal("show");
+                $("#loading").hide();
+            });
     });
 
     // On click event for the element with id "squawk-generator"

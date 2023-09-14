@@ -18,8 +18,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// FIXME: This is a temporary solution to the setup process
-
 Artisan::command('setup', function () {
     // Make sure that a .env file exists
     $this->comment('Checking for .env file');

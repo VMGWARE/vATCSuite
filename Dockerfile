@@ -41,11 +41,6 @@ RUN apt-get install -y libexif-dev \
 RUN apt-get update && apt-get install -y supervisor \
     && rm -rf /var/lib/apt/lists/*
 
-# TODO: Find out why gmp is not working, or if it is even needed
-# RUN set -ex \
-#     # && { echo "/usr/include/gmp.h"; echo "/usr/include/x86_64-linux-gnu/gmp.h"; } | xargs -n1 ln -s \
-#     && docker-php-ext-install gmp
-
 RUN set -ex \
     && pecl install apcu-5.1.21 \
     && docker-php-ext-enable apcu
