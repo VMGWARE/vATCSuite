@@ -333,7 +333,7 @@ class TextToSpeech
 
             // Additional validation for specific options within voice_settings if needed
             if (isset($customConfig[$engine]['voice_settings'])) {
-                $voiceSettings = $customConfig['voice_settings'];
+                $voiceSettings = $customConfig[$engine]['voice_settings'];
                 if (!is_array($voiceSettings) || !self::validateElevenLabsVoiceSettings($voiceSettings)) {
                     return false; // Invalid voice_settings
                 }
