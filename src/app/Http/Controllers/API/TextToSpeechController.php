@@ -179,6 +179,7 @@ class TextToSpeechController extends Controller
         $zulu = gmdate("dHi");
         $icao = strtoupper($icao);
         $ident = strtoupper($ident);
+        // TODO: Add logic to make sure the file extension is correct
         $name = $icao . "_ATIS_" . $ident . "_" . $zulu . "Z.mp3";
 
         // Create the database entry
