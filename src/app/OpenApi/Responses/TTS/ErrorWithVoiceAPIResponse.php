@@ -17,7 +17,7 @@ class ErrorWithVoiceAPIResponse extends ResponseFactory implements Reusable
                 ->example('error')
                 ->description('The status of the response indicating the error condition.'),
             Schema::string('message')
-                ->example('Could not generate ATIS using the VoiceRSS API.')
+                ->example('There was an error generating the ATIS audio file.')
                 ->description('A human-readable message providing additional information about the error.'),
             Schema::integer('code')
                 ->example(500)
@@ -28,7 +28,7 @@ class ErrorWithVoiceAPIResponse extends ResponseFactory implements Reusable
         );
 
         return Response::create('ErrorWithVoiceAPI')
-            ->description('Error with VoiceRSS API.')
+            ->description('An error associated with the ATIS voice generation API or the ATIS voice generation process.')
             ->content(
                 MediaType::json()->schema($response)
             );
