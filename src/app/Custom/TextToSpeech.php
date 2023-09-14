@@ -301,7 +301,7 @@ class TextToSpeech
      * @return bool True if the custom config is valid, false otherwise.
      */
     public static function validateCustomConfig(array $customConfig): bool
-    {   
+    {
         $engine = $customConfig['engine'] ?? null;
 
         // Make sure the api key is provided
@@ -313,25 +313,26 @@ class TextToSpeech
             // Validate custom config for VoiceRSS engine (example rules)
             $validOptions = ['format', 'voice', 'rate'];
 
-            foreach ($customConfig as $key => $value) {
+            foreach ($customConfig[$engine] as $key => $value) {
                 if (!in_array($key, $validOptions)) {
                     return false; // Invalid option found
                 }
             }
 
             return true; // Custom config is valid for VoiceRSS
-        } elseif ($engine === 'ElevenLabs') {
+        }
+        if ($engine === 'ElevenLabs') {
             // Validate custom config for ElevenLabs engine (example rules)
             $validOptions = ['voice', 'model_id', 'voice_settings'];
 
-            foreach ($customConfig as $key => $value) {
+            foreach ($customConfig[$engine] as $key => $value) {
                 if (!in_array($key, $validOptions)) {
                     return false; // Invalid option found
                 }
             }
 
             // Additional validation for specific options within voice_settings if needed
-            if (isset($customConfig['voice_settings'])) {
+            if (isset($customConfig[$engine]['voice_settings'])) {
                 $voiceSettings = $customConfig['voice_settings'];
                 if (!is_array($voiceSettings) || !self::validateElevenLabsVoiceSettings($voiceSettings)) {
                     return false; // Invalid voice_settings
