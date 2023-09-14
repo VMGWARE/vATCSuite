@@ -292,4 +292,75 @@ class TextToSpeech
 
         return !empty($apiKeys);
     }
+
+    /**
+     * Validate a custom configuration for the TTS engine.
+     *
+     * @param string $engine The TTS engine to validate the configuration for ('VoiceRSS', 'ElevenLabs', etc.).
+     * @param array $customConfig The custom configuration to validate.
+     * @return bool True if the custom config is valid, false otherwise.
+     */
+    public static function validateCustomConfig(array $customConfig): bool
+    {   
+        $engine = $customConfig['engine'] ?? null;
+
+        // Make sure the api key is provided
+        if (!isset($customConfig['api_key']) || empty($customConfig['api_key'])) {
+            return false;
+        }
+
+        if ($engine === 'VoiceRSS') {
+            // Validate custom config for VoiceRSS engine (example rules)
+            $validOptions = ['format', 'voice', 'rate'];
+
+            foreach ($customConfig as $key => $value) {
+                if (!in_array($key, $validOptions)) {
+                    return false; // Invalid option found
+                }
+            }
+
+            return true; // Custom config is valid for VoiceRSS
+        } elseif ($engine === 'ElevenLabs') {
+            // Validate custom config for ElevenLabs engine (example rules)
+            $validOptions = ['voice', 'model_id', 'voice_settings'];
+
+            foreach ($customConfig as $key => $value) {
+                if (!in_array($key, $validOptions)) {
+                    return false; // Invalid option found
+                }
+            }
+
+            // Additional validation for specific options within voice_settings if needed
+            if (isset($customConfig['voice_settings'])) {
+                $voiceSettings = $customConfig['voice_settings'];
+                if (!is_array($voiceSettings) || !self::validateElevenLabsVoiceSettings($voiceSettings)) {
+                    return false; // Invalid voice_settings
+                }
+            }
+
+            return true; // Custom config is valid for ElevenLabs
+        }
+
+        return false; // Unsupported engine
+    }
+
+    /**
+     * Validate the ElevenLabs voice_settings configuration.
+     *
+     * @param array $voiceSettings The voice_settings configuration to validate.
+     * @return bool True if voice_settings is valid, false otherwise.
+     */
+    private static function validateElevenLabsVoiceSettings(array $voiceSettings): bool
+    {
+        // Add validation rules for ElevenLabs voice_settings here
+        $validOptions = ['stability', 'similarity_boost', 'style', 'use_speaker_boost'];
+
+        foreach ($voiceSettings as $key => $value) {
+            if (!in_array($key, $validOptions)) {
+                return false; // Invalid option found in voice_settings
+            }
+        }
+
+        return true; // voice_settings is valid
+    }
 }
