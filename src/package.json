@@ -1,4 +1,6 @@
 {
+    "name": "vmgware/vatcsuite",
+    "description": "vATC Suite provides virtual air traffic controllers with essential tools like ATIS and AWOS generation to enhance realism in online flying networks.",
     "private": true,
     "type": "module",
     "scripts": {
