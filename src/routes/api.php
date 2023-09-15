@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\HealthCheckController;
 use App\Http\Controllers\API\AirportController;
 use App\Http\Controllers\API\TextToSpeechController;
+use App\Http\Controllers\API\PDCController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,5 +50,11 @@ Route::prefix('v1')->group(function () {
 
         // Delete atis audio file
         Route::delete('/', [TextToSpeechController::class, 'delete']);
+    });
+
+    // PDC Generator
+    Route::prefix('pdc')->group(function () {
+        // Generate PDC
+        Route::post('/', [PDCController::class, 'generate'])->name('api.pdc.generate');
     });
 });
