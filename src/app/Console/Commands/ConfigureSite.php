@@ -149,6 +149,30 @@ class ConfigureSite extends Command
             $googleAnalyticsTrackingId->save();
         }
 
+        // Discord
+        if (Setting::where('key', 'vmgware_discord_enable')->count() === 0) {
+            $vmgwareDiscordEnable = new Setting();
+            $vmgwareDiscordEnable->key = 'vmgware_discord_enable';
+            $vmgwareDiscordEnable->name = 'Enable Discord Link';
+            $vmgwareDiscordEnable->description = 'Enable/Disable Discord Link';
+            $vmgwareDiscordEnable->value = env('VMGWARE_DISCORD_ENABLE', '0');
+            $vmgwareDiscordEnable->field = '{"name":"value","label":"Enabled","type":"checkbox"}';
+            $vmgwareDiscordEnable->active = '1';
+            $vmgwareDiscordEnable->save();
+        }
+
+        // Show powered by
+        if (Setting::where('key', 'vmgware_powered_by')->count() === 0) {
+            $vmgwarePoweredBy = new Setting();
+            $vmgwarePoweredBy->key = 'vmgware_powered_by';
+            $vmgwarePoweredBy->name = 'Show Powered By';
+            $vmgwarePoweredBy->description = 'Show/Hide Powered By';
+            $vmgwarePoweredBy->value = env('VMGWARE_POWERED_BY', '1');
+            $vmgwarePoweredBy->field = '{"name":"value","label":"Show","type":"checkbox"}';
+            $vmgwarePoweredBy->active = '1';
+            $vmgwarePoweredBy->save();
+        }
+
         $this->info('Default settings created.');
     }
 }

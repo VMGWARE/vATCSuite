@@ -126,14 +126,25 @@
     <footer class="bg-light py-4 mt-auto">
         <div class="container">
             <div class="row">
-                <div class="col-md text-center text-md-left">
-                    <p class="text-muted"> <i class="fas fa-plane"></i> Powered by <a
-                            href="https://github.com/VMGWARE/vATCSuite" target="_blank"
-                            style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">
-                            vATC Suite
-                        </a>
-                    </p>
-                </div>
+                @if (\Backpack\Settings\app\Models\Setting::get('vmgware_powered_by') == 1)
+                    <div class="col-md text-center text-md-left">
+                        <p class="text-muted"> <i class="fas fa-plane"></i> Powered by <a
+                                href="https://github.com/VMGWARE/vATCSuite" target="_blank"
+                                style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">
+                                vATC Suite
+                            </a>
+                        </p>
+                    </div>
+                @endif
+                @if (\Backpack\Settings\app\Models\Setting::get('vmgware_discord_enable') == 1)
+                    <div class="col-md text-center text-md-right">
+                        <p class="text-muted">
+                            <i class="fab fa-discord"></i> <!-- Assuming FontAwesome is used for Discord icon -->
+                            <a href="https://discord.gg/m5NzuSQCrE" target="_blank"
+                                style="color: #1b95e0; border-bottom: 1px dotted #1b95e0;">Discord</a>
+                        </p>
+                    </div>
+                @endif
                 <div class="col-md text-center">
                     <p class="text-muted">
                         <i class="fas fa-book"></i>
