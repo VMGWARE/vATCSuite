@@ -38,6 +38,9 @@ class GenerateAtisRequestBody extends RequestBodyFactory
             Schema::boolean('override_runways')
                 ->description('Disable the requirement for a runway to be selected.')
                 ->example(false),
+            Schema::string('metar')
+                ->description('The METAR to use.')
+                ->example('KJAX 201853Z 00000KT 10SM FEW250 28/22 A3000 RMK AO2 SLP159 T02780217')
         );
 
         return RequestBody::create('GenerateAtis')

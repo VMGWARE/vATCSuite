@@ -215,6 +215,7 @@ class AirportController extends Controller
             override_runways: $request->override_runways,
             output_type: $request['output-type'],
             approaches: $request->approaches,
+            metar: $request->metar,
         );
         $text_atis = new AtisGenerator(
             $icao,
@@ -226,6 +227,7 @@ class AirportController extends Controller
             override_runways: $request->override_runways,
             output_type: $request['output-type'],
             approaches: $request->approaches,
+            metar: $request->metar,
         );
 
         // Generate the ATIS
