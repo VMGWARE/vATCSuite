@@ -73,17 +73,51 @@ class AtisGenerator
     private array $spoken_runways = array("c" => "center", "l" => "left", "r" => "right");
 
 
-    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null, $output_type = null, $approaches = [])
+    /**
+     * The constructor takes a METAR string and parses it into an ATIS string
+     *
+     * @param mixed $icao The ICAO code of the airport.
+     * @param mixed $ident The ATIS ident.
+     * @param mixed $landing_runways An array of runways that are available for landing.
+     * @param mixed $departing_runways An array of runways that are available for departing.
+     * @param mixed $remarks1 The first part of the remarks.
+     * @param mixed $remarks2 The second part of the remarks.
+     * @param mixed $override_runways An array of runways that are available for landing and departing.
+     * @param mixed $output_type The type of output to generate.
+     * @param mixed $approaches An array of approaches that are in use.
+     * @param mixed $metar The METAR string.
+     */
+    public function __construct($icao = null, $ident = null, $landing_runways = [], $departing_runways = [], $remarks1 = null, $remarks2 = null, $override_runways = null, $output_type = null, $approaches = [], $metar = null)
     {
+        // ICAO
         $this->icao                 = strtoupper($icao);
+
+        // Ident
         $this->ident                = $ident;
+
+        // Runways
         $this->landing_runways      = $landing_runways;
         $this->departing_runways    = $departing_runways;
+
+        // Remarks
         $this->remarks1             = $remarks1;
+        // The remarks that are actually used
         $this->remarks2             = $remarks2;
+
+        // Removes the requirement to specify landing and departing runways
         $this->override_runways     = $override_runways;
-        $this->metar    = explode(" ", Helpers::fetch_metar($this->icao));
+
+        // If the METAR is not provided, fetch it from the API
+        if (empty($metar)) {
+            $this->metar = explode(" ", Helpers::fetch_metar($this->icao));
+        } else {
+            $this->metar    = explode(" ", $metar);
+        }
+
+        // If the output type is not provided, set it to ATIS, accepts atis or awos
         $this->output_type          = $output_type;
+
+        // Can be ils, visual, or both
         $this->approaches          = $approaches;
     }
 
