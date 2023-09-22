@@ -21,14 +21,17 @@ class GenerateAtisRequestBody extends RequestBodyFactory
                 ->description('The ICAO airport code.')
                 ->required(),
             Schema::string('remarks1')
+                ->example('Custom remarks.')
                 ->description('Custom remarks.'),
             Schema::object('remarks2')
                 ->description('Array of preset remarks.'),
-            Schema::object('landing_runways')
+            Schema::array('landing_runways')
                 ->description('Array of landing runways.')
+                ->example(['08', '26'])
                 ->required(),
-            Schema::object('departing_runways')
+            Schema::array('departing_runways')
                 ->description('Array of departing runways.')
+                ->example(['08', '26'])
                 ->required(),
             Schema::string('output-type')
                 ->description('The output type.')
