@@ -109,7 +109,7 @@ Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more informat
 [issues-url]: https://github.com/VMGWARE/vATCSuite/issues
 [license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[ci-shield]: https://woodpecker.vahngomes.dev/api/badges/VMGWARE/vATCSuite/status.svg
-[ci-url]: https://woodpecker.vahngomes.dev/VMGWARE/vATCSuite
+[ci-shield]: https://ci.vmgware.dev/api/badges/110/status.svg
+[ci-url]: https://ci.vmgware.dev/repos/110
 [forge-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fdfb30462-772c-4427-afe7-bb17de5c40f2%3Fdate%3D1%26commit%3D1&style=plastic
 [forge-url]: https://forge.laravel.com/servers/699079/sites/2035675
