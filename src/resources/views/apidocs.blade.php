@@ -33,13 +33,10 @@
         content="The offical API documentation for vATC Suite, a web application that provides virtual air traffic controllers with essential tools like ATIS and AWOS generation to enhance realism in online flying networks.">
     <meta name="twitter:image" content="https://atisgenerator.com/lib/images/vatcsuite_logo_small.png">
 
-    <!--
-    Redoc doesn't change outer page styles
-    -->
+
     <style>
         body {
             margin: 0;
-            padding: 0;
         }
     </style>
 
@@ -51,8 +48,8 @@
 </head>
 
 <body>
-    <redoc spec-url='/openapi'></redoc>
-    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <script id="api-reference" data-url="/openapi"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
 </body>
 
 </html>

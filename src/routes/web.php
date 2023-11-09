@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 // API Documentation
 Route::get('/docs', function () {
-    return view('redoc');
+    return view('apidocs');
 })->name('docs');
 
 // Import additional routes from the routes directory
