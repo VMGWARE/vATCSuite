@@ -183,7 +183,7 @@ class AirportController extends Controller
         $metar = Helpers::fetch_metar($icao);
 
         // Ensure that the METAR data was found
-        if ($metar == null) {
+        if ($metar == null && $request->metar == null) {
             return Helpers::response('Could not find METAR data for ' . strtoupper($icao) . '.', null, 404, 'error');
         }
 
