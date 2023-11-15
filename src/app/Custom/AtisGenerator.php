@@ -678,7 +678,7 @@ class AtisGenerator
      */
     private function runways(mixed $landing_runways, mixed $departing_runways, bool $speak = false)
     {
-        if (isset($this->override_runways)) {
+        if (isset($this->override_runways) && $this->override_runways == true) {
             return false;
         }
 
