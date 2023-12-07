@@ -1,3 +1,10 @@
+when:
+  - event: [pull_request, tag]
+  - event: push
+    branch:
+      - ${CI_REPO_DEFAULT_BRANCH}
+      - release/*
+
 variables:
   - &buildx_image "woodpeckerci/plugin-docker-buildx"
   - &platforms "linux/amd64,linux/arm64"
@@ -8,8 +15,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: vatc-suite
-    ports:
-      - 3306:3306
+    ports: ["3306"]
 
 pipeline:
   - name: Install Dependencies
@@ -90,6 +96,3 @@ pipeline:
       tag: pull_${CI_COMMIT_PULL_REQUEST}
     when:
       event: pull_request
-
-branches: [main, release/*]
-ignore_paths: [README.md, LICENSE, .github, .gitignore]
