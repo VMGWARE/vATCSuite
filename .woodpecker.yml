@@ -17,7 +17,7 @@ services:
       MYSQL_DATABASE: vatc-suite
     ports: ["3306"]
 
-pipeline:
+steps:
   - name: Install Dependencies
     image: sineverba/php8xc:latest
     commands:
