@@ -2,6 +2,7 @@
 
 namespace App\Custom;
 
+use Illuminate\Support\Facades\Log;
 use Exception;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Audio\Mp3;
@@ -10,8 +11,9 @@ use FFMpeg\Format\Audio\Mp3;
  * Text to Speech Generator.
  * 
  * Supported TTS engines:
- *     - VoiceRSS   
- *    - Eleven Labs
+ * - VoiceRSS   
+ * - Eleven Labs
+ * - Larynx (Beta)
  */
 class TextToSpeech
 {
@@ -27,7 +29,7 @@ class TextToSpeech
      *
      * @param string $text The text to be converted to speech.
      * @param string $language The language of the text (currently only used with VoiceRSS).
-     * @param string $engine The TTS engine to be used ('VoiceRSS', 'ElevenLabs', ...).
+     * @param string $engine The TTS engine to be used ('Larynx', 'VoiceRSS', 'ElevenLabs', ...).
      * @param array $options Additional options for the TTS engine:
      *      - VoiceRSS:
      *          - format: 'MP3' (default), ...
@@ -41,8 +43,13 @@ class TextToSpeech
      *              - similarity_boost: int (default 0), ...
      *              - style: int (default 0), ...
      *              - use_speaker_boost: bool (default true), ...
-     *      - AnotherTTSAPI (if added later):
-     *          - ...
+     *      - Larynx:
+     *         - voice: 'en-us/harvard-glow_tts' (default), ... 
+     *         - vocoder: 'hifi_gan/universal_large' (default), ...  
+     *         - denoiserStrength: float (default 0.01), ...
+     *         - noiseScale: float (default 0.333), ...
+     *         - lengthScale: float (default 1.0), ...
+     *         - ssml: bool (default false), ...
      * @param array|null $apiKeys (Optional) The API keys for the TTS engines. Keys should be engine names with associated API key as value.
      * @throws Exception If the TTS engine is not supported.
      */
@@ -120,6 +127,15 @@ class TextToSpeech
                     'use_speaker_boost' => true
                 ]
             ],
+            'Larynx' => [
+                // TODO: Find a better voice
+                'voice' => 'en-us/harvard-glow_tts',
+                'vocoder' => 'hifi_gan/universal_large',
+                'denoiserStrength' => 0.002,
+                'noiseScale' => 0.667,
+                'lengthScale' => 0.85,
+                'ssml' => 'false',
+            ]
         ];
 
         // Check if the engine is supported
@@ -146,6 +162,9 @@ class TextToSpeech
                 // Eleven Labs
             case 'ElevenLabs':
                 return $this->generateWithElevenLabs();
+                // Larynx
+            case 'Larynx':
+                return $this->generateWithLarynx();
                 // Unsupported engine
             default:
                 throw new Exception('Unsupported TTS Engine');
@@ -236,6 +255,59 @@ class TextToSpeech
 
         throw new Exception('Eleven Labs API Error');  // Handle error as per your requirements
     }
+
+    /**
+     * Generate the audio file using Larynx.
+     *
+     * @return bool|string Returns the generated audio data or false on failure
+     * @throws Exception If the API request fails
+     */
+    private function generateWithLarynx()
+    {
+        global $result;
+        $result = '';
+
+        $callback = function ($ch, $str) use (&$result) {
+            $result .= $str;
+            return strlen($str);
+        };
+
+        $requesturl = "http://voice.vmgware.dev/api/tts?" .
+            "text=" . rawurlencode($this->text) .
+            "&voice=" . $this->OPTIONS['voice'] .
+            "&vocoder=" . $this->OPTIONS['vocoder'] .
+            "&denoiserStrength=" . $this->OPTIONS['denoiserStrength'] .
+            "&noiseScale=" . $this->OPTIONS['noiseScale'] .
+            "&lengthScale=" . $this->OPTIONS['lengthScale'] .
+            "&ssml=" . $this->OPTIONS['ssml'];
+
+        $ch = curl_init($requesturl);
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_NOBODY, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, $callback);
+        curl_setopt($ch, CURLOPT_BUFFERSIZE, 256);
+
+        if (!curl_exec($ch)) {
+            $error_msg = curl_error($ch);
+        }
+        curl_close($ch);
+
+        if (isset($error_msg)) {
+            throw new Exception('Larynx API Error: ' . $error_msg);
+        }
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Exception('Larynx API Error: No response');
+    }
+
 
     /**
      * Convert the provided audio data to MP3. (Beta)
@@ -340,6 +412,18 @@ class TextToSpeech
             }
 
             return true; // Custom config is valid for ElevenLabs
+        }
+        if ($engine === 'Larynx') {
+            // Validate custom config for Larynx engine (example rules)
+            $validOptions = ['voice', 'vocoder', 'denoiserStrength', 'noiseScale', 'lengthScale', 'ssml'];
+
+            foreach ($customConfig[$engine] as $key => $value) {
+                if (!in_array($key, $validOptions)) {
+                    return false; // Invalid option found
+                }
+            }
+
+            return true; // Custom config is valid for Larynx
         }
 
         return false; // Unsupported engine
