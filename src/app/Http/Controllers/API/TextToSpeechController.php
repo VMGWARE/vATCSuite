@@ -203,6 +203,7 @@ class TextToSpeechController extends Controller
         // Write the file to the server storage
         Storage::disk()->put("atis/$file_id/$name", $output);
         $file_url = Storage::url("atis/$file_id/$name");
+        Log::info("File URL: $file_url");
         if (!$file_url) {
             // Delete the database entry
             $atis_file->delete();
@@ -210,8 +211,12 @@ class TextToSpeechController extends Controller
             return Helpers::response('Could not generate ATIS audio file.', null, 422, 'error');
         }
 
-        // Validate that the file exists
-        if (!Storage::disk()->exists("atis/$file_id/$name")) {
+        // Make curl call and see if the file exists
+        $ch = curl_init($file_url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($retcode != 200) {
             // Delete the database entry
             $atis_file->delete();
 
