@@ -128,8 +128,7 @@ class TextToSpeech
                 ]
             ],
             'Larynx' => [
-                // TODO: Find a better voice
-                'voice' => 'en-us/harvard-glow_tts',
+                'voice' => 'en-us/cmu_rms-glow_tts',
                 'vocoder' => 'hifi_gan/universal_large',
                 'denoiserStrength' => 0.002,
                 'noiseScale' => 0.667,
