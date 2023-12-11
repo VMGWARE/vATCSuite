@@ -264,14 +264,6 @@ class TextToSpeech
      */
     private function generateWithLarynx()
     {
-        global $result;
-        $result = '';
-
-        $callback = function ($ch, $str) use (&$result) {
-            $result .= $str;
-            return strlen($str);
-        };
-
         $requesturl = "http://voice.vmgware.dev/api/tts?" .
             "text=" . rawurlencode($this->text) .
             "&voice=" . $this->OPTIONS['voice'] .
@@ -283,30 +275,35 @@ class TextToSpeech
 
         $ch = curl_init($requesturl);
 
+        $tmpfname = tempnam(sys_get_temp_dir(), 'tts');
+        $fp = fopen($tmpfname, 'wb');
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_NOBODY, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Adjust timeout as needed
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_WRITEFUNCTION, $callback);
-        curl_setopt($ch, CURLOPT_BUFFERSIZE, 256);
 
-        if (!curl_exec($ch)) {
-            $error_msg = curl_error($ch);
+        curl_exec($ch);
+        if (curl_errno($ch)) {
+            throw new Exception('Larynx API Error: ' . curl_error($ch));
         }
+
+        fclose($fp);
         curl_close($ch);
 
-        if (isset($error_msg)) {
-            throw new Exception('Larynx API Error: ' . $error_msg);
+        if (filesize($tmpfname) > 0) {
+            // return $tmpfname; // Return the path to the temporary file
+            // Return the audio data
+            $audioData = file_get_contents($tmpfname);
+            unlink($tmpfname); // Delete the temporary file
+            return $audioData;
+        } else {
+            throw new Exception('Larynx API Error: No response or empty file');
         }
-
-        if ($result) {
-            return $result;
-        }
-
-        throw new Exception('Larynx API Error: No response');
     }
+
 
 
     /**
