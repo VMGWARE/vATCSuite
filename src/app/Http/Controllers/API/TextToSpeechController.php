@@ -141,7 +141,7 @@ class TextToSpeechController extends Controller
         }
 
         // Make sure at least one API key is set
-        if (!TextToSpeech::hasApiKey() && !$options) {
+        if (!TextToSpeech::hasApiKey() && !$options && $engine != 'Larynx') {
             Log::error('Your server voice API configuration is incorrect. Please check your .env file.');
 
             // Return the response
