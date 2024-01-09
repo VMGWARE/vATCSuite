@@ -1,9 +1,6 @@
 when:
   - event: [pull_request, tag]
   - event: push
-    branch:
-      - ${CI_REPO_DEFAULT_BRANCH}
-      - release/*
 
 variables:
   - &buildx_image "woodpeckerci/plugin-docker-buildx"
@@ -63,36 +60,3 @@ steps:
       - cd ./src
       - php artisan test
       - cd ../
-
-  - name: Deploy to Docker Hub
-    image: *buildx_image
-    secrets: [docker_username, docker_password]
-    settings:
-      repo: insidiousfiddler/vatcsuite
-      dockerfile: Dockerfile
-      platforms: *platforms
-      tag: latest
-    when:
-      event: push
-
-  - name: Deploy Tagged Version
-    image: *buildx_image
-    secrets: [docker_username, docker_password]
-    settings:
-      repo: insidiousfiddler/vatcsuite
-      dockerfile: Dockerfile
-      platforms: *platforms
-      tag: [latest, "${CI_COMMIT_TAG}"]
-    when:
-      event: tag
-
-  - name: Deploy Pull Request
-    image: *buildx_image
-    secrets: [docker_username, docker_password]
-    settings:
-      repo: insidiousfiddler/vatcsuite
-      dockerfile: Dockerfile
-      platforms: *platforms
-      tag: pull_${CI_COMMIT_PULL_REQUEST}
-    when:
-      event: pull_request
