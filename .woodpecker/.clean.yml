@@ -1,5 +1,8 @@
 when:
   event: [pull_request_closed]
+
+variables:
+  - &buildx_image "woodpeckerci/plugin-docker-buildx"
   
 # Only run on amd64 agents
 labels:
