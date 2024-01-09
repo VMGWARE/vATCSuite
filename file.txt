@@ -1,0 +1,1 @@
+This is meant to help test the deletion of PR images after the PR is closed or merged.
