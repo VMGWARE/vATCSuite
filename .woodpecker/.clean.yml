@@ -1,0 +1,15 @@
+when:
+  event: [pull_request_closed]
+  
+# Only run on amd64 agents
+labels:
+  arch: amd64
+
+steps:
+  - name: Delete PR Image
+    image: *buildx_image
+    commands:
+      - echo "Deleting PR image for PR#${CI_COMMIT_PULL_REQUEST}"
+      - docker login -u ${docker_username} -p ${docker_password}
+      - docker rmi insidiousfiddler/vatcsuite:pull_${CI_COMMIT_PULL_REQUEST}
+    secrets: [docker_username, docker_password]
