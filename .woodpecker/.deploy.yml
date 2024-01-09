@@ -16,6 +16,17 @@ steps:
       - git describe --always --tags --dirty > version
       - cat version
       - cd ../
+
+  - name: Deploy to CapRover
+    image: *node_image
+    secrets: [caprover_password, caprover_url, caprover_name]
+    commands:
+      - npm install -g caprover
+      - caprover login
+      - caprover deploy -n caprover -a atis -b main
+    when:
+      event: tag
+
   - name: Deploy to Docker Hub
     image: *buildx_image
     secrets: [docker_username, docker_password]
