@@ -93,10 +93,6 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-Distributed under the `CC BY-NC-SA 4.0` License. See `LICENSE` for more information. The `CC BY-NC-SA 4.0` License overrides the included `LICENSE` file. The LICENSE file included is a secondary license that also applies to this project and is included for reference.
-
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=VMGWARE/vATCSuite)](https://github.com/VMGWARE/vATCSuite/graphs/contributors)
