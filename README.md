@@ -62,21 +62,23 @@ vATC Suite provides virtual air traffic controllers with tools to generate and d
 1. Pull the image
 
     ```sh
-    docker pull insidiousfiddler/vatcsuite
+    docker pull ghcr.io/vmgware/vatcsuite
     ```
 
-2. Run the container with your database credentials
+2. Run the container with an app key and your database credentials
 
     ```sh
-    docker run -d -p 8000:80 insidiousfiddler/vatcsuite -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password>
+    docker run -d -p 8000:80 -e APP_KEY=<key> -e DB_HOST=<host> -e DB_PORT=<port> -e DB_DATABASE=<database> -e DB_USERNAME=<username> -e DB_PASSWORD=<password> ghcr.io/vmgware/vatcsuite
     ```
+
+    Generate the key once with `echo "base64:$(openssl rand -base64 32)"` and reuse it. Without one, a recreated container generates a new key and everyone gets logged out.
 
 3. Visit the site at [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ## Requirements
 
 1. PHP: version 8.5 or greater
-2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
+2. MariaDB: version 12.3 LTS (the version CI tests against)
 3. cURL: is used to fetch weather info, so this function must be enabled.
 4. Composer: is used to install dependencies
 
@@ -105,7 +107,7 @@ Don't forget to give the project a star! Thanks again!
 [issues-url]: https://github.com/VMGWARE/vATCSuite/issues
 [license-shield]: https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg
 [license-url]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[ci-shield]: https://ci.vmgware.dev/api/badges/110/status.svg
-[ci-url]: https://ci.vmgware.dev/repos/110
+[ci-shield]: https://github.com/VMGWARE/vATCSuite/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/VMGWARE/vATCSuite/actions/workflows/ci.yml
 [forge-shield]: https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fdfb30462-772c-4427-afe7-bb17de5c40f2%3Fdate%3D1%26commit%3D1&style=plastic
 [forge-url]: https://forge.laravel.com/servers/699079/sites/2035675
