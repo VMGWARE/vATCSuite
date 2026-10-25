@@ -75,7 +75,7 @@ vATC Suite provides virtual air traffic controllers with tools to generate and d
 
 ## Requirements
 
-1. PHP: version 8.1 or greater
+1. PHP: version 8.5 or greater
 2. MYSQL: My current server setup is running 10.3.36-MariaDB-log-cll-lve
 3. cURL: is used to fetch weather info, so this function must be enabled.
 4. Composer: is used to install dependencies

@@ -92,6 +92,11 @@ return [
          * When true, horizontal layouts will display the classic top bar on top to free some space when multiple nav items are used.
          */
         'doubleTopBarInHorizontalLayouts' => false,
+
+        /**
+         * When true, the password input will have a toggle button to show/hide the password.
+         */
+        'showPasswordVisibilityToggler' => false,
     ],
 
     /**

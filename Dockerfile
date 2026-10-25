@@ -5,7 +5,7 @@
 ### OS: Debian
 ###
 
-FROM php:8.1-apache
+FROM php:8.5-apache
 
 # opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.authors="The vATC Suite Team <hello@atisgenerator.com>" \
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y supervisor \
     && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
-    && pecl install apcu-5.1.21 \
+    && pecl install apcu-5.1.28 \
     && docker-php-ext-enable apcu
 
 RUN set -ex \
@@ -66,14 +66,13 @@ RUN set -ex; \
     echo '* * * * * /usr/local/bin/php /var/www/html/artisan schedule:run -v >/proc/1/fd/1 2>/proc/1/fd/2\n#' >> /var/spool/cron/crontabs/root \
     && crontab /var/spool/cron/crontabs/root
 
-# Opcache
+# Opcache (built into PHP since 8.5, so it only needs configuring)
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
     PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
     PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
 RUN set -ex; \
     \
-    docker-php-ext-enable opcache; \
     { \
     echo '[opcache]'; \
     echo 'opcache.enable=1'; \

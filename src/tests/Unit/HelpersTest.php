@@ -6,13 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Custom\Helpers;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HelpersTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_calculates_angle_difference_correctly()
     {
         $result = Helpers::get_angle_diff(10, 350);
@@ -24,14 +25,14 @@ class HelpersTest extends TestCase
 
     //... Similarly, you can write tests for other methods.
 
-    /** @test */
+    #[Test]
     public function it_validates_icao_code()
     {
         $this->assertTrue(Helpers::validateIcao('KJFK'));
         $this->assertFalse(Helpers::validateIcao('12345'));
     }
 
-    /** @test */
+    #[Test]
     public function it_parses_metar_for_wind_information()
     {
         $metarString = "XXXX 05015G25KT ..."; // Example METAR string
