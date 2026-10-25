@@ -8,7 +8,7 @@ Before contributing, please ensure you have the latest version of the code by cl
 
     gh repo clone VMGWARE/vATCSuite
 
-You will also need PHP 8.1 or later installed on your system. You can download PHP from the [PHP website](https://www.php.net/downloads.php).
+You will also need PHP 8.5 or later installed on your system. You can download PHP from the [PHP website](https://www.php.net/downloads.php).
 
 ## Contributing Guidelines
 

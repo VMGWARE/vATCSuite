@@ -11,8 +11,11 @@ return [
     // To override per Controller use $this->crud->setShowContentClass('class-string')
     'contentClass' => 'col-md-12',
 
+    // Which component to use for displaying the Show page?
+    'component' => 'bp-datalist', // options: bp-datagrid, bp-datalist, or a custom component alias
+
     // Automatically add all columns from the db table?
-    'setFromDb'  => true,
+    'setFromDb' => true,
 
     // Automatically add created_at and updated_at columns, if model has timestamps?
     'timestamps' => true,
