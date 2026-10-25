@@ -5,6 +5,20 @@ set -Eeo pipefail
 ATISGENDIR=/var/www/html
 ARTISAN="php ${ATISGENDIR}/artisan"
 
+# Generate key if not set. This runs before cron and supervisor start so every process picks up the same key.
+if [ -n "${APP_KEY:-}" ] && [ "$APP_KEY" != "ChangeMeBy32KeyLengthOrGenerated" ]; then
+    echo "APP_KEY already set"
+else
+    # Drop the placeholder so it can't shadow the key written to .env
+    unset APP_KEY
+    if grep -q '^APP_KEY=ChangeMeBy32KeyLengthOrGenerated$' ${ATISGENDIR}/.env; then
+        echo "APP_KEY not set, generating one. Set APP_KEY to keep sessions valid when the container is recreated."
+        ${ARTISAN} key:generate --force --no-interaction
+    else
+        echo "Using the APP_KEY generated on a previous start"
+    fi
+fi
+
 # Push env vars for cron
 echo "Loading env vars for cron"
 env >/etc/environment
@@ -27,13 +41,6 @@ mkdir -p ${STORAGE}/framework/sessions
 chown -R www-data:www-data ${STORAGE}
 chmod -R g+rw ${STORAGE}
 
-# Generate key if not set
-if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
-    ${ARTISAN} key:generate --no-interaction
-else
-    echo "APP_KEY already set"
-fi
-
 # Link public storage
 if [ -d "${ATISGENDIR}/public/storage" ]; then
     echo "Public storage already linked"
@@ -55,5 +62,8 @@ ${ARTISAN} backpack:install --no-interaction
 
 # Write to a file the current time
 ${ARTISAN} uptime
+
+# The artisan commands above run as root, so hand anything they created (e.g. Basset's cache) back to Apache
+chown -R www-data:www-data ${STORAGE}
 
 exec "$@"
