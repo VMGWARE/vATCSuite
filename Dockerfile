@@ -134,17 +134,6 @@ RUN set -ex; \
     composer clear-cache; \
     rm -rf .composer
 
-# # Install node dependencies
-# RUN set -ex; \
-#     \
-#     curl -fsSL https://deb.nodesource.com/setup_18.x | bash -; \
-#     apt-get install -y nodejs; \
-#     npm install -g yarn; \
-#     # yarn run inst; \
-#     yarn run dev; \
-#     \
-#     rm -rf /var/lib/apt/lists/*
-
 # Ensure the log file exists
 RUN set -ex; \
     \
